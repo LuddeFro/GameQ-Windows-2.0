@@ -9,8 +9,8 @@ import java.util.LinkedList;
 public class DotaDetector extends GameDetector implements PacketDetector {
 
     private String dotaFilter = "udp src portrange 27000-28999 or udp dst portrange 27000-28999";
-    private LinkedList<Packet> packetQueue = null;
-    private int queueMaxSize = -1;
+    private LinkedList<Packet> packetQueue = new LinkedList<Packet>();
+    private int queueMaxSize = 200;
     private boolean isCapturing = false;
 
     private int portMin = 27000;
@@ -53,7 +53,7 @@ public class DotaDetector extends GameDetector implements PacketDetector {
 
         if(!isCapturing){
             //new thread?????
-            PacketParser.getInstance().start(dotaFilter);
+            PacketParser.getInstance().start(dotaFilter, this);
         }
         isCapturing = true;
     }
@@ -186,14 +186,63 @@ public class DotaDetector extends GameDetector implements PacketDetector {
         }
     }
 
+    private boolean queueStarted(Packet p, int timeSpan, int maxPacket, int packetNumber) {
+
+        while(!srcQTimer.isEmpty() && p.getCaptureTime() - srcQTimer.getLast().getTime() > timeSpan){
+            int key = srcQTimer.removeLast().getKey();
+            srcQCounter.put(key, srcQCounter.get(key) - 1);
+        }
+
+        while(!dstQTimer.isEmpty() && p.getCaptureTime() - dstQTimer.getLast().getTime() > timeSpan){
+            int key = dstQTimer.removeLast().getKey();
+            dstQCounter.put(key, dstQCounter.get(key) -1);
+        }
+
+        for (int key : srcQCounter.keySet()){
+            if((p.getPacketLength() <= key + maxPacket && p.getPacketLength() >= key)
+                    && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
+                srcQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                srcQCounter.put(key, srcQCounter.get(key) + 1);
+            }
+        }
+
+        for (int key : dstQCounter.keySet()){
+            if((p.getPacketLength() <= key + maxPacket && p.getPacketLength() >= key)
+                    && p.getDstPort() <= portMax && p.getDstPort() >= portMin){
+                dstQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                dstQCounter.put(key, dstQCounter.get(key) + 1);
+            }
+        }
+
+        printMap(srcQCounter);
+        printMap(dstQCounter);
+
+//        //bad coode here yo
+//        if(srcQCounter.get(78) > 0 && srcQCounter.get(158) > 0
+//                || (dstQCounter.get(174) > 0 && srcQCounter.get(78) > 0 && (srcQCounter.get(270) > 0 || srcQCounter.get(285) > 0 ))){
+//
+//            srcQTimer.add(new PacketTimer(158, p.getCaptureTime()));
+//            srcQCounter.put(158, srcQCounter.get(158) + 1);
+//
+//            srcQTimer.add(new PacketTimer(78, p.getCaptureTime()));
+//            srcQCounter.put(78, srcQCounter.get(78) + 1);
+//
+//            dstQTimer.add(new PacketTimer(126, p.getCaptureTime()));
+//            dstQCounter.put(126, dstQCounter.get(126) + 1);
+//
+//            dstQTimer.add(new PacketTimer(142, p.getCaptureTime()));
+//            dstQCounter.put(142, dstQCounter.get(142) + 1);
+//
+//            return true;
+//        }
+//        else {return false;}
+        return false;
+    }
+
+
     private boolean isStillQueueing(Packet newPacket, int timeSpan, int maxPacket, int packetNumber) {
         return false;
     }
-
-    private boolean queueStarted(Packet newPacket, int timeSpan, int maxPacket, int packetNumber) {
-        return false;
-    }
-
 
     private boolean isInGame(Packet newPacket, int timeSpan, int packetNumber) {
         return false;
@@ -204,4 +253,11 @@ public class DotaDetector extends GameDetector implements PacketDetector {
         return false;
     }
 
+    public void printMap(HashMap<Integer,Integer> map){
+        for (int name: map.keySet()){
+            String value = map.get(name).toString();
+            System.out.print(name + " : " + value + ", ");
+        }
+        System.out.println();
+    }
 }

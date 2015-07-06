@@ -39,7 +39,7 @@ public class PacketParser {
 
     private Pcap pcap = null;
 
-    public void start(String filterString) {
+    public void start(String filterString, final PacketDetector detector) {
         List<PcapIf> alldevs = new ArrayList<PcapIf>(); // Will be filled with NICs
         StringBuilder errbuf = new StringBuilder(); // For any error msgs
 
@@ -74,7 +74,7 @@ public class PacketParser {
          **************************************************************************/
         int snaplen = 64 * 1024;           // Capture all packets, no trucation
         int flags = Pcap.MODE_PROMISCUOUS; // capture all packets
-        int timeout = 10 * 1000;           // 10 seconds in millis
+        int timeout = 100;           // 10 seconds in millis
         pcap = Pcap.openLive(device.getName(), snaplen, flags, timeout, errbuf);
 
         if (pcap == null) {
@@ -111,7 +111,7 @@ public class PacketParser {
                     System.out.print("Found tcp packet");
                     System.out.print("src: " +  tcp.source());
                     System.out.print("dst: " +  tcp.destination());
-                    System.out.print("len: " + tcp.getLength());
+                    System.out.print("len: " + tcp.getLength()); //PROBABLY WRONG
                     System.out.println("time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
                 }
 
@@ -119,8 +119,9 @@ public class PacketParser {
                     System.out.print("Found udp packet");
                     System.out.print(" src: " + udp.source());
                     System.out.print(" dst: " + udp.destination());
-                    System.out.print(" len: " + udp.length());
+                    System.out.print(" caplen : " + packet.getCaptureHeader().caplen());
                     System.out.println(" time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
+                    detector.handle(new Packet(udp.source(), udp.destination(), packet.getCaptureHeader().caplen(), packet.getCaptureHeader().timestampInMillis()/1000));
                 }
             }
         };
@@ -133,7 +134,7 @@ public class PacketParser {
          * the loop method exists that allows the programmer to sepecify exactly
          * which protocol ID to use as the data link type for this pcap interface.
          **************************************************************************/
-        pcap.loop(0, jpacketHandler, "jNetPcap rocks!");
+        pcap.loop(Pcap.LOOP_INFINITE, jpacketHandler, "jNetPcap rocks!");
 
         /***************************************************************************
          * Last thing to do is close the pcap handle

@@ -5,12 +5,12 @@ package io.gameq.gameqwindows;
  */
 public class Packet {
 
-    private int dstPort;
     private int srcPort;
+    private int dstPort;
     private int packetLength;
     private long captureTime;
 
-    public Packet(int dstPort, int srcPort, int packetLength, long captureTime){
+    public Packet(int srcPort, int dstPort, int packetLength, long captureTime){
 
         this.dstPort = dstPort;
         this.srcPort = srcPort;
