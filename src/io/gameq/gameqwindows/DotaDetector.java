@@ -20,25 +20,25 @@ public class DotaDetector extends GameDetector implements PacketDetector {
     private boolean isProbablyGame = false;
 
     private LinkedList<PacketTimer> srcQTimer = new LinkedList<PacketTimer>();
-    private PacketHashMap srcQCounter = new PacketHashMap(new int[]{78,158,270,285});
+    private PacketMap srcQCounter = new PacketMap(new int[]{78,158,270,285});
 
     private LinkedList<PacketTimer> dstQTimer = new LinkedList<PacketTimer>();
-    private PacketHashMap dstQCounter = new PacketHashMap(new int[]{126,142,174,222});
+    private PacketMap dstQCounter = new PacketMap(new int[]{126,142,174,222});
 
     private LinkedList<PacketTimer> stopQTimer = new LinkedList<PacketTimer>();
-    private PacketHashMap stopQCounter = new PacketHashMap(new int[]{78,250});
+    private PacketMap stopQCounter = new PacketMap(new int[]{78,250});
 
     private LinkedList<PacketTimer> gameTimer1 = new LinkedList<PacketTimer>();
-    private PacketHashMap packetCounter1 = new PacketHashMap(new int[]{600, 700, 800, 900, 1000, 1100, 1200, 1300});
+    private PacketMap packetCounter1 = new PacketMap(new int[]{600, 700, 800, 900, 1000, 1100, 1200, 1300});
 
     private LinkedList<PacketTimer> gameTimer2 = new LinkedList<PacketTimer>();
-    private PacketHashMap packetCounter2 = new PacketHashMap(new int[]{164, 174, 190, 206});
+    private PacketMap packetCounter2 = new PacketMap(new int[]{164, 174, 190, 206});
 
     private LinkedList<PacketTimer> dstGameTimer = new LinkedList<PacketTimer>();
-    private PacketHashMap dstPacketCounter = new PacketHashMap(new int[]{78});
+    private PacketMap dstPacketCounter = new PacketMap(new int[]{78});
 
     private LinkedList<PacketTimer> inGameTimer = new LinkedList<PacketTimer>();
-    private HashMap<Integer,Integer> inGamePacketCounter = new HashMap<Integer, Integer>();
+    private PacketMap inGamePacketCounter = new PacketMap(new int[]{});
 
     private int saveCounter = 0;
 
@@ -96,29 +96,29 @@ public class DotaDetector extends GameDetector implements PacketDetector {
 
         queuePort = -1;
         srcQTimer = new LinkedList<PacketTimer>();
-        srcQCounter = new PacketHashMap(new int[]{78,158,270,285});
+        srcQCounter = new PacketMap(new int[]{78,158,270,285});
         dstQTimer = new LinkedList<PacketTimer>();
-        dstQCounter = new PacketHashMap(new int[]{126,142,174,222});
+        dstQCounter = new PacketMap(new int[]{126,142,174,222});
         stopQTimer = new LinkedList<PacketTimer>();
-        stopQCounter =  new PacketHashMap(new int[]{78,250});
+        stopQCounter =  new PacketMap(new int[]{78,250});
     }
 
     private void resetGameTimer(){
         gameTimer1 = new LinkedList<PacketTimer>();
-        packetCounter1 =  new PacketHashMap(new int[]{600, 700, 800, 900, 1000, 1100, 1200, 1300});
+        packetCounter1 =  new PacketMap(new int[]{600, 700, 800, 900, 1000, 1100, 1200, 1300});
 
         gameTimer2 = new LinkedList<PacketTimer>();
-        packetCounter2 = new PacketHashMap(new int[]{164, 174, 190, 206});
+        packetCounter2 = new PacketMap(new int[]{164, 174, 190, 206});
 
         dstGameTimer = new LinkedList<PacketTimer>();
-        dstPacketCounter = new PacketHashMap(new int[]{78});
+        dstPacketCounter = new PacketMap(new int[]{78});
 
         isProbablyGame = false;
     }
 
     private void resetInGameTimer(){
         inGameTimer = new LinkedList<PacketTimer>();
-        inGamePacketCounter = new HashMap<Integer, Integer>();
+        inGamePacketCounter = new PacketMap(new int[]{});
     }
 
 
@@ -214,29 +214,28 @@ public class DotaDetector extends GameDetector implements PacketDetector {
             }
         }
 
-        printMap(srcQCounter);
-        printMap(dstQCounter);
+        srcQCounter.printMap();
+        dstQCounter.printMap();
 
-//        //bad coode here yo
-//        if(srcQCounter.get(78) > 0 && srcQCounter.get(158) > 0
-//                || (dstQCounter.get(174) > 0 && srcQCounter.get(78) > 0 && (srcQCounter.get(270) > 0 || srcQCounter.get(285) > 0 ))){
-//
-//            srcQTimer.add(new PacketTimer(158, p.getCaptureTime()));
-//            srcQCounter.put(158, srcQCounter.get(158) + 1);
-//
-//            srcQTimer.add(new PacketTimer(78, p.getCaptureTime()));
-//            srcQCounter.put(78, srcQCounter.get(78) + 1);
-//
-//            dstQTimer.add(new PacketTimer(126, p.getCaptureTime()));
-//            dstQCounter.put(126, dstQCounter.get(126) + 1);
-//
-//            dstQTimer.add(new PacketTimer(142, p.getCaptureTime()));
-//            dstQCounter.put(142, dstQCounter.get(142) + 1);
-//
-//            return true;
-//        }
-//        else {return false;}
-        return false;
+        //bad coode here yo
+        if(srcQCounter.get(78) > 0 && srcQCounter.get(158) > 0
+                || (dstQCounter.get(174) > 0 && srcQCounter.get(78) > 0 && (srcQCounter.get(270) > 0 || srcQCounter.get(285) > 0 ))){
+
+            srcQTimer.add(new PacketTimer(158, p.getCaptureTime()));
+            srcQCounter.put(158, srcQCounter.get(158) + 1);
+
+            srcQTimer.add(new PacketTimer(78, p.getCaptureTime()));
+            srcQCounter.put(78, srcQCounter.get(78) + 1);
+
+            dstQTimer.add(new PacketTimer(126, p.getCaptureTime()));
+            dstQCounter.put(126, dstQCounter.get(126) + 1);
+
+            dstQTimer.add(new PacketTimer(142, p.getCaptureTime()));
+            dstQCounter.put(142, dstQCounter.get(142) + 1);
+
+            return true;
+        }
+        else {return false;}
     }
 
 
@@ -251,13 +250,5 @@ public class DotaDetector extends GameDetector implements PacketDetector {
 
     private boolean isGameReady(Packet newPacket) {
         return false;
-    }
-
-    public void printMap(HashMap<Integer,Integer> map){
-        for (int name: map.keySet()){
-            String value = map.get(name).toString();
-            System.out.print(name + " : " + value + ", ");
-        }
-        System.out.println();
     }
 }

@@ -6,7 +6,5 @@ public class Main {
 
     public static void main(String[] args) {
 
-         DotaDetector test = new DotaDetector();
-         test.startDetection();
     }
 }

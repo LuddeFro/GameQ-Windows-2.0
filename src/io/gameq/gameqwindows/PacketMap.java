@@ -13,5 +13,11 @@ public class PacketMap extends HashMap<Integer,Integer> {
         }
     }
 
-
+    public void printMap(){
+        for (int name: this.keySet()){
+            String value = this.get(name).toString();
+            System.out.print(name + " : " + value + ", ");
+        }
+        System.out.println();
+    }
 }
