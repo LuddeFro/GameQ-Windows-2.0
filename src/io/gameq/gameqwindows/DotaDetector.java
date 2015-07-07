@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class DotaDetector extends GameDetector implements PacketDetector {
 
     private String dotaFilter = "udp src portrange 27000-28999 or udp dst portrange 27000-28999";
-    private LinkedList<Packet> packetQueue = new LinkedList<Packet>();
+    private LinkedList<Packet> packetQueue = new LinkedList<>();
     private int queueMaxSize = 200;
     private boolean isCapturing = false;
 
@@ -19,25 +19,25 @@ public class DotaDetector extends GameDetector implements PacketDetector {
     private int queuePort = -1;
     private boolean isProbablyGame = false;
 
-    private LinkedList<PacketTimer> srcQTimer = new LinkedList<PacketTimer>();
+    private LinkedList<PacketTimer> srcQTimer = new LinkedList<>();
     private PacketMap srcQCounter = new PacketMap(new int[]{78,158,270,285});
 
-    private LinkedList<PacketTimer> dstQTimer = new LinkedList<PacketTimer>();
+    private LinkedList<PacketTimer> dstQTimer = new LinkedList<>();
     private PacketMap dstQCounter = new PacketMap(new int[]{126,142,174,222});
 
-    private LinkedList<PacketTimer> stopQTimer = new LinkedList<PacketTimer>();
+    private LinkedList<PacketTimer> stopQTimer = new LinkedList<>();
     private PacketMap stopQCounter = new PacketMap(new int[]{78,250});
 
-    private LinkedList<PacketTimer> gameTimer1 = new LinkedList<PacketTimer>();
+    private LinkedList<PacketTimer> gameTimer1 = new LinkedList<>();
     private PacketMap packetCounter1 = new PacketMap(new int[]{600, 700, 800, 900, 1000, 1100, 1200, 1300});
 
-    private LinkedList<PacketTimer> gameTimer2 = new LinkedList<PacketTimer>();
+    private LinkedList<PacketTimer> gameTimer2 = new LinkedList<>();
     private PacketMap packetCounter2 = new PacketMap(new int[]{164, 174, 190, 206});
 
-    private LinkedList<PacketTimer> dstGameTimer = new LinkedList<PacketTimer>();
+    private LinkedList<PacketTimer> dstGameTimer = new LinkedList<>();
     private PacketMap dstPacketCounter = new PacketMap(new int[]{78});
 
-    private LinkedList<PacketTimer> inGameTimer = new LinkedList<PacketTimer>();
+    private LinkedList<PacketTimer> inGameTimer = new LinkedList<>();
     private PacketMap inGamePacketCounter = new PacketMap(new int[]{});
 
     private int saveCounter = 0;
@@ -72,14 +72,14 @@ public class DotaDetector extends GameDetector implements PacketDetector {
     @Override
     public void saveDetection(){
         super.saveDetection();
-        packetQueue = new LinkedList<Packet>();
+        packetQueue = new LinkedList<>();
         // dataHandler.logPackets(packetQueue)
     }
 
     @Override
     public void saveMissedDetection(){
         super.saveMissedDetection();
-        packetQueue = new LinkedList<Packet>();
+        packetQueue = new LinkedList<>();
         //dataHandler.logPackets(packetQueue)
     }
 
@@ -96,29 +96,29 @@ public class DotaDetector extends GameDetector implements PacketDetector {
     private void resetQueueTimer(){
 
         queuePort = -1;
-        srcQTimer = new LinkedList<PacketTimer>();
+        srcQTimer = new LinkedList<>();
         srcQCounter = new PacketMap(new int[]{78,158,270,285});
-        dstQTimer = new LinkedList<PacketTimer>();
+        dstQTimer = new LinkedList<>();
         dstQCounter = new PacketMap(new int[]{126,142,174,222});
-        stopQTimer = new LinkedList<PacketTimer>();
+        stopQTimer = new LinkedList<>();
         stopQCounter =  new PacketMap(new int[]{78,250});
     }
 
     private void resetGameTimer(){
-        gameTimer1 = new LinkedList<PacketTimer>();
+        gameTimer1 = new LinkedList<>();
         packetCounter1 =  new PacketMap(new int[]{600, 700, 800, 900, 1000, 1100, 1200, 1300});
 
-        gameTimer2 = new LinkedList<PacketTimer>();
+        gameTimer2 = new LinkedList<>();
         packetCounter2 = new PacketMap(new int[]{164, 174, 190, 206});
 
-        dstGameTimer = new LinkedList<PacketTimer>();
+        dstGameTimer = new LinkedList<>();
         dstPacketCounter = new PacketMap(new int[]{78});
 
         isProbablyGame = false;
     }
 
     private void resetInGameTimer(){
-        inGameTimer = new LinkedList<PacketTimer>();
+        inGameTimer = new LinkedList<>();
         inGamePacketCounter = new PacketMap(new int[]{});
     }
 
