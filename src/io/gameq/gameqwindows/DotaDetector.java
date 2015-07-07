@@ -41,6 +41,7 @@ public class DotaDetector extends GameDetector implements PacketDetector {
     private PacketMap inGamePacketCounter = new PacketMap(new int[]{});
 
     private int saveCounter = 0;
+    private int inGameMaxSize = 100;
 
 
     @Override
@@ -239,16 +240,154 @@ public class DotaDetector extends GameDetector implements PacketDetector {
     }
 
 
-    private boolean isStillQueueing(Packet newPacket, int timeSpan, int maxPacket, int packetNumber) {
-        return false;
+    private boolean isStillQueueing(Packet p, int timeSpan, int maxPacket, int packetNumber) {
+
+        while(!srcQTimer.isEmpty() && p.getCaptureTime() - srcQTimer.getLast().getTime() > timeSpan){
+            int key = srcQTimer.removeLast().getKey();
+            srcQCounter.put(key, srcQCounter.get(key) - 1);
+        }
+
+        while(!dstQTimer.isEmpty() && p.getCaptureTime() - dstQTimer.getLast().getTime() > timeSpan){
+            int key = dstQTimer.removeLast().getKey();
+            dstQCounter.put(key, dstQCounter.get(key) -1);
+        }
+
+
+        while(!stopQTimer.isEmpty() && p.getCaptureTime() - stopQTimer.getLast().getTime() > timeSpan){
+            int key = stopQTimer.removeLast().getKey();
+            stopQCounter.put(key, stopQCounter.get(key) -1);
+        }
+
+
+        for (int key : srcQCounter.keySet()){
+            if((p.getPacketLength() <= key + maxPacket && p.getPacketLength() >= key)
+                    && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
+                srcQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                srcQCounter.put(key, srcQCounter.get(key) + 1);
+            }
+        }
+
+        for (int key : dstQCounter.keySet()){
+            if((p.getPacketLength() <= key + maxPacket && p.getPacketLength() >= key)
+                    && p.getDstPort() <= portMax && p.getDstPort() >= portMin){
+                dstQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                dstQCounter.put(key, dstQCounter.get(key) + 1);
+            }
+        }
+
+        if(p.getPacketLength() <= 250 + 50 && p.getPacketLength() >= 250
+                && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
+            stopQTimer.addFirst(new PacketTimer(250, p.getCaptureTime()));
+            dstQCounter.put(250, dstQCounter.get(250) + 1);
+        }
+
+        else if(p.getPacketLength() == 78){
+            stopQTimer.addFirst(new PacketTimer(78, p.getCaptureTime()));
+            dstQCounter.put(78, dstQCounter.get(78) + 1);
+        }
+
+
+
+        if(isProbablyGame){return true;}
+        if(stopQCounter.get(78) > 1 && stopQCounter.get(250) > 0){return false;}
+        //else if(srcQueueCounter[78] > 0 && srcQueueCounter[158] > 0 || isProbablyGame){return true}
+        if((srcQCounter.get(78) + srcQCounter.get(158) + dstQCounter.get(126) + dstQCounter.get(142) > 2)
+                && ((srcQCounter.get(78) > 0 && srcQCounter.get(78)  > 0 &&
+                ( dstQCounter.get(126) > 0 ||  dstQCounter.get(142)  > 0))))
+        {return true;}
+        else {return false;}
     }
 
-    private boolean isInGame(Packet newPacket, int timeSpan, int packetNumber) {
-        return false;
+
+    private boolean isGameReady(Packet p) {
+
+        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 10){
+            int key = gameTimer1.removeLast().getKey();
+            packetCounter1.put(key, packetCounter1.get(key) - 1);
+        }
+
+        while(!dstGameTimer.isEmpty() && p.getCaptureTime() - dstGameTimer.getLast().getTime() > 10){
+            int key = dstGameTimer.removeLast().getKey();
+            dstPacketCounter.put(key, dstPacketCounter.get(key) - 1);
+        }
+
+        while(!gameTimer2.isEmpty() && p.getCaptureTime() - gameTimer2.getLast().getTime() > 10){
+            int key = gameTimer2.removeLast().getKey();
+            packetCounter2.put(key, packetCounter2.get(key) - 1);
+        }
+
+        for (int key: packetCounter1.keySet()){
+            if(p.getPacketLength() <= key + 100 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort ==
+                    -1) && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
+                gameTimer1.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                packetCounter1.put(key, packetCounter1.get(key) + 1);
+            }
+        }
+
+        for (int key: dstPacketCounter.keySet()){
+            if(p.getPacketLength() <= key + 5 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort ==
+                    -1) && p.getDstPort() <= portMax && p.getDstPort() >= portMin){
+                dstGameTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                dstPacketCounter.put(key, dstPacketCounter.get(key) + 1);
+            }
+        }
+
+        for (int key: packetCounter2.keySet()){
+            if(p.getPacketLength() <= key + 5 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort ==
+                    -1) && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
+                gameTimer2.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                packetCounter2.put(key, packetCounter2.get(key) + 1);
+            }
+        }
+
+        if(gameTimer1.size() > 0 || gameTimer2.size() > 0 && p.getPacketLength() > 1300){isProbablyGame = true;}
+        else{isProbablyGame = false;}
+
+        packetCounter1.printMap();
+        packetCounter2.printMap();
+        dstPacketCounter.printMap();
+
+        if(gameTimer1.size() >= 3
+                && packetCounter1.get(1300) < 3
+                && gameTimer2.size() > 0
+                && dstPacketCounter.get(78) > 1)
+        {return true;}
+
+        else if((packetCounter2.get(164) > 0 || packetCounter2.get(174) > 0)
+                && packetCounter2.get(190) > 0
+                && packetCounter2.get(206) > 0
+                && gameTimer1.size() > 0)
+        {return true;}
+        else if(gameTimer2.size() >= 6){return true;}
+        else {return false;}
     }
 
+    private boolean isInGame(Packet p, int timeSpan, int packetNumber) {
+        int port = -1;
 
-    private boolean isGameReady(Packet newPacket) {
-        return false;
+        if(p.getSrcPort() >= 27000 && p.getSrcPort() <= 28999){port = p.getSrcPort();}
+        else if(p.getDstPort() >= 27000 && p.getDstPort() <= 28999){port = p.getDstPort();}
+
+        if(port != -1){
+            inGameTimer.addFirst(new PacketTimer(port, p.getCaptureTime()));
+            if(inGamePacketCounter.get(port) == null){inGamePacketCounter.put(port, 1);}
+            else {inGamePacketCounter.put(port, inGamePacketCounter.get(port) + 1);}
+            }
+
+            while(!inGameTimer.isEmpty() && p.getCaptureTime() - inGameTimer.getLast().getTime() > timeSpan || inGameTimer.size() >= inGameMaxSize){
+                int key = inGameTimer.removeLast().getKey();
+                inGamePacketCounter.put(key, inGamePacketCounter.get(key) - 1);
+            }
+
+            int maxNumber = 0;
+
+            for(int key : inGamePacketCounter.keySet()){
+                maxNumber = Math.max(maxNumber, inGamePacketCounter.get(key));
+            }
+
+            //    println(inGamePacketCounter)
+            //    println(maxNumber)
+            //    println(inGameTimer.count)
+        return maxNumber > 70;
     }
 }
