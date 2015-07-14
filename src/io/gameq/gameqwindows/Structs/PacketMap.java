@@ -1,4 +1,4 @@
-package io.gameq.gameqwindows;
+package io.gameq.gameqwindows.Structs;
 
 import java.util.HashMap;
 

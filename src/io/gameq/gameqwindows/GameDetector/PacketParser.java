@@ -1,4 +1,4 @@
-package io.gameq.gameqwindows; /**
+package io.gameq.gameqwindows.GameDetector; /**
  * Created by fabianwikstrom on 7/6/2015.
  */
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import io.gameq.gameqwindows.Structs.Packet;
 import org.jnetpcap.Pcap;
 import org.jnetpcap.PcapBpfProgram;
 import org.jnetpcap.PcapIf;

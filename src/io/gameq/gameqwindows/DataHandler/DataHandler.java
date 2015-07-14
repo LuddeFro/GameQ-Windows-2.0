@@ -1,13 +1,11 @@
-package io.gameq.gameqwindows;
+package io.gameq.gameqwindows.DataHandler;
+
+import io.gameq.gameqwindows.Structs.Packet;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 
 /**
  * Created by fabianwikstrom on 7/6/2015.

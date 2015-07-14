@@ -1,6 +1,7 @@
-package io.gameq.gameqwindows;
+package io.gameq.gameqwindows.GameDetector;
 
-import java.util.HashMap;
+import io.gameq.gameqwindows.Structs.*;
+
 import java.util.LinkedList;
 
 /**
@@ -278,12 +279,12 @@ public class DotaDetector extends GameDetector implements PacketDetector {
         if(p.getPacketLength() <= 250 + 50 && p.getPacketLength() >= 250
                 && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
             stopQTimer.addFirst(new PacketTimer(250, p.getCaptureTime()));
-            dstQCounter.put(250, dstQCounter.get(250) + 1);
+            stopQCounter.put(250, stopQCounter.get(250) + 1);
         }
 
         else if(p.getPacketLength() == 78){
             stopQTimer.addFirst(new PacketTimer(78, p.getCaptureTime()));
-            dstQCounter.put(78, dstQCounter.get(78) + 1);
+            stopQCounter.put(78, stopQCounter.get(78) + 1);
         }
 
 

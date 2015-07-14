@@ -1,4 +1,4 @@
-package io.gameq.gameqwindows;
+package io.gameq.gameqwindows.Structs;
 
 /**
  * Created by fabianwikstrom on 7/6/2015.

@@ -1,4 +1,6 @@
-package io.gameq.gameqwindows;
+package io.gameq.gameqwindows.GameDetector;
+
+import io.gameq.gameqwindows.Structs.Packet;
 
 import java.util.LinkedList;
 

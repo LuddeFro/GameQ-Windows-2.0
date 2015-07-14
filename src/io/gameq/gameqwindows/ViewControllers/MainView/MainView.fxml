@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.MainView.MainViewController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -51,11 +51,17 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-        <Label alignment="CENTER" layoutX="220.0" layoutY="192.0" style="&#10;" text="GameQ" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+        <Label alignment="CENTER" layoutX="220.0" layoutY="29.0" style="&#10;" text="GameQ" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
           <font>
             <Font size="18.0" />
           </font>
         </Label>
+            <Button layoutX="42.0" layoutY="192.0" mnemonicParsing="false" onAction="#startButtonClicked" text="Start" />
+            <Button layoutX="43.0" layoutY="256.0" mnemonicParsing="false" onAction="#stopButtonClicked" text="Stop" />
+            <Button layoutX="361.0" layoutY="192.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
+            <Button layoutX="331.0" layoutY="256.0" mnemonicParsing="false" onAction="#saveMissedButtonClicked" text="Save missed" />
+            <Button layoutX="361.0" layoutY="322.0" mnemonicParsing="false" onAction="#failModeButtonClicked" text="FailMode" />
+            <Button layoutX="172.0" layoutY="111.0" mnemonicParsing="false" onAction="#logOutButtonClicked" text="logout" />
       </children>
     </AnchorPane>
   </children>

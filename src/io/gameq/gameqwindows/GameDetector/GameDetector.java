@@ -1,4 +1,7 @@
-package io.gameq.gameqwindows;
+package io.gameq.gameqwindows.GameDetector;
+
+import io.gameq.gameqwindows.Structs.Game;
+import io.gameq.gameqwindows.Structs.Status;
 
 /**
  * Created by fabianwikstrom on 7/6/2015.
