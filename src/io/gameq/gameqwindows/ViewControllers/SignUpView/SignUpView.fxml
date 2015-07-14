@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController">
+<VBox prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.SignUpView.SignUpViewController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -51,14 +51,15 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <TextField layoutX="129.0" layoutY="185.0" />
-            <TextField layoutX="129.0" layoutY="242.0" />
-            <Button fx:id="loginButton" layoutX="202.0" layoutY="324.0" mnemonicParsing="false" onAction="#processLogin" text="login " />
-            <Button fx:id="signUp" layoutX="195.0" layoutY="383.0" mnemonicParsing="false" onAction="#gotoSignUp" text="sign up" />
+            <TextField layoutX="202.0" layoutY="44.0" />
+            <TextField layoutX="202.0" layoutY="97.0" />
+            <TextField layoutX="202.0" layoutY="142.0" />
+            <Button fx:id="signUpButton" layoutX="281.0" layoutY="204.0" mnemonicParsing="false" onAction="#processSignUp" text="Sign Up" />
+            <Button fx:id="backButton" layoutX="281.0" layoutY="261.0" mnemonicParsing="false" onAction="#backPressed" text="Back" />
       </children>
     </AnchorPane>
   </children>
   <stylesheets>
-    <URL value="@LoginView.css" />
+    <URL value="@SignUpView.css" />
   </stylesheets>
 </VBox>

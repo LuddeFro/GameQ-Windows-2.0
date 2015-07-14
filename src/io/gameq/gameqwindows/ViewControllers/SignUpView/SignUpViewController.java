@@ -1,4 +1,8 @@
-package io.gameq.gameqwindows.ViewControllers.LoginView;
+package io.gameq.gameqwindows.ViewControllers.SignUpView;
+
+/**
+ * Created by fabianwikstrom on 7/14/2015.
+ */
 
 import io.gameq.gameqwindows.Main;
 import javafx.fxml.FXML;
@@ -9,17 +13,15 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * Created by fabianwikstrom on 7/14/2015.
- */
-public class LoginViewController extends VBox implements Initializable {
+public class SignUpViewController extends VBox implements Initializable {
 
-   @FXML Button loginButton;
+    @FXML
+    Button signUpButton;
 
-   @FXML Button signUp;
+    @FXML
+    Button backButton;
 
     private Main application;
-
 
     public void setApp(Main application){
         this.application = application;
@@ -31,25 +33,26 @@ public class LoginViewController extends VBox implements Initializable {
 
     }
 
-    public void processLogin() {
+    public void backPressed(){
         if (application == null){
             // We are running in isolated FXML, possibly in Scene Builder.
             // NO-OP.
             //errorMessage.setText("Hello " + userId.getText());
         } else {
-            if (!application.userLogin("bajs", "Bajs")){
-                System.out.println("Incorrect Shit");
+            application.userBackToLogin();
+            }
+        }
+
+    public void processSignUp() {
+        if (application == null){
+            // We are running in isolated FXML, possibly in Scene Builder.
+            // NO-OP.
+            //errorMessage.setText("Hello " + userId.getText());
+        } else {
+            if (!application.userSignUp("bajs", "bajs")){
+                System.out.println("Not yet implemented");
             }
         }
     }
 
-    public void gotoSignUp(){
-        if (application == null){
-            // We are running in isolated FXML, possibly in Scene Builder.
-            // NO-OP.
-            //errorMessage.setText("Hello " + userId.getText());
-        } else {
-            application.gotoSignUp();
-        }
-    }
 }

@@ -6,6 +6,7 @@ import io.gameq.gameqwindows.GameDetector.GameDetector;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController;
 import io.gameq.gameqwindows.ViewControllers.MainView.MainViewController;
+import io.gameq.gameqwindows.ViewControllers.SignUpView.SignUpViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -54,7 +55,8 @@ public class Main extends Application {
 //                }, 0, 1000);
     }
 
-    public boolean userLogging(String userId, String password){
+    public boolean userLogin(String userId, String password){
+       //add connection login
         if (true) {
             gotoMainView();
             return true;
@@ -62,11 +64,24 @@ public class Main extends Application {
             return false;
         }
     }
-
+    public boolean userSignUp(String userId, String password){
+        //add connection SignUp
+        if (true) {
+            gotoMainView();
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public void gotoSignUp(){
+        gotoSignUpView();
+    }
     public void userLogout(){
         gotoLoginView();
     }
-
+    public void userBackToLogin(){
+        gotoLoginView();
+    }
     private void gotoMainView() {
         try {
             MainViewController mainView = (MainViewController) replaceSceneContent("ViewControllers/MainView/MainView.fxml");
@@ -75,16 +90,23 @@ public class Main extends Application {
            System.out.println("what the fuck happened");
         }
     }
-
     private void gotoLoginView() {
         try {
             LoginViewController login = (LoginViewController) replaceSceneContent("ViewControllers/LoginView/LoginView.fxml");
             login.setApp(this);
         } catch (Exception ex) {
-           System.out.println("somth poop");
             System.out.println(ex);
         }
     }
+    private void gotoSignUpView() {
+        try {
+            SignUpViewController signUp = (SignUpViewController) replaceSceneContent("ViewControllers/SignUpView/SignUpView.fxml");
+            signUp.setApp(this);
+        } catch (Exception ex) {;
+            System.out.println(ex);
+        }
+    }
+
 
     private Initializable replaceSceneContent(String fxml) throws Exception {
         FXMLLoader loader = new FXMLLoader();
@@ -103,9 +125,6 @@ public class Main extends Application {
         stage.sizeToScene();
         return (Initializable) loader.getController();
     }
-
-
-
 
     public static void main(String[] args) {
         launch(args);
