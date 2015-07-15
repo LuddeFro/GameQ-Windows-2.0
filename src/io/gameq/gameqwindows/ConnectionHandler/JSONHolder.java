@@ -1,8 +1,5 @@
 package io.gameq.gameqwindows.ConnectionHandler;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by Ludvig on 15/07/15.
  */

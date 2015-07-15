@@ -25,5 +25,18 @@
         <jarDirectory url="file://$MODULE_DIR$/lib/jnetpcap-1.3.0" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/jdpapi-1.0" />
+        </CLASSES>
+        <JAVADOC />
+        <NATIVE>
+          <root url="file://$MODULE_DIR$/lib/jdpapi-1.0" />
+        </NATIVE>
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/jdpapi-1.0" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>

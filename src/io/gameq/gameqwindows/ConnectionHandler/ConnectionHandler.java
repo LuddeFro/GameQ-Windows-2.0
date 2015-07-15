@@ -1,8 +1,5 @@
 package io.gameq.gameqwindows.ConnectionHandler;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,8 +18,6 @@ import java.util.Locale;
 public final class ConnectionHandler {
 
     private static ConnectionHandler instance = null;
-
-
     private static String TAG = "GAMEQ";
     private static String sessionToken = "";
     private static long serverDelay = 0;
@@ -326,29 +321,6 @@ public final class ConnectionHandler {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // MARK: - DataHandling below
 
