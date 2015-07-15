@@ -1,5 +1,6 @@
 package io.gameq.gameqwindows.GameDetector;
 
+import io.gameq.gameqwindows.DataHandler.DataHandler;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
 
@@ -12,9 +13,12 @@ public abstract class GameDetector {
     private Status status = Status.Online;
     private boolean isFailMode = false;
     private boolean isTesting = false;
-    //private Datalogger datalogger = ...
 
-
+    private DataHandler dataHandler = DataHandler.getInstance();
+    private boolean saveToDesktop = false;
+    private boolean saveToServer = true;
+    private String saveMemory = "";
+    private Game lastGame = Game.NoGame;
 
     private int countDownLength = -1;
     private int counter = -1;

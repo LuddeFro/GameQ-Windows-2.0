@@ -8,60 +8,18 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.MainView.MainViewController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.MainView.MainViewController">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane fx:id="anchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="600.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
       <children>
-        <Label alignment="CENTER" layoutX="220.0" layoutY="29.0" style="&#10;" text="GameQ" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
-          <font>
-            <Font size="18.0" />
-          </font>
-        </Label>
-            <Button layoutX="42.0" layoutY="192.0" mnemonicParsing="false" onAction="#startButtonClicked" text="Start" />
-            <Button layoutX="43.0" layoutY="256.0" mnemonicParsing="false" onAction="#stopButtonClicked" text="Stop" />
-            <Button layoutX="361.0" layoutY="192.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
-            <Button layoutX="331.0" layoutY="256.0" mnemonicParsing="false" onAction="#saveMissedButtonClicked" text="Save missed" />
-            <Button layoutX="361.0" layoutY="322.0" mnemonicParsing="false" onAction="#failModeButtonClicked" text="FailMode" />
-            <Button layoutX="172.0" layoutY="111.0" mnemonicParsing="false" onAction="#logOutButtonClicked" text="logout" />
+            <Button layoutX="23.0" layoutY="121.0" mnemonicParsing="false" onAction="#startButtonClicked" text="Start" />
+            <Button layoutX="23.0" layoutY="28.0" mnemonicParsing="false" onAction="#stopButtonClicked" text="Stop" />
+            <Button layoutX="23.0" layoutY="74.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
+            <Button layoutX="25.0" layoutY="169.0" mnemonicParsing="false" onAction="#saveMissedButtonClicked" prefHeight="39.0" prefWidth="89.0" text="missed" />
+            <Button layoutX="25.0" layoutY="212.0" mnemonicParsing="false" onAction="#failModeButtonClicked" text="FailMode" />
+            <Button layoutX="106.0" layoutY="512.0" mnemonicParsing="false" onAction="#logOutButtonClicked" prefHeight="40.0" prefWidth="300.0" text="logout" />
+            <AnchorPane fx:id="innerAnchorPane" layoutX="150.0" layoutY="200.0" prefHeight="200.0" prefWidth="200.0" />
+            <Button layoutX="108.0" layoutY="456.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="300.0" text="Feedback" />
       </children>
     </AnchorPane>
   </children>

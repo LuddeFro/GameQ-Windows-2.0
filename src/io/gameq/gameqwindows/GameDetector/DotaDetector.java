@@ -7,7 +7,7 @@ import java.util.LinkedList;
 /**
  * Created by fabianwikstrom on 7/6/2015.
  */
-public class DotaDetector extends GameDetector implements PacketDetector {
+public class DotaDetector extends PacketDetector {
 
     private String dotaFilter = "udp src portrange 27000-28999 or udp dst portrange 27000-28999";
     private LinkedList<Packet> packetQueue = new LinkedList<>();

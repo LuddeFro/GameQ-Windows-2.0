@@ -15,11 +15,9 @@ import java.util.ResourceBundle;
 public class LoginViewController extends VBox implements Initializable {
 
    @FXML Button loginButton;
-
    @FXML Button signUp;
 
     private Main application;
-
 
     public void setApp(Main application){
         this.application = application;

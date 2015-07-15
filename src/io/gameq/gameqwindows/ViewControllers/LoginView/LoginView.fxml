@@ -8,53 +8,14 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController">
+<VBox prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <TextField layoutX="129.0" layoutY="185.0" />
-            <TextField layoutX="129.0" layoutY="242.0" />
-            <Button fx:id="loginButton" layoutX="202.0" layoutY="324.0" mnemonicParsing="false" onAction="#processLogin" text="login " />
-            <Button fx:id="signUp" layoutX="195.0" layoutY="383.0" mnemonicParsing="false" onAction="#gotoSignUp" text="sign up" />
+            <TextField layoutX="99.0" layoutY="245.0" prefHeight="40.0" prefWidth="300.0" />
+            <TextField layoutX="99.0" layoutY="308.0" prefHeight="40.0" prefWidth="300.0" />
+            <Button fx:id="loginButton" layoutX="99.0" layoutY="386.0" mnemonicParsing="false" onAction="#processLogin" prefHeight="40.0" prefWidth="300.0" styleClass="button-orange" text="login " />
+            <Button fx:id="signUp" layoutX="99.0" layoutY="444.0" mnemonicParsing="false" onAction="#gotoSignUp" prefHeight="40.0" prefWidth="300.0" styleClass="button-blue" text="sign up" />
       </children>
     </AnchorPane>
   </children>

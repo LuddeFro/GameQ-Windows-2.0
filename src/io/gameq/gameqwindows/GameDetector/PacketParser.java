@@ -40,7 +40,7 @@ public class PacketParser {
 
     private Pcap pcap = null;
 
-    public void start(String filterString, final PacketDetector detector) {
+    public void start(String filterString, PacketDetector detector) {
         List<PcapIf> alldevs = new ArrayList<PcapIf>(); // Will be filled with NICs
         StringBuilder errbuf = new StringBuilder(); // For any error msgs
 
