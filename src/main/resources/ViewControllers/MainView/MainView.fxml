@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.MainView.MainViewController">
+  <children>
+    <AnchorPane fx:id="anchorPane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="600.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
+      <children>
+            <Button layoutX="23.0" layoutY="121.0" mnemonicParsing="false" onAction="#startButtonClicked" text="Start" />
+            <Button layoutX="23.0" layoutY="28.0" mnemonicParsing="false" onAction="#stopButtonClicked" text="Stop" />
+            <Button layoutX="23.0" layoutY="74.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
+            <Button layoutX="25.0" layoutY="169.0" mnemonicParsing="false" onAction="#saveMissedButtonClicked" prefHeight="39.0" prefWidth="89.0" text="missed" />
+            <Button layoutX="25.0" layoutY="212.0" mnemonicParsing="false" onAction="#failModeButtonClicked" text="FailMode" />
+            <Button layoutX="106.0" layoutY="512.0" mnemonicParsing="false" onAction="#logOutButtonClicked" prefHeight="40.0" prefWidth="300.0" text="logout" />
+            <AnchorPane fx:id="innerAnchorPane" layoutX="150.0" layoutY="200.0" prefHeight="200.0" prefWidth="200.0" />
+            <Button layoutX="108.0" layoutY="456.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="300.0" text="Feedback" />
+      </children>
+    </AnchorPane>
+  </children>
+  <stylesheets>
+    <URL value="@MainView.css" />
+  </stylesheets>
+</VBox>
