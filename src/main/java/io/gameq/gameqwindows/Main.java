@@ -1,5 +1,7 @@
 package io.gameq.gameqwindows;
 
+import io.gameq.gameqwindows.ConnectionHandler.CallbackGeneral;
+import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
 import io.gameq.gameqwindows.GameDetector.DotaDetector;
 import io.gameq.gameqwindows.GameDetector.GameDetector;
 import io.gameq.gameqwindows.Structs.Game;
@@ -8,16 +10,19 @@ import io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController;
 import io.gameq.gameqwindows.ViewControllers.MainView.MainViewController;
 import io.gameq.gameqwindows.ViewControllers.SignUpView.SignUpViewController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.ir.Symbol;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,6 +49,7 @@ public class Main extends Application {
             stage.setResizable(false);
             gotoLoginView();
             primaryStage.show();
+            //TODO ADD AUTO LOGIN?
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -53,19 +59,8 @@ public class Main extends Application {
         launch(args);
     }
 
-    public boolean userLogin(String userId, String password){
-        //add connection login
-        if (true) {
-            gotoMainView();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     private void didLogin(){
         detector.updateStatus(Status.Online);
-
         this.timer = new Timer();
         timer.schedule(
                 new TimerTask() {
@@ -101,31 +96,34 @@ public class Main extends Application {
 //        ConnectionHandler.logout({ (success:Bool, err:String?) in})
     }
 
-    public boolean userSignUp(String userId, String password){
-        //add connection SignUp
-        if (true) {
-            gotoMainView();
-            return true;
-        } else {
-            return false;
-        }
-    }
     public void gotoSignUp(){
-        gotoSignUpView();
+        Platform.runLater(this::gotoSignUpView);
     }
     public void userLogout(){
-        gotoLoginView();
+        Platform.runLater(this::gotoLoginView);
+        //TODO add later
+        // didLogOut();
+        ConnectionHandler.logout((success, error) -> {
+            if(success){
+                System.out.println("logout Success");
+            }
+            else{
+                System.out.println("lougout failed");
+            }
+        });
     }
+
     public void userBackToLogin(){
-        gotoLoginView();
+        Platform.runLater(this::gotoLoginView);
     }
-    private void gotoMainView() {
+
+    public void gotoMainView() {
         try {
             MainViewController mainView = (MainViewController) replaceSceneContent
                     ("/ViewControllers/MainView/MainView.fxml");
             mainView.setApp(this);
         } catch (Exception ex) {
-           // ex.printStackTrace();
+            // ex.printStackTrace();
         }
     }
     private void gotoLoginView() {
@@ -134,7 +132,7 @@ public class Main extends Application {
                     ("/ViewControllers/LoginView/LoginView.fxml");
             login.setApp(this);
         } catch (Exception ex) {
-          //  ex.printStackTrace();
+            //  ex.printStackTrace();
         }
     }
     private void gotoSignUpView() {
@@ -143,27 +141,26 @@ public class Main extends Application {
                     ("/ViewControllers/SignUpView/SignUpView.fxml");
             signUp.setApp(this);
         } catch (Exception ex) {;
-           // ex.printStackTrace();
+            /* ex.printStackTrace(); */
         }
     }
 
 
     private Initializable replaceSceneContent(String fxml) throws Exception {
         FXMLLoader loader = new FXMLLoader();
-        InputStream in = Main.class.getResourceAsStream(fxml);
         loader.setBuilderFactory(new JavaFXBuilderFactory());
         loader.setLocation(Main.class.getResource(fxml));
         VBox page = null;
-        try {
+        try (InputStream in = Main.class.getResourceAsStream(fxml)) {
             page = (VBox) loader.load(in);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }  finally {
-            in.close();
         }
 
-        Scene scene = new Scene(page, 500, 600);
+        Scene scene = null;
+        if (page != null) {
+            scene = new Scene(page, 500, 600);
+        }
         stage.setScene(scene);
         stage.sizeToScene();
         return (Initializable) loader.getController();
@@ -191,7 +188,7 @@ public class Main extends Application {
             }
             input.close();
         } catch (Exception err) {
-           // err.printStackTrace();
+            // err.printStackTrace();
         }
 
         if(game != newGame){

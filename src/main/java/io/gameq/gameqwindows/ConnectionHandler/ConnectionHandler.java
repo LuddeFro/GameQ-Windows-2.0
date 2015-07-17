@@ -29,7 +29,7 @@ public final class ConnectionHandler {
     static private Preferences preferences;
 
 
-    public ConnectionHandler() {
+    static {
         byte rawKey[] = new byte[0];
         try {
             rawKey = Util.readFile("C:\\Users\\fabianwikstrom\\IdeaProjects\\GameQ-Windows-2.1\\src\\main\\resources\\key");
@@ -47,7 +47,7 @@ public final class ConnectionHandler {
 
 
     public static String post(String extension, String arguments) {
-        String serverURL = "http://server.gameq.io/computer/";
+        String serverURL = "http://server.gameq.io:8080/computer/";
         String url = serverURL + extension + "?";
         arguments = arguments + "&key=68440fe0484ad2bb1656b56d234ca5f463f723c3d3d58c3398190877d1d963bb";
         URL obj;
@@ -343,7 +343,7 @@ public final class ConnectionHandler {
 
     // MARK: - DataHandling below
 
-    public static void savePassword(String password) {
+    private static void savePassword(String password) {
            preferences.put("pw", password);
     }
 
@@ -359,7 +359,7 @@ public final class ConnectionHandler {
        preferences.put("device_id", String.valueOf(id));
     }
 
-    public static void saveShouldReceiveNotifications(boolean registered) {
+    private static void saveShouldReceiveNotifications(boolean registered) {
         preferences.put("notifications", String.valueOf(registered));
     }
 
@@ -367,7 +367,7 @@ public final class ConnectionHandler {
         return preferences.get("pw", "");
     }
 
-    public static String loadEmail() {
+    private static String loadEmail() {
         return preferences.get("email", "");
     }
 
