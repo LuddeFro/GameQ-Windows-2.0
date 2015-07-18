@@ -6,14 +6,30 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainViewController extends VBox implements Initializable {
+
+    @FXML Button startButton;
+    @FXML Button stopButton;
+    @FXML Button saveButton;
+    @FXML Button saveMissed;
+    @FXML Button failModeButton;
+    @FXML Button logOutButton;
+    @FXML AnchorPane anchorPane;
+    @FXML StackPane timerHolder;
+
+    private String userName;
 
     public void startButtonClicked(){
        startTimer();
@@ -39,10 +55,6 @@ public class MainViewController extends VBox implements Initializable {
         processLogout();
     }
 
-    @FXML
-    AnchorPane anchorPane;
-    @FXML
-    AnchorPane innerAnchorPane;
 
     private Main application;
     private Timeline timer = null;
@@ -57,9 +69,23 @@ public class MainViewController extends VBox implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        countDownIndicator.setProgress(0);
-        innerAnchorPane.getChildren().add(countDownIndicator);
+        countDownIndicator.setProgress(50);
+        timerHolder.getChildren().add(countDownIndicator);
+        StackPane.setAlignment(countDownIndicator, Pos.CENTER);
+
         countDownTime = 45;
+        if(true) {
+            startButton.setDisable(true);
+            startButton.setVisible(false);
+            stopButton.setDisable(true);
+            stopButton.setVisible(false);
+            failModeButton.setDisable(true);
+            failModeButton.setVisible(false);
+            saveButton.setDisable(true);
+            saveButton.setVisible(false);
+            saveMissed.setDisable(true);
+            saveMissed.setVisible(false);
+        }
     }
 
     public void processLogout() {

@@ -34,6 +34,7 @@ public class Main extends Application {
     private final double MINIMUM_WINDOW_WIDTH = 500.0;
     private final double MINIMUM_WINDOW_HEIGHT = 600.0;
     private Timer timer = null;
+    private String userName = "";
 
 
 
@@ -47,9 +48,18 @@ public class Main extends Application {
             stage.setMaxWidth(MINIMUM_WINDOW_WIDTH);
             stage.setMaxHeight(MINIMUM_WINDOW_HEIGHT);
             stage.setResizable(false);
-            gotoLoginView();
-            primaryStage.show();
-            //TODO ADD AUTO LOGIN?
+
+            ConnectionHandler.loginWithRememberedDetails((success, error) -> {
+                if (success) {
+                    Platform.runLater(this::gotoMainView);
+                    Platform.runLater(primaryStage::show);
+                }
+                else {
+                    Platform.runLater(this::gotoLoginView);
+                    Platform.runLater(primaryStage::show);
+                }
+            });
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -93,12 +103,14 @@ public class Main extends Application {
         detector.stopDetection();
         timer.cancel();
         timer.purge();
+        setUserName("");
 //        ConnectionHandler.logout({ (success:Bool, err:String?) in})
     }
 
     public void gotoSignUp(){
         Platform.runLater(this::gotoSignUpView);
     }
+
     public void userLogout(){
         Platform.runLater(this::gotoLoginView);
         //TODO add later
@@ -194,5 +206,13 @@ public class Main extends Application {
         if(game != newGame){
             detector = new DotaDetector();
         }
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

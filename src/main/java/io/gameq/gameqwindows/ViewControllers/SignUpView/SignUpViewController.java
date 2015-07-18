@@ -4,6 +4,7 @@ package io.gameq.gameqwindows.ViewControllers.SignUpView;
  * Created by fabianwikstrom on 7/14/2015.
  */
 
+import io.gameq.gameqwindows.ConnectionHandler.CallbackGeneral;
 import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
 import io.gameq.gameqwindows.Main;
 import javafx.application.Platform;
@@ -72,12 +73,18 @@ public class SignUpViewController extends VBox implements Initializable {
                     Platform.runLater(application::gotoMainView);
                     //TODO ADd later
                     //didLogin();
+                    application.setUserName(emailField.getText());
                 } else {
                     Platform.runLater(() -> signUpButton.setDisable(false));
                     Platform.runLater(() -> backButton.setDisable(false));
                     Platform.runLater(() -> statusLabel.setText(error));
                 }
             }, emailField.getText(), pwField1.getText());
+
+            ConnectionHandler.login((success, error) -> {
+
+            }, "asd", "asd");
+
 
         } else {
             //TODO format error message

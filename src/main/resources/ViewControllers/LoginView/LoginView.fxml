@@ -18,7 +18,8 @@
             <Button fx:id="loginButton" layoutX="99.0" layoutY="386.0" mnemonicParsing="false" onAction="#processLogin" prefHeight="40.0" prefWidth="300.0" styleClass="button-orange" text="login " />
             <Button fx:id="signUp" layoutX="99.0" layoutY="444.0" mnemonicParsing="false" onAction="#gotoSignUp" prefHeight="40.0" prefWidth="300.0" styleClass="button-blue" text="sign up" />
             <Label fx:id="statusLabel" layoutX="99.0" layoutY="357.0" prefHeight="27.0" prefWidth="300.0" text="Label" />
-            <PasswordField fx:id = "passwordField" layoutX="99.0" layoutY="310.0" prefHeight="39.0" prefWidth="300.0" />
+            <PasswordField fx:id="passwordField" layoutX="99.0" layoutY="310.0" prefHeight="39.0" prefWidth="300.0" />
+            <Button fx:id="forgotButton" layoutX="99.0" layoutY="497.0" mnemonicParsing="false" onAction="#processForgot" prefHeight="39.0" prefWidth="300.0" styleClass="button-forgot" text="forgot password" />
       </children>
     </AnchorPane>
   </children>

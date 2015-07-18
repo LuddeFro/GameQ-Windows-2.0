@@ -26,8 +26,10 @@ public class LoginViewController extends VBox implements Initializable {
     @FXML TextField emailField;
     @FXML Button loginButton;
     @FXML Button signUp;
+    @FXML Button forgotButton;
 
     private Main application;
+    private boolean isForgot = false;
 
     public void setApp(Main application){
         this.application = application;
@@ -38,40 +40,93 @@ public class LoginViewController extends VBox implements Initializable {
 
     }
 
-    public void processLogin() {
-        if (application == null){
-           System.out.println("Error no application");
-        }
-        //TODO check for email password error
-        else if(true) {
-            Platform.runLater(() -> loginButton.setDisable(true));
-            Platform.runLater(() -> signUp.setDisable(true));
-            Platform.runLater(() -> statusLabel.setText("Signing in..."));
-            ConnectionHandler.login((success, error) -> {
-                if (success) {
-                    //didLogin();
-                    Platform.runLater(() ->  statusLabel.setText("Success!"));
-                    Platform.runLater(() -> loginButton.setDisable(false));
-                    Platform.runLater(() -> signUp.setDisable(false));
-                    Platform.runLater(application::gotoMainView);
-                } else {
-                    Platform.runLater(() -> statusLabel.setText(error));
-                    Platform.runLater(() -> loginButton.setDisable(false));
-                    Platform.runLater(() -> signUp.setDisable(false));
-                }
+    public void processForgot(){
+        isForgot = true;
+        forgotButton.setDisable(true);
+        forgotButton.setVisible(false);
+        passwordField.setVisible(false);
+        passwordField.setDisable(true);
+        loginButton.setText("Submit");
+        signUp.setText("Back");
+    }
 
-            }, emailField.getText(), passwordField.getText());
-        }
+    public void processLogin() {
+        if(!isForgot){
+            if (application == null){
+                System.out.println("Error no application");
+            }
+            //TODO check for email password error
+            else if(true) {
+                Platform.runLater(() -> loginButton.setDisable(true));
+                Platform.runLater(() -> signUp.setDisable(true));
+                Platform.runLater(() -> forgotButton.setDisable(true));
+                Platform.runLater(() -> statusLabel.setText("Signing in..."));
+                ConnectionHandler.login((success, error) -> {
+                    if (success) {
+                        //didLogin();
+                        application.setUserName(emailField.getText());
+                        Platform.runLater(() -> statusLabel.setText("Success!"));
+                        Platform.runLater(() -> loginButton.setDisable(false));
+                        Platform.runLater(() -> signUp.setDisable(false));
+                        Platform.runLater(() -> forgotButton.setDisable(false));
+                        Platform.runLater(application::gotoMainView);
+                    } else {
+                        Platform.runLater(() -> statusLabel.setText(error));
+                        Platform.runLater(() -> loginButton.setDisable(false));
+                        Platform.runLater(() -> signUp.setDisable(false));
+                        Platform.runLater(() -> forgotButton.setDisable(false));
+                    }
+                }, emailField.getText(), passwordField.getText());
+            }
+            else{
+                //TODO format error message
+            }}
         else{
-            //TODO format error message
+            //TODO check for email password error
+             if(true) {
+                Platform.runLater(() -> loginButton.setDisable(true));
+                Platform.runLater(() -> signUp.setDisable(true));
+                Platform.runLater(() -> forgotButton.setDisable(true));
+                Platform.runLater(() -> statusLabel.setText("Submitting..."));
+                ConnectionHandler.submitForgotPassword((success, error) -> {
+                    if (success) {
+                        //didLogin();
+                        application.setUserName(emailField.getText());
+                        Platform.runLater(() -> statusLabel.setText("Success!"));
+                        //Platform.runLater(() -> loginButton.setDisable(false));
+                        Platform.runLater(() -> signUp.setDisable(false));
+                        Platform.runLater(() -> forgotButton.setDisable(false));
+
+                    } else {
+                        Platform.runLater(() -> statusLabel.setText(error));
+                        Platform.runLater(() -> loginButton.setDisable(false));
+                        Platform.runLater(() -> signUp.setDisable(false));
+                        Platform.runLater(() -> forgotButton.setDisable(false));
+                    }
+                }, emailField.getText());
+            }
+            else{
+                 //TODO Wrong format
+             }
         }
     }
 
     public void gotoSignUp(){
-
-        if (application == null){
-        } else {
-            application.gotoSignUp();
+        if(!isForgot) {
+            if (application == null) {
+            } else {
+                application.gotoSignUp();
+            }
+        }
+        else{
+            isForgot = false;
+            loginButton.setText("Login");
+            signUp.setText("Sign Up");
+            forgotButton.setVisible(true);
+            forgotButton.setDisable(false);
+            passwordField.setDisable(false);
+            passwordField.setVisible(true);
+            loginButton.setDisable(false);
         }
     }
 }
