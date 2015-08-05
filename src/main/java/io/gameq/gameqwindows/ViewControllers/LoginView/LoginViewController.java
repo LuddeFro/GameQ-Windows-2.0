@@ -63,7 +63,7 @@ public class LoginViewController extends VBox implements Initializable {
                 Platform.runLater(() -> statusLabel.setText("Signing in..."));
                 ConnectionHandler.login((success, error) -> {
                     if (success) {
-                        //didLogin();
+                        application.didLogin();
                         application.setUserName(emailField.getText());
                         Platform.runLater(() -> statusLabel.setText("Success!"));
                         Platform.runLater(() -> loginButton.setDisable(false));
@@ -90,8 +90,6 @@ public class LoginViewController extends VBox implements Initializable {
                 Platform.runLater(() -> statusLabel.setText("Submitting..."));
                 ConnectionHandler.submitForgotPassword((success, error) -> {
                     if (success) {
-                        //didLogin();
-                        application.setUserName(emailField.getText());
                         Platform.runLater(() -> statusLabel.setText("Success!"));
                         //Platform.runLater(() -> loginButton.setDisable(false));
                         Platform.runLater(() -> signUp.setDisable(false));

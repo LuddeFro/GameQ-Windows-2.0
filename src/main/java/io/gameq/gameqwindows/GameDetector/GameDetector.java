@@ -1,13 +1,15 @@
 package io.gameq.gameqwindows.GameDetector;
 
+import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
 import io.gameq.gameqwindows.DataHandler.DataHandler;
+import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
 
 /**
  * Created by fabianwikstrom on 7/6/2015.
  */
-public abstract class GameDetector {
+public class GameDetector {
 
     private Game game = Game.NoGame;
     private Status status = Status.Online;
@@ -30,17 +32,15 @@ public abstract class GameDetector {
         counter = 0;
     }
 
-    public void updateStatus(Status newStatus){
-        if(newStatus == Status.InLobby || newStatus == Status.InQueue){
+    public void updateStatus(Status newStatus) {
+        if (newStatus == Status.InLobby || newStatus == Status.InQueue) {
             counter = 0;
         }
 
-        if(status != newStatus && newStatus == Status.GameReady && !isTesting){
+        if (status != newStatus && newStatus == Status.GameReady && !isTesting) {
             //detector.saveDetection()
             //startTimer()
-        }
-
-        else{
+        } else {
             // countDownTimer.invalidate()
             counter = 0;
         }
@@ -48,6 +48,19 @@ public abstract class GameDetector {
         status = newStatus;
         System.out.println("new Status: " + status);
         // NSNotificationCenter.defaultCenter().postNotificationName("updateStatus", object: nil)
+
+        System.out.println("game" + this.game);
+        System.out.println("status" + this.status);
+        if (!isTesting) {
+            ConnectionHandler.setStatus((success, error) -> {
+            if(success){
+                System.out.println("successfully updated status");
+            }
+                else{
+                System.out.println(error);
+            }
+            }, Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(this.status));
+        }
     }
 
 

@@ -28,7 +28,7 @@ import java.util.TimerTask;
 
 public class Main extends Application {
 
-    private GameDetector detector = null;
+    private GameDetector detector = new GameDetector();
     private Game game = null;
     private Stage stage;
     private final double MINIMUM_WINDOW_WIDTH = 500.0;
@@ -69,7 +69,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    private void didLogin(){
+    public void didLogin(){
         detector.updateStatus(Status.Online);
         this.timer = new Timer();
         timer.schedule(
@@ -120,7 +120,8 @@ public class Main extends Application {
                 System.out.println("logout Success");
             }
             else{
-                System.out.println("lougout failed");
+                System.out.println("logout failed");
+                System.out.println(error);
             }
         });
     }

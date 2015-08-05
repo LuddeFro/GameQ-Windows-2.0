@@ -72,8 +72,8 @@ public class MainViewController extends VBox implements Initializable {
         countDownIndicator.setProgress(50);
         timerHolder.getChildren().add(countDownIndicator);
         StackPane.setAlignment(countDownIndicator, Pos.CENTER);
-
         countDownTime = 45;
+
         if(true) {
             startButton.setDisable(true);
             startButton.setVisible(false);

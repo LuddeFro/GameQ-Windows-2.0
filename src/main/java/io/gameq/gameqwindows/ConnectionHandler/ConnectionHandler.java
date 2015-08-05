@@ -6,6 +6,7 @@ import io.gameq.gameqwindows.ConnectionHandler.ep.Util;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import javax.security.auth.callback.Callback;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -136,6 +137,9 @@ public final class ConnectionHandler {
                     ConnectionHandler.saveEmail(mEmail);
                     ConnectionHandler.savePassword(mPassword);
                     sessionToken = holder.session_token;
+
+
+
                     if (holder.device_id != 0) {
                         ConnectionHandler.saveDeviceID(holder.device_id);
                     }
@@ -200,7 +204,12 @@ public final class ConnectionHandler {
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
-                String response = post("setStatus", "session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
+                String response = post("setStatus", "status="+status + "&game="+ game + "&session_token=" +
+                        ConnectionHandler
+                                .sessionToken +
+                        "&device_id=" + ConnectionHandler.loadDeviceID());
+//                //System.out.println("session_token=" + ConnectionHandler.sessionToken + "&device_id=" +
+//                        ConnectionHandler.loadDeviceID());
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
                 return;
@@ -344,7 +353,7 @@ public final class ConnectionHandler {
     // MARK: - DataHandling below
 
     private static void savePassword(String password) {
-           preferences.put("pw", password);
+        preferences.put("pw", password);
     }
 
     private static void saveEmail(String email) {
@@ -352,11 +361,11 @@ public final class ConnectionHandler {
     }
 
     private static void saveToken(String token) {
-         preferences.put("token", token);
+        preferences.put("token", token);
     }
 
     private static void saveDeviceID(int id) {
-       preferences.put("device_id", String.valueOf(id));
+        preferences.put("device_id", String.valueOf(id));
     }
 
     private static void saveShouldReceiveNotifications(boolean registered) {
@@ -376,7 +385,8 @@ public final class ConnectionHandler {
     }
 
     private static int loadDeviceID() {
-        String bajs = preferences.get("token", "");
+        String bajs = preferences.get("device_id", "");
+        // System.out.println("bajs"+bajs);
         if(bajs.equals("")){return 0;}
         else{return Integer.parseInt(bajs);}
     }

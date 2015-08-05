@@ -17,7 +17,7 @@ public class DelegatedPreferences extends AbstractPreferences
 
   protected String getSpi( String key ) {
     if (verbose) {
-      System.out.println( "DP["+target+"]:getSpi( "+key+" )" );
+      //System.out.println( "DP["+target+"]:getSpi( "+key+" )" );
     }
 
     return target.get( key, null );
@@ -25,7 +25,7 @@ public class DelegatedPreferences extends AbstractPreferences
 
   protected void putSpi( String key, String value ) {
     if (verbose) {
-      System.out.println( "DP["+target+"]:putSpi( "+key+", "+value+" )" );
+      //System.out.println( "DP["+target+"]:putSpi( "+key+", "+value+" )" );
     }
 
     target.put( key, value );
@@ -33,7 +33,7 @@ public class DelegatedPreferences extends AbstractPreferences
 
   protected void removeSpi( String key ) {
     if (verbose) {
-      System.out.println( "DP["+target+"]:removeSpi( "+key+" )" );
+      //System.out.println( "DP["+target+"]:removeSpi( "+key+" )" );
     }
 
     target.remove( key );
@@ -41,7 +41,7 @@ public class DelegatedPreferences extends AbstractPreferences
 
   protected AbstractPreferences childSpi( String name ) {
     if (verbose) {
-      System.out.println( "DP["+target+"]:chlidSpi( "+name+" )" );
+      //System.out.println( "DP["+target+"]:chlidSpi( "+name+" )" );
     }
 
     return (AbstractPreferences)target.node( name );
@@ -49,7 +49,7 @@ public class DelegatedPreferences extends AbstractPreferences
 
   protected void removeNodeSpi() throws BackingStoreException {
     if (verbose) {
-      System.out.println( "DP["+target+"]:removeNode()" );
+      //System.out.println( "DP["+target+"]:removeNode()" );
     }
 
     target.removeNode();
@@ -57,7 +57,7 @@ public class DelegatedPreferences extends AbstractPreferences
 
   protected String[] keysSpi() throws BackingStoreException {
     if (verbose) {
-      System.out.println( "DP["+target+"]:keysSpi()" );
+      //System.out.println( "DP["+target+"]:keysSpi()" );
     }
 
     return target.keys();
@@ -65,7 +65,7 @@ public class DelegatedPreferences extends AbstractPreferences
 
   protected String[] childrenNamesSpi() throws BackingStoreException {
     if (verbose) {
-      System.out.println( "DP["+target+"]:childrenNamesSpi()" );
+      //System.out.println( "DP["+target+"]:childrenNamesSpi()" );
     }
 
     return target.childrenNames();
@@ -73,7 +73,7 @@ public class DelegatedPreferences extends AbstractPreferences
 
   protected void syncSpi() throws BackingStoreException {
     if (verbose) {
-      System.out.println( "DP["+target+"]:sync()" );
+      //System.out.println( "DP["+target+"]:sync()" );
     }
 
     target.sync();
@@ -81,7 +81,7 @@ public class DelegatedPreferences extends AbstractPreferences
 
   protected void flushSpi() throws BackingStoreException {
     if (verbose) {
-      System.out.println( "DP["+target+"]:flush()" );
+      //System.out.println( "DP["+target+"]:flush()" );
     }
 
     target.flush();
