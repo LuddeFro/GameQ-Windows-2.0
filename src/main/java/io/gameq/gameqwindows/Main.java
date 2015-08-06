@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jdk.nashorn.internal.ir.Symbol;
@@ -30,15 +31,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javafx.application.*;
+import javafx.geometry.Pos;
+import javafx.scene.*;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.*;
+
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
+import java.text.*;
+import java.util.*;
+
+
 public class Main extends Application {
 
 
-    private boolean firstTime;
-    private TrayIcon trayIcon;
+    // one icon location is shared between the application tray icon and task bar icon.
+    // you could also use multiple icons to allow for clean display of tray icons on hi-dpi devices.
+    private static final String iconImageLoc =
+            "http://icons.iconarchive.com/icons/scafer31000/bubble-circle-3/16/GameCenter-icon.png";
+
+    // sets up the javafx application.
+    // a tray icon is setup for the icon, but the main stage remains invisible until the user
+    // interacts with the tray icon.
+
 
     private GameDetector detector = null;
     private Stage stage;
@@ -50,6 +75,8 @@ public class Main extends Application {
     private Game game = Game.NoGame;
     private MainViewController mainView = null;
 
+    // records relative x and y co-ordinates.
+    class Delta { double x, y; }
 
 
     @Override
@@ -63,10 +90,11 @@ public class Main extends Application {
             stage.setMaxHeight(MINIMUM_WINDOW_HEIGHT);
             stage.setResizable(false);
 
-            createTrayIcon(stage);
-            firstTime = true;
-            Platform.setImplicitExit(false);
+            primaryStage.initStyle(StageStyle.UNDECORATED);
 
+            Platform.setImplicitExit(false);
+            // sets up the tray icon (using awt code run on the swing thread).
+            javax.swing.SwingUtilities.invokeLater(this::addAppToTray);
 
             //TODO Login without internet
 
@@ -93,7 +121,7 @@ public class Main extends Application {
     }
 
     public void didLogin(){
-        Platform.runLater(() -> mainView.updateStatus(game.NoGame, Status.Online));
+        Platform.runLater(() -> mainView.updateStatus(Game.NoGame, Status.Online));
         this.timer = new Timer();
         timer.schedule(
                 new TimerTask() {
@@ -124,7 +152,8 @@ public class Main extends Application {
 //        menu.addItem(loginItem)
 //        menu.addItem(quitItem)
 
-        if(detector != null && this.game != Game.NoGame) {detector.stopDetection();}
+        if(detector != null && this.game != Game.NoGame) {detector.stopDetection();
+        }
         timer.cancel();
         timer.purge();
         setUserName("");
@@ -134,7 +163,7 @@ public class Main extends Application {
         Platform.runLater(this::gotoSignUpView);
     }
 
-    public void userLogout(){
+    public void userLogout() {
         Platform.runLater(this::gotoLoginView);
         didLogOut();
         ConnectionHandler.logout((success, error) -> {
@@ -174,7 +203,7 @@ public class Main extends Application {
             SignUpViewController signUp = (SignUpViewController) replaceSceneContent
                     ("/ViewControllers/SignUpView/SignUpView.fxml");
             signUp.setApp(this);
-        } catch (Exception ex) {;
+        } catch (Exception ex) {
             /* ex.printStackTrace(); */
         }
     }
@@ -186,7 +215,7 @@ public class Main extends Application {
         loader.setLocation(Main.class.getResource(fxml));
         VBox page = null;
         try (InputStream in = Main.class.getResourceAsStream(fxml)) {
-            page = (VBox) loader.load(in);
+            page = loader.load(in);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -197,6 +226,21 @@ public class Main extends Application {
         }
         stage.setScene(scene);
         stage.sizeToScene();
+
+        // allow the background to be used to drag the clock around.
+        final Delta dragDelta = new Delta();
+        if (page != null) {
+            page.setOnMousePressed(mouseEvent -> {
+                // record a delta distance for the drag and drop operation.
+                dragDelta.x = stage.getX() - mouseEvent.getScreenX();
+                dragDelta.y = stage.getY() - mouseEvent.getScreenY();
+            });
+            page.setOnMouseDragged(mouseEvent -> {
+                stage.setX(mouseEvent.getScreenX() + dragDelta.x);
+                stage.setY(mouseEvent.getScreenY() + dragDelta.y);
+            });
+        }
+
         return (Initializable) loader.getController();
     }
 
@@ -226,18 +270,17 @@ public class Main extends Application {
             // err.printStackTrace();
         }
 
-        if(game != newGame){
+        if (game != newGame){
             detector = new DotaDetector();
         }
     }
 
-    public void updateStatus(Status newStatus){
+    public void updateStatus(Status newStatus) {
         this.status = newStatus;
         ConnectionHandler.setStatus((success, error) -> {
-            if(success){
+            if (success) {
                 System.out.println("successfully updated status");
-            }
-            else{
+            } else {
                 System.out.println(error);
             }
         }, Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(status));
@@ -246,68 +289,80 @@ public class Main extends Application {
     }
 
 
-    public void createTrayIcon(final Stage stage) {
-        if (SystemTray.isSupported()) {
-            // get the SystemTray instance
-            SystemTray tray = SystemTray.getSystemTray();
-            // load an image
-            java.awt.Image image = null;
-            try {
-                URL url = new URL("http://www.digitalphotoartistry.com/rose1.jpg");
-                image = ImageIO.read(url);
-            } catch (IOException ex) {
-                System.out.println(ex);
+    /**
+     * Sets up a system tray icon for the application.
+     */
+    private void addAppToTray() {
+        try {
+            // ensure awt toolkit is initialized.
+            java.awt.Toolkit.getDefaultToolkit();
+
+            // app requires system tray support, just exit if there is no support.
+            if (!java.awt.SystemTray.isSupported()) {
+                System.out.println("No system tray support, application exiting.");
+                Platform.exit();
             }
 
+            // set up a system tray icon.
+            java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
+            URL imageLoc = new URL(
+                    iconImageLoc
+            );
+            java.awt.Image image = ImageIO.read(imageLoc);
+            java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(image);
 
-            stage.setOnCloseRequest(t -> hide(stage));
-            // create a action listener to listen for default action executed on the tray icon
-            final ActionListener closeListener = e -> System.exit(0);
+            // if the user double-clicks on the tray icon, show the main app stage.
+            trayIcon.addActionListener(event -> Platform.runLater(this::showStage));
 
-            ActionListener showListener = e -> Platform.runLater(() -> stage.show());
-            // create a popup menu
-            PopupMenu popup = new PopupMenu();
-            MenuItem showItem = new MenuItem("Show");
-            showItem.addActionListener(showListener);
-            popup.add(showItem);
-            MenuItem closeItem = new MenuItem("Close");
-            closeItem.addActionListener(closeListener);
-            popup.add(closeItem);
-            /// ... add other items
-            // construct a TrayIcon
-            trayIcon = new TrayIcon(image, "Title", popup);
-            // set the TrayIcon properties
-            trayIcon.addActionListener(showListener);
-            // ...
-            // add the tray image
-            try {
-                tray.add(trayIcon);
-            } catch (AWTException e) {
-                System.err.println(e);
-            }
-            // ...
+            trayIcon.addActionListener(e -> Platform.runLater(stage::show));
+
+            // if the user selects the default menu item (which includes the app name),
+            // show the main app stage.
+            java.awt.MenuItem openItem = new java.awt.MenuItem("hello, world");
+            openItem.addActionListener(event -> Platform.runLater(this::showStage));
+
+            // the convention for tray icons seems to be to set the default icon for opening
+            // the application stage in a bold font.
+            java.awt.Font defaultFont = java.awt.Font.decode(null);
+            java.awt.Font boldFont = defaultFont.deriveFont(java.awt.Font.BOLD);
+            openItem.setFont(boldFont);
+
+            // to really exit the application, the user must go to the system tray icon
+            // and select the exit option, this will shutdown JavaFX and remove the
+            // tray icon (removing the tray icon will also shut down AWT).
+            java.awt.MenuItem exitItem = new java.awt.MenuItem("Exit");
+            exitItem.addActionListener(event -> {
+                Platform.exit();
+                tray.remove(trayIcon);
+            });
+
+            // setup the popup menu for the application.
+            final java.awt.PopupMenu popup = new java.awt.PopupMenu();
+            popup.add(openItem);
+            popup.addSeparator();
+            popup.add(exitItem);
+            trayIcon.setPopupMenu(popup);
+
+
+            // add the application tray icon to the system tray.
+            tray.add(trayIcon);
+        } catch (java.awt.AWTException | IOException e) {
+            System.out.println("Unable to init system tray");
+            e.printStackTrace();
         }
     }
 
-    public void showProgramIsMinimizedMsg() {
-        if (firstTime) {
-            trayIcon.displayMessage("Some message.",
-                    "Some other message.",
-                    TrayIcon.MessageType.INFO);
-            firstTime = false;
+    /**
+     * Shows the application stage and ensures that it is brought ot the front of all stages.
+     */
+    private void showStage() {
+        if (stage != null) {
+            stage.show();
+            stage.toFront();
         }
     }
 
-    private void hide(final Stage stage) {
-        Platform.runLater(() -> {
-            if (SystemTray.isSupported()) {
-                stage.hide();
-                showProgramIsMinimizedMsg();
-            } else {
-                System.exit(0);
-            }
-        });
-    }
+
 
     public String getUserName() {
         return userName;
