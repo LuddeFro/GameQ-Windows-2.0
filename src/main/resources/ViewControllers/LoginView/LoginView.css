@@ -1,32 +1,43 @@
 .root {
-    -fx-background-color: #4C5A6D;
+    -fx-background-color: #17212b;
 }
 
 .button {
 }
 
+.label{
+    -fx-text-fill: white;
+}
+
 .button-orange{
-    -fx-background-color: #FF6861;
+    -fx-background-color: #e65b4c;
     -fx-background-radius: 4;
     -fx-text-fill: white;
     -fx-font-size: 20px;
 }
 
 .button-blue {
-    -fx-background-color: #8fd8f7;
+    -fx-background-color: #7dbae3;
     -fx-background-radius: 4;
     -fx-text-fill: white;
     -fx-font-size: 20px;
 }
 
 .button-forgot{
-    -fx-background-color: #4C5A6D;
+    -fx-background-color: transparent;
     -fx-background-radius: 4;
     -fx-text-fill: white;
     -fx-font-size: 20px;
 }
 
+.text-field{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+}
+
 .hbox {
     -fx-background-color: #FFFFFF;
+    -fx-background-radius: 4;
 }
 

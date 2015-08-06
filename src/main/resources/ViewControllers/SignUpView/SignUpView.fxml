@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.scene.layout.*?>
@@ -8,19 +11,49 @@
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
 
-<VBox prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="io.gameq.gameqwindows.ViewControllers.SignUpView.SignUpViewController">
+<VBox prefHeight="700.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.SignUpView.SignUpViewController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <TextField fx:id="emailField" layoutX="139.0" layoutY="200.0" />
-            <PasswordField fx:id="pwField1" layoutX="139.0" layoutY="253.0" />
-            <PasswordField fx:id="pwField2" layoutX="139.0" layoutY="298.0" />
-            <Button fx:id="signUpButton" layoutX="208.0" layoutY="383.0" mnemonicParsing="false"
-                    onAction="#processSignUp" text="Sign Up" styleClass="button-orange" />
-            <Button fx:id="backButton" layoutX="221.0" layoutY="436.0" mnemonicParsing="false"
-                    onAction="#backPressed" text="Back" styleClass="button-blue" />
-            <Label fx:id="statusLabel" layoutX="139.0" layoutY="354.0" prefHeight="27.0" prefWidth="224.0" text="Label" />
+            <HBox layoutX="50.0" layoutY="270.0" prefHeight="150.0" prefWidth="200.0" styleClass="hbox" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+               <children>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="5.0" top="105.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@../../images/LoginIconLine.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="-40.0" top="5.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@../../images/EmailIcon-Line.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="-40.0" top="55.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@../../images/LoginIconLine.png" />
+                     </image>
+                  </ImageView>
+               </children></HBox>
+            <TextField fx:id="emailField" layoutX="139.0" layoutY="200.0" promptText="Email" AnchorPane.bottomAnchor="350.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
+            <PasswordField fx:id="pwField1" layoutX="139.0" layoutY="253.0" promptText="Password" AnchorPane.bottomAnchor="305.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
+            <PasswordField fx:id="pwField2" layoutX="139.0" layoutY="298.0" promptText="Repeat Password" AnchorPane.bottomAnchor="260.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
+            <Button fx:id="signUpButton" layoutX="50.0" layoutY="480.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" mnemonicParsing="false" onAction="#processSignUp" prefHeight="50.0" prefWidth="400.0" styleClass="button-orange" text="Sign Up" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Button fx:id="backButton" layoutX="50.0" layoutY="520.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="50.0" prefWidth="400.0" styleClass="button-blue" text="Back" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Label fx:id="statusLabel" layoutX="139.0" layoutY="354.0" prefHeight="27.0" prefWidth="224.0" textFill="WHITE" AnchorPane.bottomAnchor="215.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Line endX="450.0" layoutX="166.0" layoutY="420.0" startX="50.0" stroke="#323f4f" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Line endX="450.0" layoutX="137.0" layoutY="359.0" startX="50.0" stroke="#323f4f" AnchorPane.bottomAnchor="350.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="138.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="156.0" AnchorPane.topAnchor="50.0">
+               <image>
+                  <Image url="@../../images/gq-nb-512.png" />
+               </image></ImageView>
       </children>
     </AnchorPane>
   </children>

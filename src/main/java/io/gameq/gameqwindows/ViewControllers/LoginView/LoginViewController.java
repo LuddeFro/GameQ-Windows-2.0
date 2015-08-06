@@ -10,7 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Line;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,6 +30,12 @@ public class LoginViewController extends VBox implements Initializable {
     @FXML Button loginButton;
     @FXML Button signUp;
     @FXML Button forgotButton;
+    @FXML ImageView lockImage;
+    @FXML HBox textHolder;
+    @FXML HBox forgotBox;
+    @FXML Line forgotLine;
+
+
 
     private Main application;
     private boolean isForgot = false;
@@ -49,6 +58,11 @@ public class LoginViewController extends VBox implements Initializable {
             passwordField.setDisable(true);
             loginButton.setText("Submit");
             signUp.setText("Back");
+            lockImage.setVisible(false);
+            textHolder.setOpacity(0);
+            forgotBox.setOpacity(1);
+            forgotLine.setVisible(false);
+            forgotBox.setVisible(true);
                           });
     }
 
@@ -128,6 +142,11 @@ public class LoginViewController extends VBox implements Initializable {
                 passwordField.setDisable(false);
                 passwordField.setVisible(true);
                 loginButton.setDisable(false);
+                forgotBox.setOpacity(0);
+                forgotLine.setVisible(true);
+                textHolder.setVisible(true);
+                lockImage.setVisible(true);
+                textHolder.setOpacity(1);
             }
         });
     }

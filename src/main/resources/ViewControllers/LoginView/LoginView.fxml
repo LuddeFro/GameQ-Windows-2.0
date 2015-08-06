@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.scene.control.*?>
@@ -14,13 +17,48 @@
   <children>
     <AnchorPane maxHeight="700.0" maxWidth="500" minHeight="700.0" minWidth="500.0" prefHeight="700.0" prefWidth="500" VBox.vgrow="ALWAYS">
       <children>
-            <TextField fx:id="emailField" layoutX="50.0" layoutY="361.0" prefHeight="40.0" prefWidth="300.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <HBox id="forgotBox" fx:id="forgotBox" layoutX="35.0" layoutY="250.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" opacity="0.0" prefHeight="50.0" prefWidth="400.0" styleClass="hbox" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+               <children>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/EmailIcon-Line.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" top="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children></HBox>
+            <HBox fx:id="textHolder" layoutX="43.0" layoutY="350.0" prefHeight="100.0" prefWidth="200.0" styleClass="hbox" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+               <children>
+                  <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/EmailIcon-Line.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" top="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fx:id="lockImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="-40.0" top="55.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@../../images/LoginIconLine.png" />
+                     </image>
+                  </ImageView>
+               </children></HBox>
+            <TextField fx:id="emailField" layoutX="162.0" layoutY="361.0" prefHeight="41.0" prefWidth="288.0" promptText="Email" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
             <Button fx:id="loginButton" layoutX="50.0" layoutY="480.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" mnemonicParsing="false" onAction="#processLogin" prefHeight="50.0" prefWidth="400.0" styleClass="button-orange" text="login " AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
             <Button fx:id="signUp" layoutX="50.0" layoutY="520.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" mnemonicParsing="false" onAction="#gotoSignUp" prefHeight="50.0" prefWidth="400.0" styleClass="button-blue" text="sign up" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
-            <Label fx:id="statusLabel" layoutX="99.0" layoutY="357.0" prefHeight="30.0" prefWidth="400.0" text="Label" AnchorPane.bottomAnchor="215.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
-            <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="396.0" prefHeight="39.0" prefWidth="300.0" AnchorPane.bottomAnchor="260.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Label fx:id="statusLabel" layoutX="99.0" layoutY="357.0" prefHeight="30.0" prefWidth="400.0" AnchorPane.bottomAnchor="215.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="396.0" prefHeight="39.0" prefWidth="300.0" promptText="Password" AnchorPane.bottomAnchor="260.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
             <Button fx:id="forgotButton" layoutX="100.0" layoutY="520.0" maxHeight="50.0" maxWidth="300.0" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onAction="#processForgot" prefHeight="50.0" prefWidth="300.0" styleClass="button-forgot" text="forgot password" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
-            <HBox layoutX="43.0" layoutY="350.0" prefHeight="100.0" prefWidth="200.0" styleClass="hbox" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Line fx:id="forgotLine" endX="450.0" layoutX="190.0" layoutY="400.0" startX="50.0" stroke="#323f4f" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="137.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="50.0">
+               <image>
+                  <Image url="@../../images/gq-nb-512.png" />
+               </image>
+            </ImageView>
       </children>
     </AnchorPane>
   </children>
