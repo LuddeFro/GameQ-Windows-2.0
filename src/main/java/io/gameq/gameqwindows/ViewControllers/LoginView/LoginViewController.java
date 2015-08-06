@@ -129,6 +129,7 @@ public class LoginViewController extends VBox implements Initializable {
         Platform.runLater(() -> {
             if(!isForgot) {
                 if (application == null) {
+
                 } else {
                     application.gotoSignUp();
                 }

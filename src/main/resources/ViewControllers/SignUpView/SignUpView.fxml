@@ -42,9 +42,9 @@
                      </image>
                   </ImageView>
                </children></HBox>
-            <TextField fx:id="emailField" layoutX="139.0" layoutY="200.0" promptText="Email" AnchorPane.bottomAnchor="350.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
+            <TextField fx:id="emailField" layoutX="139.0" layoutY="200.0" promptText="Email" AnchorPane.bottomAnchor="355.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
             <PasswordField fx:id="pwField1" layoutX="139.0" layoutY="253.0" promptText="Password" AnchorPane.bottomAnchor="305.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
-            <PasswordField fx:id="pwField2" layoutX="139.0" layoutY="298.0" promptText="Repeat Password" AnchorPane.bottomAnchor="260.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
+            <PasswordField fx:id="pwField2" layoutX="139.0" layoutY="298.0" promptText="Repeat Password" AnchorPane.bottomAnchor="255.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="50.0" />
             <Button fx:id="signUpButton" layoutX="50.0" layoutY="480.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" mnemonicParsing="false" onAction="#processSignUp" prefHeight="50.0" prefWidth="400.0" styleClass="button-orange" text="Sign Up" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
             <Button fx:id="backButton" layoutX="50.0" layoutY="520.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="50.0" prefWidth="400.0" styleClass="button-blue" text="Back" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
             <Label fx:id="statusLabel" layoutX="139.0" layoutY="354.0" prefHeight="27.0" prefWidth="224.0" textFill="WHITE" AnchorPane.bottomAnchor="215.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
