@@ -10,16 +10,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
 
-<VBox prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController">
+<VBox prefHeight="700.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="700.0" maxWidth="500" minHeight="700.0" minWidth="500.0" prefHeight="700.0" prefWidth="500" VBox.vgrow="ALWAYS">
       <children>
-            <TextField fx:id="emailField" layoutX="99.0" layoutY="245.0" prefHeight="40.0" prefWidth="300.0" />
-            <Button fx:id="loginButton" layoutX="99.0" layoutY="386.0" mnemonicParsing="false" onAction="#processLogin" prefHeight="40.0" prefWidth="300.0" styleClass="button-orange" text="login " />
-            <Button fx:id="signUp" layoutX="99.0" layoutY="444.0" mnemonicParsing="false" onAction="#gotoSignUp" prefHeight="40.0" prefWidth="300.0" styleClass="button-blue" text="sign up" />
-            <Label fx:id="statusLabel" layoutX="99.0" layoutY="357.0" prefHeight="27.0" prefWidth="300.0" text="Label" />
-            <PasswordField fx:id="passwordField" layoutX="99.0" layoutY="310.0" prefHeight="39.0" prefWidth="300.0" />
-            <Button fx:id="forgotButton" layoutX="99.0" layoutY="497.0" mnemonicParsing="false" onAction="#processForgot" prefHeight="39.0" prefWidth="300.0" styleClass="button-forgot" text="forgot password" />
+            <TextField fx:id="emailField" layoutX="50.0" layoutY="361.0" prefHeight="40.0" prefWidth="300.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Button fx:id="loginButton" layoutX="50.0" layoutY="480.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" mnemonicParsing="false" onAction="#processLogin" prefHeight="50.0" prefWidth="400.0" styleClass="button-orange" text="login " AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Button fx:id="signUp" layoutX="50.0" layoutY="520.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" mnemonicParsing="false" onAction="#gotoSignUp" prefHeight="50.0" prefWidth="400.0" styleClass="button-blue" text="sign up" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Label fx:id="statusLabel" layoutX="99.0" layoutY="357.0" prefHeight="30.0" prefWidth="400.0" text="Label" AnchorPane.bottomAnchor="215.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <PasswordField fx:id="passwordField" layoutX="50.0" layoutY="396.0" prefHeight="39.0" prefWidth="300.0" AnchorPane.bottomAnchor="260.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
+            <Button fx:id="forgotButton" layoutX="100.0" layoutY="520.0" maxHeight="50.0" maxWidth="300.0" minHeight="50.0" minWidth="300.0" mnemonicParsing="false" onAction="#processForgot" prefHeight="50.0" prefWidth="300.0" styleClass="button-forgot" text="forgot password" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
+            <HBox layoutX="43.0" layoutY="350.0" prefHeight="100.0" prefWidth="200.0" styleClass="hbox" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" />
       </children>
     </AnchorPane>
   </children>

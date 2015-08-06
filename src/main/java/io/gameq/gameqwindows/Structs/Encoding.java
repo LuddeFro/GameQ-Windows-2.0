@@ -5,7 +5,7 @@ package io.gameq.gameqwindows.Structs;
  */
 public class Encoding {
 
-    static String getStringFromGame(Game game) {
+   public static String getStringFromGame(Game game) {
 
         switch (game){
             case Dota2:
@@ -43,7 +43,7 @@ public class Encoding {
         return 6;
     }
 
-    static String getStringFromGameStatus(Game game, Status status) {
+   public static String getStringFromGameStatus(Game game, Status status) {
 
         switch (game) {
             case Dota2:

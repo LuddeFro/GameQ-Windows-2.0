@@ -21,6 +21,8 @@
                 <Button fx:id="logOutButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="40.0" maxWidth="300.0" minHeight="40.0" minWidth="300.0" mnemonicParsing="false" onAction="#logOutButtonClicked" prefHeight="40.0" prefWidth="300.0" styleClass="button-blue" text="Log Out" textAlignment="CENTER" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="100.0" />
                 <Button maxHeight="40.0" maxWidth="300.0" minHeight="40.0" minWidth="300.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" styleClass="button-orange" text="Feedback" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
             <StackPane fx:id="timerHolder" layoutX="157.0" layoutY="200.0" prefHeight="200.0" prefWidth="200.0" styleClass="tab-pane-stack" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="200.0" />
+            <Label fx:id="statusLabel" layoutX="229.0" layoutY="34.0" text="Label" />
+            <Label fx:id="gameLabel" layoutX="229.0" layoutY="74.0" text="Label" />
             </children>
         </AnchorPane>
     </children>

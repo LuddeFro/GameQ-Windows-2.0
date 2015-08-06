@@ -1,6 +1,8 @@
 package io.gameq.gameqwindows.GameDetector;
 
+import io.gameq.gameqwindows.Main;
 import io.gameq.gameqwindows.Structs.*;
+import javafx.application.Application;
 
 import java.util.LinkedList;
 
@@ -46,12 +48,12 @@ public class DotaDetector extends PacketDetector {
 
 
     @Override
-    public void startDetection() {
+    public void startDetection(Main application) {
         setGame(Game.Dota2);
         //self.detector = self
         setCountDownLength(45);
         updateStatus(Status.InLobby);
-        super.startDetection();
+        super.startDetection(application);
 
         if(!isCapturing){
             //new thread?????

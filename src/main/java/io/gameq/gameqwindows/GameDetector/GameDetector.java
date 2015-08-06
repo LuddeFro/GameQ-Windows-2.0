@@ -2,14 +2,19 @@ package io.gameq.gameqwindows.GameDetector;
 
 import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
 import io.gameq.gameqwindows.DataHandler.DataHandler;
+import io.gameq.gameqwindows.Main;
 import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
+import javafx.application.Application;
+import javafx.beans.Observable;
 
 /**
  * Created by fabianwikstrom on 7/6/2015.
  */
-public class GameDetector {
+public abstract class GameDetector {
+
+    private Main application = null;
 
     private Game game = Game.NoGame;
     private Status status = Status.Online;
@@ -27,9 +32,10 @@ public class GameDetector {
     //private countdownTimer .....
 
 
-    public void startDetection(){
+    public void startDetection(Main application){
         //datahandler.foldername = ...
         counter = 0;
+        this.application = application;
     }
 
     public void updateStatus(Status newStatus) {
@@ -47,26 +53,18 @@ public class GameDetector {
 
         status = newStatus;
         System.out.println("new Status: " + status);
-        // NSNotificationCenter.defaultCenter().postNotificationName("updateStatus", object: nil)
-
         System.out.println("game" + this.game);
         System.out.println("status" + this.status);
+
+
         if (!isTesting) {
-            ConnectionHandler.setStatus((success, error) -> {
-            if(success){
-                System.out.println("successfully updated status");
-            }
-                else{
-                System.out.println(error);
-            }
-            }, Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(this.status));
+        application.updateStatus(newStatus);
         }
     }
 
 
     public void saveDetection(){
         System.out.println("Saving File");
-        //dataHandler.folderName = game.rawValue
     }
 
     public void resetDetection() {
@@ -75,20 +73,17 @@ public class GameDetector {
 
     public void saveMissedDetection(){
         System.out.println("Saving Missed File");
-        //dataHandler.folderName = game.rawValue + "missed"
     }
 
     public void failMode(){
 
         if(isFailMode){
             System.out.println("FailMode Off");
-           // dataHandler.folderName = game.rawValue
             isFailMode = false;
         }
 
         else{
             System.out.println("FailMode On");
-            //dataHandler.folderName = game.rawValue + "ForcedFails"
             isFailMode = true;
         }
     }
@@ -104,7 +99,6 @@ public class GameDetector {
     }
 
     public void startTimer(){
-
 //        dispatch_async(dispatch_get_main_queue()) {
 //            self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)}
     }

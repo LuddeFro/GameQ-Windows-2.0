@@ -41,13 +41,15 @@ public class LoginViewController extends VBox implements Initializable {
     }
 
     public void processForgot(){
-        isForgot = true;
-        forgotButton.setDisable(true);
-        forgotButton.setVisible(false);
-        passwordField.setVisible(false);
-        passwordField.setDisable(true);
-        loginButton.setText("Submit");
-        signUp.setText("Back");
+        Platform.runLater(() -> {
+            isForgot = true;
+            forgotButton.setDisable(true);
+            forgotButton.setVisible(false);
+            passwordField.setVisible(false);
+            passwordField.setDisable(true);
+            loginButton.setText("Submit");
+            signUp.setText("Back");
+                          });
     }
 
     public void processLogin() {
@@ -63,13 +65,13 @@ public class LoginViewController extends VBox implements Initializable {
                 Platform.runLater(() -> statusLabel.setText("Signing in..."));
                 ConnectionHandler.login((success, error) -> {
                     if (success) {
-                        application.didLogin();
                         application.setUserName(emailField.getText());
                         Platform.runLater(() -> statusLabel.setText("Success!"));
                         Platform.runLater(() -> loginButton.setDisable(false));
                         Platform.runLater(() -> signUp.setDisable(false));
                         Platform.runLater(() -> forgotButton.setDisable(false));
                         Platform.runLater(application::gotoMainView);
+                        Platform.runLater(application::didLogin);
                     } else {
                         Platform.runLater(() -> statusLabel.setText(error));
                         Platform.runLater(() -> loginButton.setDisable(false));
@@ -110,21 +112,23 @@ public class LoginViewController extends VBox implements Initializable {
     }
 
     public void gotoSignUp(){
-        if(!isForgot) {
-            if (application == null) {
-            } else {
-                application.gotoSignUp();
+        Platform.runLater(() -> {
+            if(!isForgot) {
+                if (application == null) {
+                } else {
+                    application.gotoSignUp();
+                }
             }
-        }
-        else{
-            isForgot = false;
-            loginButton.setText("Login");
-            signUp.setText("Sign Up");
-            forgotButton.setVisible(true);
-            forgotButton.setDisable(false);
-            passwordField.setDisable(false);
-            passwordField.setVisible(true);
-            loginButton.setDisable(false);
-        }
+            else{
+                isForgot = false;
+                loginButton.setText("Login");
+                signUp.setText("Sign Up");
+                forgotButton.setVisible(true);
+                forgotButton.setDisable(false);
+                passwordField.setDisable(false);
+                passwordField.setVisible(true);
+                loginButton.setDisable(false);
+            }
+        });
     }
 }

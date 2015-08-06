@@ -4,6 +4,7 @@ import io.gameq.gameqwindows.ConnectionHandler.CallbackGeneral;
 import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
 import io.gameq.gameqwindows.GameDetector.DotaDetector;
 import io.gameq.gameqwindows.GameDetector.GameDetector;
+import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
 import io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController;
@@ -28,13 +29,15 @@ import java.util.TimerTask;
 
 public class Main extends Application {
 
-    private GameDetector detector = new GameDetector();
-    private Game game = null;
+    private GameDetector detector = null;
     private Stage stage;
     private final double MINIMUM_WINDOW_WIDTH = 500.0;
-    private final double MINIMUM_WINDOW_HEIGHT = 600.0;
+    private final double MINIMUM_WINDOW_HEIGHT = 700.0;
     private Timer timer = null;
     private String userName = "";
+    private Status status = Status.Offline;
+    private Game game = Game.NoGame;
+    private MainViewController mainView = null;
 
 
 
@@ -49,10 +52,14 @@ public class Main extends Application {
             stage.setMaxHeight(MINIMUM_WINDOW_HEIGHT);
             stage.setResizable(false);
 
+            //TODO Login without internet
+
             ConnectionHandler.loginWithRememberedDetails((success, error) -> {
                 if (success) {
                     Platform.runLater(this::gotoMainView);
                     Platform.runLater(primaryStage::show);
+                    didLogin();
+                    System.out.println("login success");
                 }
                 else {
                     Platform.runLater(this::gotoLoginView);
@@ -70,7 +77,7 @@ public class Main extends Application {
     }
 
     public void didLogin(){
-        detector.updateStatus(Status.Online);
+        Platform.runLater(() -> mainView.updateStatus(game.NoGame, Status.Online));
         this.timer = new Timer();
         timer.schedule(
                 new TimerTask() {
@@ -100,11 +107,11 @@ public class Main extends Application {
 //        menu.removeAllItems()
 //        menu.addItem(loginItem)
 //        menu.addItem(quitItem)
-        detector.stopDetection();
+
+        if(detector != null && this.game != Game.NoGame) {detector.stopDetection();}
         timer.cancel();
         timer.purge();
         setUserName("");
-//        ConnectionHandler.logout({ (success:Bool, err:String?) in})
     }
 
     public void gotoSignUp(){
@@ -113,13 +120,11 @@ public class Main extends Application {
 
     public void userLogout(){
         Platform.runLater(this::gotoLoginView);
-        //TODO add later
-        // didLogOut();
+        didLogOut();
         ConnectionHandler.logout((success, error) -> {
-            if(success){
+            if (success) {
                 System.out.println("logout Success");
-            }
-            else{
+            } else {
                 System.out.println("logout failed");
                 System.out.println(error);
             }
@@ -132,9 +137,9 @@ public class Main extends Application {
 
     public void gotoMainView() {
         try {
-            MainViewController mainView = (MainViewController) replaceSceneContent
+            this.mainView = (MainViewController) replaceSceneContent
                     ("/ViewControllers/MainView/MainView.fxml");
-            mainView.setApp(this);
+            this.mainView.setApp(this);
         } catch (Exception ex) {
             // ex.printStackTrace();
         }
@@ -172,7 +177,7 @@ public class Main extends Application {
 
         Scene scene = null;
         if (page != null) {
-            scene = new Scene(page, 500, 600);
+            scene = new Scene(page, 500, 700);
         }
         stage.setScene(scene);
         stage.sizeToScene();
@@ -182,9 +187,7 @@ public class Main extends Application {
 
     // Lots of games to add
     private void update(){
-
         Game newGame = null;
-
         try {
             String line;
             Process p = Runtime.getRuntime().exec
@@ -192,12 +195,15 @@ public class Main extends Application {
             BufferedReader input =
                     new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
+
                 if(line.contains("dota.exe")){
                     newGame = Game.Dota2;
                 }
                 else{
                     newGame = Game.NoGame;
                 }
+
+
             }
             input.close();
         } catch (Exception err) {
@@ -207,6 +213,20 @@ public class Main extends Application {
         if(game != newGame){
             detector = new DotaDetector();
         }
+    }
+
+    public void updateStatus(Status newStatus){
+        this.status = newStatus;
+        ConnectionHandler.setStatus((success, error) -> {
+            if(success){
+                System.out.println("successfully updated status");
+            }
+            else{
+                System.out.println(error);
+            }
+        }, Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(status));
+
+        mainView.updateStatus(this.game, this.status);
     }
 
     public String getUserName() {
