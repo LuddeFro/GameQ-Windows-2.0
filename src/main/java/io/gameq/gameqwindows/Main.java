@@ -1,6 +1,5 @@
 package io.gameq.gameqwindows;
 
-import io.gameq.gameqwindows.ConnectionHandler.CallbackGeneral;
 import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
 import io.gameq.gameqwindows.GameDetector.DotaDetector;
 import io.gameq.gameqwindows.GameDetector.GameDetector;
@@ -12,44 +11,21 @@ import io.gameq.gameqwindows.ViewControllers.MainView.MainViewController;
 import io.gameq.gameqwindows.ViewControllers.SignUpView.SignUpViewController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.ir.Symbol;
-
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javafx.application.*;
-import javafx.geometry.Pos;
-import javafx.scene.*;
-import javafx.scene.control.Label;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.*;
-
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.net.URL;
-import java.text.*;
-import java.util.*;
 
 
 public class Main extends Application {
@@ -64,16 +40,23 @@ public class Main extends Application {
     // a tray icon is setup for the icon, but the main stage remains invisible until the user
     // interacts with the tray icon.
 
+    private java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
+    private java.awt.TrayIcon trayIcon = null;
+    private java.awt.MenuItem userItem = new java.awt.MenuItem("user");
+    private java.awt.MenuItem statusItem = new java.awt.MenuItem("status");
+    private java.awt.MenuItem gameItem = new java.awt.MenuItem("game");
+    private java.awt.PopupMenu popup = new java.awt.PopupMenu();
 
     private GameDetector detector = null;
     private Stage stage;
     private final double MINIMUM_WINDOW_WIDTH = 500.0;
     private final double MINIMUM_WINDOW_HEIGHT = 700.0;
     private Timer timer = null;
-    private String userName = "";
     private Status status = Status.Offline;
     private Game game = Game.NoGame;
     private MainViewController mainView = null;
+    private String userName = "";
+
 
     // records relative x and y co-ordinates.
     class Delta { double x, y; }
@@ -108,6 +91,7 @@ public class Main extends Application {
                 else {
                     Platform.runLater(this::gotoLoginView);
                     Platform.runLater(primaryStage::show);
+                    Platform.runLater(this::setLogOutPopUp);
                 }
             });
 
@@ -122,6 +106,53 @@ public class Main extends Application {
 
     public void didLogin(){
         Platform.runLater(() -> mainView.updateStatus(Game.NoGame, Status.Online));
+
+        popup.removeAll();
+
+        userName = ConnectionHandler.loadEmail();
+        userItem.setLabel(userName);
+        statusItem.setLabel(Encoding.getStringFromGameStatus(Game.NoGame, Status.Online));
+        gameItem.setLabel(Encoding.getStringFromGame(Game.NoGame));
+
+        // if the user selects the default menu item (which includes the app name),
+        // show the main app stage.
+        java.awt.MenuItem openItem = new java.awt.MenuItem("Open GameQ");
+        openItem.addActionListener(event -> Platform.runLater(this::showStage));
+
+        // the convention for tray icons seems to be to set the default icon for opening
+        // the application stage in a bold font.
+        java.awt.Font defaultFont = java.awt.Font.decode(null);
+        java.awt.Font boldFont = defaultFont.deriveFont(java.awt.Font.BOLD);
+        openItem.setFont(boldFont);
+
+        // if the user selects the default menu item (which includes the app name),
+        // show the main app stage.
+        java.awt.MenuItem logOutItem = new java.awt.MenuItem("LogOut");
+        logOutItem.addActionListener(event -> Platform.runLater(this::userLogout));
+
+        // the convention for tray icons seems to be to set the default icon for opening
+        // the application stage in a bold font.
+        logOutItem.setFont(boldFont);
+
+        // to really exit the application, the user must go to the system tray icon
+        // and select the exit option, this will shutdown JavaFX and remove the
+        // tray icon (removing the tray icon will also shut down AWT).
+        java.awt.MenuItem exitItem = new java.awt.MenuItem("Quit");
+        exitItem.addActionListener(event -> {
+            Platform.exit();
+            tray.remove(trayIcon);
+        });
+
+        // setup the popup menu for the application.
+        popup.add(userItem);
+        popup.add(statusItem);
+        popup.add(gameItem);
+        popup.addSeparator();
+        popup.add(openItem);
+        popup.add(logOutItem);
+        popup.add(exitItem);
+        trayIcon.setPopupMenu(popup);
+
         this.timer = new Timer();
         timer.schedule(
                 new TimerTask() {
@@ -147,11 +178,38 @@ public class Main extends Application {
 //            self.menu.addItem(self.quitItem)
     }
 
-    private void didLogOut(){
-//        menu.removeAllItems()
-//        menu.addItem(loginItem)
-//        menu.addItem(quitItem)
 
+    private void setLogOutPopUp(){
+        popup.removeAll();
+
+        // if the user selects the default menu item (which includes the app name),
+        // show the main app stage.
+        java.awt.MenuItem openItem = new java.awt.MenuItem("Open GameQ");
+        openItem.addActionListener(event -> Platform.runLater(this::showStage));
+
+        // the convention for tray icons seems to be to set the default icon for opening
+        // the application stage in a bold font.
+        java.awt.Font defaultFont = java.awt.Font.decode(null);
+        java.awt.Font boldFont = defaultFont.deriveFont(java.awt.Font.BOLD);
+        openItem.setFont(boldFont);
+
+        // to really exit the application, the user must go to the system tray icon
+        // and select the exit option, this will shutdown JavaFX and remove the
+        // tray icon (removing the tray icon will also shut down AWT).
+        java.awt.MenuItem exitItem = new java.awt.MenuItem("Quit");
+        exitItem.addActionListener(event -> {
+            Platform.exit();
+            tray.remove(trayIcon);
+        });
+
+        popup.add(openItem);
+        popup.add(exitItem);
+        trayIcon.setPopupMenu(popup);
+    }
+
+
+    private void didLogOut(){
+        Platform.runLater(this::setLogOutPopUp);
         if(detector != null && this.game != Game.NoGame) {detector.stopDetection();
         }
         timer.cancel();
@@ -170,7 +228,7 @@ public class Main extends Application {
             if (success) {
                 System.out.println("logout Success");
             } else {
-                System.out.println("logout failed");
+                System.out.println("logout ");
                 System.out.println(error);
             }
         });
@@ -277,6 +335,10 @@ public class Main extends Application {
 
     public void updateStatus(Status newStatus) {
         this.status = newStatus;
+
+        statusItem.setLabel(Encoding.getStringFromGameStatus(this.game, this.status));
+        gameItem.setLabel(Encoding.getStringFromGame(this.game));
+
         ConnectionHandler.setStatus((success, error) -> {
             if (success) {
                 System.out.println("successfully updated status");
@@ -304,45 +366,16 @@ public class Main extends Application {
             }
 
             // set up a system tray icon.
-            java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
             URL imageLoc = new URL(
                     iconImageLoc
             );
             java.awt.Image image = ImageIO.read(imageLoc);
-            java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(image);
+            trayIcon = new java.awt.TrayIcon(image);
 
             // if the user double-clicks on the tray icon, show the main app stage.
             trayIcon.addActionListener(event -> Platform.runLater(this::showStage));
 
             trayIcon.addActionListener(e -> Platform.runLater(stage::show));
-
-            // if the user selects the default menu item (which includes the app name),
-            // show the main app stage.
-            java.awt.MenuItem openItem = new java.awt.MenuItem("hello, world");
-            openItem.addActionListener(event -> Platform.runLater(this::showStage));
-
-            // the convention for tray icons seems to be to set the default icon for opening
-            // the application stage in a bold font.
-            java.awt.Font defaultFont = java.awt.Font.decode(null);
-            java.awt.Font boldFont = defaultFont.deriveFont(java.awt.Font.BOLD);
-            openItem.setFont(boldFont);
-
-            // to really exit the application, the user must go to the system tray icon
-            // and select the exit option, this will shutdown JavaFX and remove the
-            // tray icon (removing the tray icon will also shut down AWT).
-            java.awt.MenuItem exitItem = new java.awt.MenuItem("Exit");
-            exitItem.addActionListener(event -> {
-                Platform.exit();
-                tray.remove(trayIcon);
-            });
-
-            // setup the popup menu for the application.
-            final java.awt.PopupMenu popup = new java.awt.PopupMenu();
-            popup.add(openItem);
-            popup.addSeparator();
-            popup.add(exitItem);
-            trayIcon.setPopupMenu(popup);
-
 
             // add the application tray icon to the system tray.
             tray.add(trayIcon);

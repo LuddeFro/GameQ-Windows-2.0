@@ -32,7 +32,6 @@ public class MainViewController extends VBox implements Initializable {
     @FXML Button saveButton;
     @FXML Button saveMissed;
     @FXML Button failModeButton;
-    @FXML Button logOutButton;
     @FXML AnchorPane anchorPane;
     @FXML StackPane timerHolder;
     @FXML Label statusLabel;
@@ -60,9 +59,6 @@ public class MainViewController extends VBox implements Initializable {
         System.out.println("failmode");
     }
 
-    public void logOutButtonClicked(){
-        processLogout();
-    }
 
 
     private Main application;
@@ -82,7 +78,7 @@ public class MainViewController extends VBox implements Initializable {
             timerHolder.getChildren().add(countDownIndicator);
             StackPane.setAlignment(countDownIndicator, Pos.CENTER);
 
-            if (false) {
+            if (true) {
                 startButton.setDisable(true);
                 startButton.setVisible(false);
                 stopButton.setDisable(true);
@@ -95,15 +91,6 @@ public class MainViewController extends VBox implements Initializable {
                 saveMissed.setVisible(false);
             }
         });
-    }
-
-    public void processLogout() {
-        if (application == null){
-            // We are running in isolated FXML, possibly in Scene Builder.
-            // NO-OP.
-            return;
-        }
-        application.userLogout();
     }
 
     public void updateStatus(Game game, Status status){

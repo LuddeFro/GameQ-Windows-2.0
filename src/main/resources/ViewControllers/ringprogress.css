@@ -6,19 +6,19 @@
 	-fx-opacity: 1;
 	-fx-stroke: #8fd8f7;
 	-fx-stroke-width: 0px;
-	-fx-fill: #4C5A6D;
+	-fx-fill: #17212b;
 }
 .ringindicator-filler {
 	-fx-opacity: 1;
 	-fx-stroke: #FF6861;
-	-fx-fill: #4C5A6D;
+	-fx-fill: #17212b;
 	-fx-stroke-line-cap: butt;
 }
 .ringindicator-outer-circle-secondary {
 	-fx-opacity: 0.0;
 	-fx-stroke: #8fd8f7;
 	-fx-stroke-width: 8.0px;
-	-fx-fill: #4C5A6D;
+	-fx-fill: #17212b;
 }
 .indeterminate {
 	-fx-opacity: 1;

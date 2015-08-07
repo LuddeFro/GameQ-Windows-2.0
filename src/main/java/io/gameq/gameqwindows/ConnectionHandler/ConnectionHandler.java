@@ -376,7 +376,7 @@ public final class ConnectionHandler {
         return preferences.get("pw", "");
     }
 
-    private static String loadEmail() {
+    public static String loadEmail() {
         return preferences.get("email", "");
     }
 
