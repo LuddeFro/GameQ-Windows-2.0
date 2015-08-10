@@ -2,6 +2,7 @@ package io.gameq.gameqwindows.ConnectionHandler;
 
 import io.gameq.gameqwindows.ConnectionHandler.ep.EncryptedPreferences;
 import io.gameq.gameqwindows.ConnectionHandler.ep.Util;
+import io.gameq.gameqwindows.DataHandler.AcceptHandler;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -211,8 +212,18 @@ public final class ConnectionHandler {
 //                //System.out.println("session_token=" + ConnectionHandler.sessionToken + "&device_id=" +
 //                        ConnectionHandler.loadDeviceID());
                 holder.populate(response);
+                if (holder.success && holder.error.equals("accept")) {
+                    AcceptHandler.acceptMatch(game);
+                } else if (holder.success && holder.error.equals("auto")) {
+                    try {
+                        Thread.sleep(1000);                 //1000 milliseconds is one second.
+                    } catch(InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    } finally {
+                        AcceptHandler.acceptMatch(game);
+                    }
+                }
                 mCaller.callback(holder.success, holder.error);
-                return;
             }
         };
         new Thread(r).start();

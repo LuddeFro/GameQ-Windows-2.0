@@ -131,7 +131,7 @@ public class Encoding {
         }
     }
 
-    static Game getGameFromInt(int game){
+    public static Game getGameFromInt(int game){
 
         switch (game){
             case 0 : return Game.NoGame;
