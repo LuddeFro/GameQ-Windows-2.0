@@ -4,6 +4,7 @@ import io.gameq.gameqwindows.Main;
 import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
+import io.gameq.gameqwindows.DataHandler.AcceptHandler;
 import io.gameq.gameqwindows.ViewControllers.MainView.ProgressTimer.RingProgressIndicator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -40,7 +41,8 @@ public class MainViewController extends VBox implements Initializable {
     private String userName;
 
     public void startButtonClicked(){
-       startTimer(45.0);
+        //application.updateStatus(Status.GameReady);
+        AcceptHandler.acceptMatch(1);
     }
 
     public void stopButtonClicked(){
@@ -78,7 +80,7 @@ public class MainViewController extends VBox implements Initializable {
             timerHolder.getChildren().add(countDownIndicator);
             StackPane.setAlignment(countDownIndicator, Pos.CENTER);
 
-            if (true) {
+            if (false) {
                 startButton.setDisable(true);
                 startButton.setVisible(false);
                 stopButton.setDisable(true);
@@ -133,7 +135,6 @@ public class MainViewController extends VBox implements Initializable {
     private void startTimer(double countDownTime){
         fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             this.counter = this.counter + 0.1;
-            System.out.println(counter);
             countDownIndicator.setProgress(this.counter/countDownTime * 100);
         }));
         fiveSecondsWonder.setCycleCount((int) countDownTime * 10);

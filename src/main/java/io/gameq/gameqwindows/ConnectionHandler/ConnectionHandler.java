@@ -212,6 +212,7 @@ public final class ConnectionHandler {
 //                //System.out.println("session_token=" + ConnectionHandler.sessionToken + "&device_id=" +
 //                        ConnectionHandler.loadDeviceID());
                 holder.populate(response);
+                System.out.println("sak: " + holder.error);
                 if (holder.success && holder.error.equals("accept")) {
                     AcceptHandler.acceptMatch(game);
                 } else if (holder.success && holder.error.equals("auto")) {
@@ -220,6 +221,7 @@ public final class ConnectionHandler {
                     } catch(InterruptedException ex) {
                         Thread.currentThread().interrupt();
                     } finally {
+                        System.out.println("I tried");
                         AcceptHandler.acceptMatch(game);
                     }
                 }

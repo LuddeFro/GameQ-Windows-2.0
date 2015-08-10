@@ -31,27 +31,35 @@ public final class AcceptHandler {
 
             File tempFile = null;
             try {
-                tempFile = File.createTempFile(localFilename, Long.toString(System.currentTimeMillis()));
+                tempFile = File.createTempFile(Long.toString(System.currentTimeMillis()), localFilename);
                 tempFile.deleteOnExit();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            URL url = AcceptHandler.class.getClassLoader().getResource("resources/executables/"+localFilename);
+
+            URL url = AcceptHandler.class.getClassLoader().getResource("executables/"+localFilename);
             FileOutputStream output = null;
 
             try {
-                output = new FileOutputStream(tempFile);
-                InputStream input = url.openStream();
-                byte [] buffer = new byte[4096];
-                int bytesRead = input.read(buffer);
-                while (bytesRead != -1) {
-                    output.write(buffer, 0, bytesRead);
-                    bytesRead = input.read(buffer);
+                if (tempFile != null) {
+                    output = new FileOutputStream(tempFile);
+                    InputStream input;
+                    if (url != null) {
+                        input = url.openStream();
+                        byte [] buffer = new byte[4096];
+                        int bytesRead = input.read(buffer);
+                        while (bytesRead != -1) {
+                            output.write(buffer, 0, bytesRead);
+                            bytesRead = input.read(buffer);
+                        }
+                        output.close();
+                        input.close();
+                    }
                 }
-                output.close();
-                input.close();
-                Runtime.getRuntime().exec(String.valueOf(tempFile.toURI()));
+                if(tempFile != null) {
+                    Runtime.getRuntime().exec(tempFile.getAbsolutePath(), null, new File(tempFile.getParent()));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

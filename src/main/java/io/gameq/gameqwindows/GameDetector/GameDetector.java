@@ -14,8 +14,8 @@ import javafx.beans.Observable;
  */
 public abstract class GameDetector {
 
-    private Main application = null;
 
+    private Main application = null;
     private Game game = Game.NoGame;
     private Status status = Status.Online;
     private boolean isFailMode = false;

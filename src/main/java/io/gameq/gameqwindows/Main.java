@@ -141,6 +141,9 @@ public class Main extends Application {
         exitItem.addActionListener(event -> {
             Platform.exit();
             tray.remove(trayIcon);
+            timer.cancel();
+            timer.purge();
+            System.exit(0);
         });
 
         // setup the popup menu for the application.
@@ -154,9 +157,7 @@ public class Main extends Application {
         trayIcon.setPopupMenu(popup);
 
         this.timer = new Timer();
-        timer.schedule(
-                new TimerTask() {
-
+        timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         update();
@@ -313,16 +314,13 @@ public class Main extends Application {
             BufferedReader input =
                     new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
-
-                if(line.contains("dota.exe")){
+                if(line.contains("dota2.exe")){
                     newGame = Game.Dota2;
+                    System.out.println("yes");
                 }
-                else{
-                    newGame = Game.NoGame;
-                }
-
-
             }
+            if(newGame == null){
+                newGame = Game.NoGame;}
             input.close();
         } catch (Exception err) {
             // err.printStackTrace();
@@ -330,14 +328,16 @@ public class Main extends Application {
 
         if (game != newGame){
             detector = new DotaDetector();
+            this.game = newGame;
+            detector.startDetection(this);
         }
     }
 
     public void updateStatus(Status newStatus) {
         this.status = newStatus;
 
-        statusItem.setLabel(Encoding.getStringFromGameStatus(this.game, this.status));
-        gameItem.setLabel(Encoding.getStringFromGame(this.game));
+        Platform.runLater(() -> statusItem.setLabel(Encoding.getStringFromGameStatus(this.game, this.status)));
+        Platform.runLater(() -> gameItem.setLabel(Encoding.getStringFromGame(this.game)));
 
         ConnectionHandler.setStatus((success, error) -> {
             if (success) {
@@ -347,7 +347,7 @@ public class Main extends Application {
             }
         }, Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(status));
 
-        mainView.updateStatus(this.game, this.status);
+        Platform.runLater(() -> mainView.updateStatus(this.game, this.status));
     }
 
 
