@@ -18,23 +18,23 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.stage.*;
+import javafx.scene.image.Image;
+
 
 
 public class Main extends Application {
 
 
-    // one icon location is shared between the application tray icon and task bar icon.
-    // you could also use multiple icons to allow for clean display of tray icons on hi-dpi devices.
-    private static final String iconImageLoc =
-            "http://icons.iconarchive.com/icons/scafer31000/bubble-circle-3/16/GameCenter-icon.png";
 
     // sets up the javafx application.
     // a tray icon is setup for the icon, but the main stage remains invisible until the user
@@ -72,6 +72,13 @@ public class Main extends Application {
             stage.setMaxWidth(MINIMUM_WINDOW_WIDTH);
             stage.setMaxHeight(MINIMUM_WINDOW_HEIGHT);
             stage.setResizable(false);
+
+
+            stage.getIcons().addAll(
+                    new Image("/images/gq-nb-16.png"),
+                    new Image("/images/gq-nb-32.png"),
+                    new Image("/images/gq-nb-64.png")
+            );
 
             primaryStage.initStyle(StageStyle.UNDECORATED);
 
@@ -365,6 +372,8 @@ public class Main extends Application {
                 Platform.exit();
             }
 
+
+            String iconImageLoc = String.valueOf(this.getClass().getClassLoader().getResource("images/gq-bb-16.jpg"));
             // set up a system tray icon.
             URL imageLoc = new URL(
                     iconImageLoc
