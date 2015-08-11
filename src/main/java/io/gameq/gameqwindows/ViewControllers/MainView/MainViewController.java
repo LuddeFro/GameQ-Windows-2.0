@@ -4,26 +4,30 @@ import io.gameq.gameqwindows.Main;
 import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
-import io.gameq.gameqwindows.DataHandler.AcceptHandler;
 import io.gameq.gameqwindows.ViewControllers.MainView.ProgressTimer.RingProgressIndicator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.ResourceBundle;
 
 public class MainViewController extends VBox implements Initializable {
@@ -37,12 +41,18 @@ public class MainViewController extends VBox implements Initializable {
     @FXML StackPane timerHolder;
     @FXML Label statusLabel;
     @FXML Label gameLabel;
+    @FXML ImageView feedbackButton;
+    @FXML ImageView settingsButton;
 
-    private String userName;
+    private boolean isFeedback = false;
+    private boolean isSettings = false;
+    private Stage feedback = null;
+    private Stage settings = null;
+
 
     public void startButtonClicked(){
-        //application.updateStatus(Status.GameReady);
-        AcceptHandler.acceptMatch(1);
+        application.updateStatus(Status.GameReady);
+       // AcceptHandler.acceptMatch(1);
     }
 
     public void stopButtonClicked(){
@@ -61,7 +71,61 @@ public class MainViewController extends VBox implements Initializable {
         System.out.println("failmode");
     }
 
+    public void feedbackClicked() {
 
+        if(isFeedback){
+            Platform.runLater(feedback::toFront);
+        }
+        else {
+            if(isSettings){
+                Platform.runLater(() -> {
+                settings.close();
+                settings = null;
+                isSettings = false;});
+            }
+
+            Platform.runLater(() -> {
+                Parent root;
+                try{
+                    root = FXMLLoader.load(getClass().getClassLoader().getResource
+                            ("ViewControllers/FeedbackView/FeedbackView.fxml"));
+                    Stage feedback = new Stage();
+                    feedback.setTitle("Feedback");
+                    feedback.setScene(new Scene(root, 400, 400));
+                    feedback.setResizable(false);
+                    feedback.initStyle(StageStyle.UNDECORATED);
+                    feedback.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                isFeedback = true;
+            });
+        }
+    }
+
+    public void settingsClicked(){
+        if(isSettings){
+            Platform.runLater(settings::toFront);
+        }
+        else {
+            if(isFeedback){
+                Parent root;
+                try{
+                    root = FXMLLoader.load(getClass().getClassLoader().getResource
+                            ("ViewControllers/FeedbackView/FeedbackView.fxml"));
+                    Stage settings = new Stage();
+                    settings.setTitle("Settings");
+                    settings.setScene(new Scene(root, 400, 400));
+                    settings.setResizable(false);
+                    settings.initStyle(StageStyle.UNDECORATED);
+                    settings.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                isFeedback = true;
+            }
+        }
+    }
 
     private Main application;
     private Timeline timer = null;
@@ -95,37 +159,44 @@ public class MainViewController extends VBox implements Initializable {
         });
     }
 
-    public void updateStatus(Game game, Status status){
+    public void updateStatus(Game game, Status status, double countDownTime){
 
         Platform.runLater(() -> this.statusLabel.setText(Encoding.getStringFromGameStatus(game, status)));
         Platform.runLater(() -> this.gameLabel.setText(Encoding.getStringFromGame(game)));
 
         switch (status){
             case Offline:
+                resetTimer(false);
                 break;
             case Online:
+                resetTimer(false);
                 break;
             case InLobby:
+                resetTimer(false);
                 break;
             case InQueue:
+                resetTimer(false);
+                break;
+            case GameReady:
+                startTimer(countDownTime);
                 break;
             case InGame:
-                break;
+                resetTimer(true);
         }
     }
 
     private void resetTimer(boolean isGame){
-        Platform.runLater(() -> {
-            fiveSecondsWonder.stop();
-            fiveSecondsWonder = null;
-            if(isGame) {
-                countDownIndicator.setProgress(100);
-            }
-            else{
-                countDownIndicator.setProgress(0);
-            }
-        });
-
+       if(fiveSecondsWonder != null) {
+           Platform.runLater(() -> {
+               fiveSecondsWonder.stop();
+               fiveSecondsWonder = null;
+               if (isGame) {
+                   countDownIndicator.setProgress(100);
+               } else {
+                   countDownIndicator.setProgress(0);
+               }
+           });
+       }
     }
 
     private void willDisappear(){

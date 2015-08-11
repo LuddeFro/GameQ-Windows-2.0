@@ -18,18 +18,15 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.stage.*;
 import javafx.scene.image.Image;
-
 
 
 public class Main extends Application {
@@ -80,7 +77,7 @@ public class Main extends Application {
                     new Image("/images/gq-nb-64.png")
             );
 
-            primaryStage.initStyle(StageStyle.UNDECORATED);
+            stage.initStyle(StageStyle.UNDECORATED);
 
             Platform.setImplicitExit(false);
             // sets up the tray icon (using awt code run on the swing thread).
@@ -112,7 +109,7 @@ public class Main extends Application {
     }
 
     public void didLogin(){
-        Platform.runLater(() -> mainView.updateStatus(Game.NoGame, Status.Online));
+        Platform.runLater(() -> mainView.updateStatus(Game.NoGame, Status.Online, 0));
 
         popup.removeAll();
 
@@ -170,20 +167,6 @@ public class Main extends Application {
                         update();
                     }
                 }, 0, 1000);
-
-//            self.gameItem.title = Encoding.getStringFromGame(GameDetector.game)
-//            self.gameItem.enabled = false
-//            self.statusItem.title = Encoding.getStringFromGameStatus(GameDetector.game, status: GameDetector.status)
-//            self.statusItem.enabled = false
-//            self.emailItem.title = ConnectionHandler.loadEmail()!
-//                    self.emailItem.enabled = false
-//            self.menu.removeAllItems()
-//            self.menu.addItem(self.emailItem)
-//            self.menu.addItem(self.gameItem)
-//            self.menu.addItem(self.statusItem)
-//            self.menu.addItem(NSMenuItem.separatorItem())
-//            self.menu.addItem(self.preferencesItem)
-//            self.menu.addItem(self.quitItem)
     }
 
 
@@ -354,9 +337,11 @@ public class Main extends Application {
             }
         }, Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(status));
 
-        Platform.runLater(() -> mainView.updateStatus(this.game, this.status));
+        double countDown = 10;
+        if(detector != null){ countDown = detector.getCountDownLength();}
+        final double finalCountDown = countDown;
+        Platform.runLater(() -> mainView.updateStatus(this.game, this.status, finalCountDown));
     }
-
 
     /**
      * Sets up a system tray icon for the application.

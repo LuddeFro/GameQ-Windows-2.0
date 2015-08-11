@@ -137,7 +137,7 @@ public abstract class GameDetector {
         this.isTesting = isTesting;
     }
 
-    protected int getCountDownLength() {
+    public int getCountDownLength() {
         return countDownLength;
     }
 

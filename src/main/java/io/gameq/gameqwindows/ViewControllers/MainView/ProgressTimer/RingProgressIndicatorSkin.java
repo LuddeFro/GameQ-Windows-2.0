@@ -81,7 +81,7 @@ public class RingProgressIndicatorSkin implements Skin<RingProgressIndicator> {
                 transition.pause();
             }
         });
-        container.getChildren().addAll(fillerArc, outerCircle, innerCircle);
+        container.getChildren().addAll(outerCircle, innerCircle, fillerArc);
     }
 
     private void initTransition() {
