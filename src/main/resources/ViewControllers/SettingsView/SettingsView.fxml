@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<VBox maxHeight="400.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="io.gameq.gameqwindows.ViewControllers.SettingsView.SettingsController">
+  <children>
+    <AnchorPane maxHeight="400.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label layoutX="30.0" layoutY="57.0" text="Label" />
+            <TextField fx:id="emailField" layoutX="30.0" layoutY="106.0" prefHeight="39.0" prefWidth="317.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+            <PasswordField fx:id="pw1" layoutX="30.0" layoutY="170.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+            <PasswordField fx:id="pw2" layoutX="30.0" layoutY="232.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+            <Button fx:id="submitButton" layoutX="30.0" layoutY="324.0" mnemonicParsing="false" text="Button" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+            <Label layoutX="30.0" layoutY="286.0" prefHeight="27.0" prefWidth="340.0" text="Label" />
+         </children>
+    </AnchorPane>
+  </children>
+  <stylesheets>
+    <URL value="@SettingsView.css" />
+  </stylesheets>
+</VBox>

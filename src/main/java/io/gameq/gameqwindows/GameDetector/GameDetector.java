@@ -103,9 +103,12 @@ public abstract class GameDetector {
 //            self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)}
     }
 
+    public String fileToString(){
+        return "";
+    }
 
 
-    protected Game getGame() {
+    public Game getGame() {
         return game;
     }
 
@@ -113,7 +116,7 @@ public abstract class GameDetector {
         this.game = game;
     }
 
-    protected Status getStatus() {
+    public Status getStatus() {
         return status;
     }
 

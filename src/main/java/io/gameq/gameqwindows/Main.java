@@ -390,6 +390,15 @@ public class Main extends Application {
     }
 
 
+    public Game getGame(){
+        return this.game;
+    }
+
+    public Status getStatus(){
+        return this.status;
+    }
+
+    public GameDetector getDetector;
 
     public String getUserName() {
         return userName;

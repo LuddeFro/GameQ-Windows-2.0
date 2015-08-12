@@ -4,13 +4,16 @@ import io.gameq.gameqwindows.Main;
 import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
+import io.gameq.gameqwindows.ViewControllers.FeedbackView.FeedbackController;
 import io.gameq.gameqwindows.ViewControllers.MainView.ProgressTimer.RingProgressIndicator;
+import io.gameq.gameqwindows.ViewControllers.SettingsView.SettingsController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -27,6 +30,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -52,7 +56,7 @@ public class MainViewController extends VBox implements Initializable {
 
     public void startButtonClicked(){
         application.updateStatus(Status.GameReady);
-       // AcceptHandler.acceptMatch(1);
+        // AcceptHandler.acceptMatch(1);
     }
 
     public void stopButtonClicked(){
@@ -79,25 +83,35 @@ public class MainViewController extends VBox implements Initializable {
         else {
             if(isSettings){
                 Platform.runLater(() -> {
-                settings.close();
-                settings = null;
-                isSettings = false;});
+                    settings.close();
+                    settings = null;
+                    isSettings = false;});
             }
 
             Platform.runLater(() -> {
-                Parent root;
-                try{
-                    root = FXMLLoader.load(getClass().getClassLoader().getResource
-                            ("ViewControllers/FeedbackView/FeedbackView.fxml"));
-                    Stage feedback = new Stage();
-                    feedback.setTitle("Feedback");
-                    feedback.setScene(new Scene(root, 400, 400));
-                    feedback.setResizable(false);
-                    feedback.initStyle(StageStyle.UNDECORATED);
-                    feedback.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+                FXMLLoader loader = new FXMLLoader();
+                loader.setBuilderFactory(new JavaFXBuilderFactory());
+                loader.setLocation(getClass().getClassLoader().getResource("ViewControllers/FeedbackView/FeedbackView" +
+                        ".fxml"));
+                VBox page = null;
+                try (InputStream in = getClass().getClassLoader().getResourceAsStream
+                        ("ViewControllers/FeedbackView/FeedbackView.fxml")) {
+                    page = loader.load(in);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
+
+                FeedbackController controller = loader.getController();
+                controller.setApp(application);
+
+                feedback = new Stage();
+                feedback.setTitle("Feedback");
+                feedback.setScene(new Scene(page, 400, 500));
+                feedback.setResizable(false);
+                feedback.initStyle(StageStyle.UNDECORATED);
+                feedback.show();
+
                 isFeedback = true;
             });
         }
@@ -107,23 +121,38 @@ public class MainViewController extends VBox implements Initializable {
         if(isSettings){
             Platform.runLater(settings::toFront);
         }
+
         else {
             if(isFeedback){
-                Parent root;
-                try{
-                    root = FXMLLoader.load(getClass().getClassLoader().getResource
-                            ("ViewControllers/FeedbackView/FeedbackView.fxml"));
-                    Stage settings = new Stage();
-                    settings.setTitle("Settings");
-                    settings.setScene(new Scene(root, 400, 400));
-                    settings.setResizable(false);
-                    settings.initStyle(StageStyle.UNDECORATED);
-                    settings.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                isFeedback = true;
+                Platform.runLater(() -> {
+                    feedback.close();
+                    feedback = null;
+                    isFeedback = false;});
             }
+
+            Platform.runLater(() -> {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setBuilderFactory(new JavaFXBuilderFactory());
+                loader.setLocation(getClass().getClassLoader().getResource("ViewControllers/SettingsView/SettingsView" +
+                        ".fxml"));
+                VBox page = null;
+                try (InputStream in = getClass().getClassLoader().getResourceAsStream
+                        ("ViewControllers/SettingsView/SettingsView.fxml")) {
+                    page = loader.load(in);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                SettingsController controller = loader.getController();
+                controller.setApp(application);
+                settings = new Stage();
+                settings.setTitle("Settings");
+                settings.setScene(new Scene(page, 400, 500));
+                settings.setResizable(false);
+                settings.initStyle(StageStyle.UNDECORATED);
+                settings.show();
+                isSettings = true;
+            });
         }
     }
 
@@ -186,17 +215,17 @@ public class MainViewController extends VBox implements Initializable {
     }
 
     private void resetTimer(boolean isGame){
-       if(fiveSecondsWonder != null) {
-           Platform.runLater(() -> {
-               fiveSecondsWonder.stop();
-               fiveSecondsWonder = null;
-               if (isGame) {
-                   countDownIndicator.setProgress(100);
-               } else {
-                   countDownIndicator.setProgress(0);
-               }
-           });
-       }
+        if(fiveSecondsWonder != null) {
+            Platform.runLater(() -> {
+                fiveSecondsWonder.stop();
+                fiveSecondsWonder = null;
+                if (isGame) {
+                    countDownIndicator.setProgress(100);
+                } else {
+                    countDownIndicator.setProgress(0);
+                }
+            });
+        }
     }
 
     private void willDisappear(){

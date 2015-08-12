@@ -38,7 +38,8 @@ public abstract class PacketDetector extends GameDetector{
 
     protected abstract void update(Packet newPacket);
 
-    protected String fileToString(){
+    @Override
+    public String fileToString(){
         String log = "";
         for(Packet p: packetQueue){
             log = log + p.getSrcPort() + "," + p.getDstPort() + "," + p.getPacketLength() + "," + p.getCaptureTime();
