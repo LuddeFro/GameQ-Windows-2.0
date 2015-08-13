@@ -25,6 +25,8 @@ public class HoTSDetector extends PacketDetector {
 
     private LinkedList<PacketTimer> inGameTimer = new LinkedList<>();
 
+    private int inGameMaxSize = 101;
+
     private boolean foundServer = false;
     private boolean soonGame = false;
 
@@ -90,25 +92,38 @@ public class HoTSDetector extends PacketDetector {
 
         //IN QUEUE
         else  if(getStatus() == Status.InQueue){
-            boolean inGame = isGame(newPacket, timeSpan:10, maxPacket:0, packetNumber:50);
+            boolean inGame = isGame(newPacket, 10.0, 0, 50);
             updateStatus(Status.GameReady);
         }
 
         //GAME READY
         else if(getStatus() == Status.GameReady){
-            boolean inGame = isGame(newPacket, timeSpan:10, maxPacket:0, packetNumber:50);
+            boolean inGame = isGame(newPacket, 10.0, 0, 50);
             if(inGame){updateStatus(Status.InGame);
             }
         }
 
         //IN GAME
         else  if(getStatus() == Status.InGame){
-            boolean inGame = isGame(newPacket, timeSpan:10, maxPacket:0, packetNumber:50);
+            boolean inGame = isGame(newPacket, 10.0, 0, 50);
             if(!inGame){updateStatus(Status.InLobby);
             }
         }
 
         else {
         }
+    }
+
+    public boolean isGame(Packet p, Double timeSpan, int maxPacket, int packetNumber){
+
+        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > timeSpan || gameTimer1
+                .size() >= inGameMaxSize){
+            gameTimer1.removeLast();
+        }
+
+        gameTimer1.addFirst(new PacketTimer(p.getSrcPort(), p.getCaptureTime()));
+
+        if(gameTimer1.size() >= packetNumber){return true;}
+        else {return false;}
     }
 }
