@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -12,14 +13,19 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <RadioButton fx:id="generalButton" layoutX="23.0" layoutY="45.0" mnemonicParsing="false" onAction="#generalPressed" text="General Feedback" />
-            <RadioButton fx:id="didNotButton" layoutX="23.0" layoutY="84.0" mnemonicParsing="false" onAction="#didNotPressed" text="I did not recieve a notifictiation" />
-            <RadioButton fx:id="didButton" layoutX="23.0" layoutY="126.0" mnemonicParsing="false" onAction="#didPressed" text="I recieved a notification when I shoudn't" />
+            <RadioButton fx:id="generalButton" layoutX="23.0" layoutY="45.0" mnemonicParsing="false" onAction="#generalPressed" text="General Feedback" textFill="WHITE" />
+            <RadioButton fx:id="didNotButton" layoutX="23.0" layoutY="84.0" mnemonicParsing="false" onAction="#didNotPressed" text="I did not recieve a notifictiation" textFill="WHITE" />
+            <RadioButton fx:id="didButton" layoutX="23.0" layoutY="126.0" mnemonicParsing="false" onAction="#didPressed" text="I recieved a notification when I shoudn't" textFill="WHITE" />
             <TextArea fx:id="feedbackField" layoutX="23.0" layoutY="188.0" prefHeight="229.0" prefWidth="349.0" />
-            <Label layoutX="23.0" layoutY="14.0" prefHeight="27.0" prefWidth="132.0" text="Send Feedback" />
-            <Label layoutX="23.0" layoutY="159.0" text="Comment" />
-            <Button fx:id="submitButton" layoutX="101.0" layoutY="447.0" mnemonicParsing="false" onAction="#submitPressed" prefHeight="39.0" prefWidth="198.0" text="Submit" />
+            <Label layoutX="23.0" layoutY="14.0" prefHeight="27.0" prefWidth="132.0" text="Send Feedback" textFill="WHITE" />
+            <Label layoutX="23.0" layoutY="159.0" text="Comment" textFill="WHITE" />
+            <Button fx:id="submitButton" layoutX="89.0" layoutY="444.0" mnemonicParsing="false" onAction="#submitPressed" prefHeight="39.0" prefWidth="223.0" styleClass="button-orange" text="Submit" />
             <Label fx:id="statusField" layoutX="23.0" layoutY="417.0" prefHeight="27.0" prefWidth="349.0" />
+            <ImageView fx:id="exitButton" fitHeight="20.0" fitWidth="20.0" layoutX="186.0" layoutY="9.0" onMouseClicked="#exitPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+               <image>
+                  <Image url="@../../images/Windows-exit.png" />
+               </image>
+            </ImageView>
          </children></AnchorPane>
   </children>
   <stylesheets>

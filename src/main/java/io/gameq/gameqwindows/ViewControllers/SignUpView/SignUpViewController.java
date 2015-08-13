@@ -12,9 +12,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.net.URL;
@@ -22,18 +24,14 @@ import java.util.ResourceBundle;
 
 public class SignUpViewController extends VBox implements Initializable {
 
-    @FXML
-    TextField emailField;
-    @FXML
-    PasswordField pwField1;
-    @FXML
-    PasswordField pwField2;
-    @FXML
-    Button signUpButton;
-    @FXML
-    Button backButton;
-    @FXML
-    Label statusLabel;
+    @FXML TextField emailField;
+    @FXML PasswordField pwField1;
+    @FXML PasswordField pwField2;
+    @FXML Button signUpButton;
+    @FXML Button backButton;
+    @FXML Label statusLabel;
+    @FXML ImageView exitButton;
+    @FXML ImageView minButton;
 
     private Main application;
 
@@ -45,6 +43,17 @@ public class SignUpViewController extends VBox implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    public void exitPressed(){
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        // do what you have to do
+        Platform.runLater(stage::close);
+    }
+
+    public void minPressed(){
+        Stage stage = (Stage) minButton.getScene().getWindow();
+        stage.setIconified(true);
     }
 
     public void backPressed() {

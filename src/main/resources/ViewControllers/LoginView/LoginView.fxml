@@ -59,6 +59,16 @@
                   <Image url="@../../images/gq-nb-512.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="exitButton" fitHeight="30.0" fitWidth="30.0" layoutX="300.0" layoutY="-7.0" onMouseClicked="#exitPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+               <image>
+                  <Image url="@../../images/Windows-exit.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="minButton" fitHeight="30.0" fitWidth="30.0" layoutX="92.0" layoutY="14.0" onMouseClicked="#minPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="10.0">
+               <image>
+                  <Image url="@../../images/windows-min.png" />
+               </image>
+            </ImageView>
       </children>
     </AnchorPane>
   </children>

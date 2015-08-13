@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,6 +35,8 @@ public class LoginViewController extends VBox implements Initializable {
     @FXML HBox textHolder;
     @FXML HBox forgotBox;
     @FXML Line forgotLine;
+    @FXML ImageView exitButton;
+    @FXML ImageView minButton;
 
 
 
@@ -47,6 +50,17 @@ public class LoginViewController extends VBox implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    public void exitPressed(){
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        // do what you have to do
+        Platform.runLater(stage::close);
+    }
+
+    public void minPressed(){
+        Stage stage = (Stage) minButton.getScene().getWindow();
+        stage.setIconified(true);
     }
 
     public void processForgot(){
@@ -75,6 +89,8 @@ public class LoginViewController extends VBox implements Initializable {
             else if(true) {
                 Platform.runLater(() -> loginButton.setDisable(true));
                 Platform.runLater(() -> signUp.setDisable(true));
+                Platform.runLater(() -> exitButton.setDisable(true));
+                Platform.runLater(() -> minButton.setDisable(true));
                 Platform.runLater(() -> forgotButton.setDisable(true));
                 Platform.runLater(() -> statusLabel.setText("Signing in..."));
                 ConnectionHandler.login((success, error) -> {
@@ -84,6 +100,8 @@ public class LoginViewController extends VBox implements Initializable {
                         Platform.runLater(() -> loginButton.setDisable(false));
                         Platform.runLater(() -> signUp.setDisable(false));
                         Platform.runLater(() -> forgotButton.setDisable(false));
+                        Platform.runLater(() -> exitButton.setDisable(false));
+                        Platform.runLater(() -> minButton.setDisable(false));
                         Platform.runLater(application::gotoMainView);
                         Platform.runLater(application::didLogin);
                     } else {
@@ -91,6 +109,8 @@ public class LoginViewController extends VBox implements Initializable {
                         Platform.runLater(() -> loginButton.setDisable(false));
                         Platform.runLater(() -> signUp.setDisable(false));
                         Platform.runLater(() -> forgotButton.setDisable(false));
+                        Platform.runLater(() -> exitButton.setDisable(false));
+                        Platform.runLater(() -> minButton.setDisable(false));
                     }
                 }, emailField.getText(), passwordField.getText());
             }
@@ -103,19 +123,25 @@ public class LoginViewController extends VBox implements Initializable {
                 Platform.runLater(() -> loginButton.setDisable(true));
                 Platform.runLater(() -> signUp.setDisable(true));
                 Platform.runLater(() -> forgotButton.setDisable(true));
+                 Platform.runLater(() -> exitButton.setDisable(true));
+                 Platform.runLater(() -> minButton.setDisable(true));
                 Platform.runLater(() -> statusLabel.setText("Submitting..."));
                 ConnectionHandler.submitForgotPassword((success, error) -> {
                     if (success) {
                         Platform.runLater(() -> statusLabel.setText("Success!"));
-                        //Platform.runLater(() -> loginButton.setDisable(false));
+                        Platform.runLater(() -> loginButton.setDisable(false));
                         Platform.runLater(() -> signUp.setDisable(false));
                         Platform.runLater(() -> forgotButton.setDisable(false));
+                        Platform.runLater(() -> exitButton.setDisable(false));
+                        Platform.runLater(() -> minButton.setDisable(false));
 
                     } else {
                         Platform.runLater(() -> statusLabel.setText(error));
                         Platform.runLater(() -> loginButton.setDisable(false));
                         Platform.runLater(() -> signUp.setDisable(false));
                         Platform.runLater(() -> forgotButton.setDisable(false));
+                        Platform.runLater(() -> exitButton.setDisable(false));
+                        Platform.runLater(() -> minButton.setDisable(false));
                     }
                 }, emailField.getText());
             }

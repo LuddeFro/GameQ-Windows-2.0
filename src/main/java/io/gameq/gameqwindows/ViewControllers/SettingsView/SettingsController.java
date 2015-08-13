@@ -9,7 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.net.URL;
@@ -25,8 +27,16 @@ public class SettingsController extends VBox implements Initializable {
     @FXML PasswordField oldpw;
     @FXML PasswordField pw1;
     @FXML PasswordField pw2;
+    @FXML ImageView exitButton;
+
 
     private Main application;
+
+    public void exitPressed(){
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        // do what you have to do
+        Platform.runLater(stage::close);
+    }
 
     public void submitButtonPressed(){
 

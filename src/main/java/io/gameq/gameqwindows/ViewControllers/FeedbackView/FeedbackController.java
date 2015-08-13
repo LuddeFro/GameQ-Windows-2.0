@@ -12,7 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,8 +30,16 @@ public class FeedbackController extends VBox implements Initializable {
     @FXML RadioButton didNotButton;
     @FXML RadioButton generalButton;
     @FXML Label statusField;
+    @FXML ImageView exitButton;
+
 
     private Main application;
+
+    public void exitPressed(){
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        // do what you have to do
+        Platform.runLater(stage::close);
+    }
 
     public void setApp(Main application){
         this.application = application;

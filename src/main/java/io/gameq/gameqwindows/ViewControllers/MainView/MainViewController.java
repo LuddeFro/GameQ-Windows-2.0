@@ -15,8 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,12 +22,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -47,12 +43,24 @@ public class MainViewController extends VBox implements Initializable {
     @FXML Label gameLabel;
     @FXML ImageView feedbackButton;
     @FXML ImageView settingsButton;
+    @FXML ImageView exitButton;
+    @FXML ImageView minButton;
 
     private boolean isFeedback = false;
     private boolean isSettings = false;
     private Stage feedback = null;
     private Stage settings = null;
 
+    public void exitPressed(){
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        // do what you have to do
+        Platform.runLater(stage::close);
+    }
+
+    public void minPressed(){
+        Stage stage = (Stage) minButton.getScene().getWindow();
+        stage.setIconified(true);
+    }
 
     public void startButtonClicked(){
         application.updateStatus(Status.GameReady);
@@ -78,6 +86,7 @@ public class MainViewController extends VBox implements Initializable {
     public void feedbackClicked() {
 
         if(isFeedback){
+            Platform.runLater(settings::show);
             Platform.runLater(feedback::toFront);
         }
         else {
@@ -119,6 +128,7 @@ public class MainViewController extends VBox implements Initializable {
 
     public void settingsClicked(){
         if(isSettings){
+            Platform.runLater(settings::show);
             Platform.runLater(settings::toFront);
         }
 
@@ -173,7 +183,7 @@ public class MainViewController extends VBox implements Initializable {
             timerHolder.getChildren().add(countDownIndicator);
             StackPane.setAlignment(countDownIndicator, Pos.CENTER);
 
-            if (false) {
+            if (true) {
                 startButton.setDisable(true);
                 startButton.setVisible(false);
                 stopButton.setDisable(true);

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -12,12 +14,36 @@
   <children>
     <AnchorPane maxHeight="400.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
          <children>
-            <Label layoutX="30.0" layoutY="57.0" text="Label" />
-            <PasswordField fx:id="pw1" layoutX="30.0" layoutY="170.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-            <PasswordField fx:id="pw2" layoutX="30.0" layoutY="232.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-            <Button fx:id="submitButton" layoutX="30.0" layoutY="324.0" mnemonicParsing="false" text="Button" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
-            <Label fx:id="statusLabel" layoutX="30.0" layoutY="286.0" prefHeight="27.0" prefWidth="340.0" text="Label" />
-            <PasswordField fx:id="oldpw" layoutX="30.0" layoutY="115.0" prefHeight="39.0" prefWidth="340.0" />
+            <Label layoutX="30.0" layoutY="30.0" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" text="Change Password" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0" />
+            <Button fx:id="submitButton" layoutX="30.0" layoutY="267.0" mnemonicParsing="false" styleClass="button-orange" text="Change Password" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+            <Label fx:id="statusLabel" layoutX="31.0" layoutY="231.0" prefHeight="27.0" prefWidth="340.0" />
+            <ImageView fx:id="exitButton" fitHeight="20.0" fitWidth="20.0" layoutX="88.0" layoutY="9.0" onMouseClicked="#exitPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+               <image>
+                  <Image url="@../../images/Windows-exit.png" />
+               </image>
+            </ImageView>
+            <HBox layoutX="30.0" layoutY="100.0" prefHeight="100.0" prefWidth="200.0" styleClass="hbox" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0" />
+            <Line fx:id="forgotLine1" endX="370.0" layoutX="10.5" layoutY="170.0" startX="30.0" stroke="#323f4f" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="181.0" />
+            <Line fx:id="forgotLine" endX="370.0" layoutX="0.5" layoutY="160.0" startX="30.0" stroke="#323f4f" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="140.0" />
+            <PasswordField fx:id="oldpw" layoutX="30.0" layoutY="115.0" maxHeight="40.0" maxWidth="310.0" minHeight="40.0" minWidth="310.0" prefHeight="40.0" prefWidth="310.0" promptText="Old Password" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="100.0" />
+            <PasswordField fx:id="pw1" layoutX="60.0" layoutY="192.0" maxHeight="40.0" maxWidth="310.0" minHeight="40.0" minWidth="310.0" prefHeight="40.0" prefWidth="310.0" promptText="New Password" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="141.0" />
+            <PasswordField fx:id="pw2" layoutX="30.0" layoutY="232.0" promptText="Repeat New Password" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="182.0" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="-5.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="105.0">
+               <image>
+                  <Image url="@../../images/LoginIconLine.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="5.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="146.0">
+               <image>
+                  <Image url="@../../images/LoginIconLine.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="-1.0" layoutY="193.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="187.0">
+               <image>
+                  <Image url="@../../images/LoginIconLine.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="submitButton1" layoutX="30.0" layoutY="323.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="340.0" styleClass="button-blue" text="Log Out" />
          </children>
     </AnchorPane>
   </children>
