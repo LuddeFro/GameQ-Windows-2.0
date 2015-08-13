@@ -285,6 +285,7 @@ public final class ConnectionHandler {
             JSONHolder holder = new JSONHolder();
             public void run() {
                 String response = post("versionControl", "feedback="+mFeedback+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
+                System.out.println(response);
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
                 return;

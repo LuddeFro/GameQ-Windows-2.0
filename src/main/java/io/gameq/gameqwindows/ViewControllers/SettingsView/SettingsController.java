@@ -1,10 +1,17 @@
 package io.gameq.gameqwindows.ViewControllers.SettingsView;
 
+import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
 import io.gameq.gameqwindows.Main;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -13,7 +20,38 @@ import java.util.ResourceBundle;
  */
 public class SettingsController extends VBox implements Initializable {
 
+    @FXML Label statusLabel;
+    @FXML Button submitButton;
+    @FXML PasswordField oldpw;
+    @FXML PasswordField pw1;
+    @FXML PasswordField pw2;
+
     private Main application;
+
+    public void submitButtonPressed(){
+
+        if(!(pw1.getText().equals(pw2.getText()))){
+            Platform.runLater(()-> statusLabel.setText("Passwords are not the same"));
+        }
+        else {
+            Platform.runLater(()-> statusLabel.setText("changing password"));
+            Platform.runLater(()-> submitButton.setDisable(true));
+
+            ConnectionHandler.updatePassword((success, error) -> {
+                if(success){
+                    Platform.runLater(()-> statusLabel.setText("Your password has been changed"));
+                    Platform.runLater(()-> submitButton.setDisable(false));
+                }
+                else{
+                    Platform.runLater(()-> statusLabel.setText(error));
+                    Platform.runLater(()-> submitButton.setDisable(false));
+                    //TODO enable disable exit button
+                }
+
+            }, application.getUserName(), pw2.getText(), oldpw.getText());
+
+        }
+    }
 
     public void setApp(Main application){
         this.application = application;
