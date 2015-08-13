@@ -8,15 +8,12 @@ import java.util.LinkedList;
 /**
  * Created by fabianwikstrom on 8/13/2015.
  */
-public class HoTSDetector extends PacketDetector {
+public class HoNDetector extends PacketDetector {
 
-    private String HOTSFilter = "udp src port 1119 or udp src port 6113 or udp src port 1120 or udp src port 80 or" +
-            " udp src port 3724 or udp dst port 1119 or udp dst port 6113 or udp dst port 1120 or udp dst port 80 or udp dst port 3724";
+    private String HoNFilter =  "udp src portrange 11235-11335 or udp dst portrange 11235-11335";
 
     private LinkedList<PacketTimer> gameTimer1 = new LinkedList<>();
-
     private int inGameMaxSize = 101;
-
 
     @Override
     public void startDetection(Main application) {
@@ -28,7 +25,7 @@ public class HoTSDetector extends PacketDetector {
 
         if (!isCapturing) {
             //new thread?????
-            PacketParser.getInstance().start(HOTSFilter, this);
+            PacketParser.getInstance().start(HoNFilter, this);
             isCapturing = true;
         }
     }
@@ -99,4 +96,5 @@ public class HoTSDetector extends PacketDetector {
         if(gameTimer1.size() >= packetNumber){return true;}
         else {return false;}
     }
+
 }
