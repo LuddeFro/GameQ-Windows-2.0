@@ -86,7 +86,7 @@ public class MainViewController extends VBox implements Initializable {
     public void feedbackClicked() {
 
         if(isFeedback){
-            Platform.runLater(settings::show);
+            Platform.runLater(feedback::show);
             Platform.runLater(feedback::toFront);
         }
         else {

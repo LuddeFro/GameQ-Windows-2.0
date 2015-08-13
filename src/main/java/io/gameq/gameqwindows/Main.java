@@ -69,6 +69,7 @@ public class Main extends Application {
             stage.setMaxWidth(MINIMUM_WINDOW_WIDTH);
             stage.setMaxHeight(MINIMUM_WINDOW_HEIGHT);
             stage.setResizable(false);
+           // stage.initStyle(StageStyle.UTILITY);
 
 
             stage.getIcons().addAll(
