@@ -70,7 +70,10 @@ public class Main extends Application {
             stage.setMaxWidth(MINIMUM_WINDOW_WIDTH);
             stage.setMaxHeight(MINIMUM_WINDOW_HEIGHT);
             stage.setResizable(false);
-            Font.loadFont(getClass().getResourceAsStream("/resources/fonts/Roboto-Regular.ttf"), 20);
+            Font.loadFont(
+                    Main.class.getResource("/fonts/Roboto-Regular.ttf").toExternalForm(),
+                    20
+            );
 
             // stage.initStyle(StageStyle.UTILITY);
 
@@ -308,9 +311,8 @@ public class Main extends Application {
             BufferedReader input =
                     new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
-                if(line.contains("dota2.exe")){
+                if(line.contains("dota.exe")){
                     newGame = Game.Dota2;
-                    System.out.println("yes");
                 }
             }
             if(newGame == null){
@@ -402,7 +404,9 @@ public class Main extends Application {
         return this.status;
     }
 
-    public GameDetector getDetector;
+    public GameDetector getDetector(){
+        return detector;
+    }
 
     public String getUserName() {
         return userName;

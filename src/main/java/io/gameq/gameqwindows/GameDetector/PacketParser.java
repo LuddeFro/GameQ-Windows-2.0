@@ -109,19 +109,19 @@ public class PacketParser {
             public void nextPacket(PcapPacket packet, String user) {
 
                 if (packet.hasHeader(tcp)) {
-                    System.out.print("Found tcp packet");
-                    System.out.print("src: " +  tcp.source());
-                    System.out.print("dst: " +  tcp.destination());
-                    System.out.print("len: " + tcp.getLength()); //PROBABLY WRONG
-                    System.out.println("time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
+//                    System.out.print("Found tcp packet");
+//                    System.out.print("src: " +  tcp.source());
+//                    System.out.print("dst: " +  tcp.destination());
+//                    System.out.print("len: " + tcp.getLength()); //PROBABLY WRONG
+//                    System.out.println("time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
                 }
 
                 else if(packet.hasHeader(udp)){
-                    System.out.print("Found udp packet");
-                    System.out.print(" src: " + udp.source());
-                    System.out.print(" dst: " + udp.destination());
-                    System.out.print(" caplen : " + packet.getCaptureHeader().caplen());
-                    System.out.println(" time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
+//                    System.out.print("Found udp packet");
+//                    System.out.print(" src: " + udp.source());
+//                    System.out.print(" dst: " + udp.destination());
+//                    System.out.print(" caplen : " + packet.getCaptureHeader().caplen());
+//                    System.out.println(" time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
                     detector.handle(new Packet(udp.source(), udp.destination(), packet.getCaptureHeader().caplen(), packet.getCaptureHeader().timestampInMillis()/1000));
                 }
             }

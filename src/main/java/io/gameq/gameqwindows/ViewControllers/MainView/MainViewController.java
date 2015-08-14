@@ -25,7 +25,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -63,8 +62,7 @@ public class MainViewController extends VBox implements Initializable {
     }
 
     public void startButtonClicked(){
-        application.updateStatus(Status.GameReady);
-        // AcceptHandler.acceptMatch(1);
+        application.getDetector().updateStatus(Status.GameReady);
     }
 
     public void stopButtonClicked(){
@@ -183,7 +181,7 @@ public class MainViewController extends VBox implements Initializable {
             timerHolder.getChildren().add(countDownIndicator);
             StackPane.setAlignment(countDownIndicator, Pos.CENTER);
 
-            if (true) {
+            if (false) {
                 startButton.setDisable(true);
                 startButton.setVisible(false);
                 stopButton.setDisable(true);
@@ -225,15 +223,18 @@ public class MainViewController extends VBox implements Initializable {
     }
 
     private void resetTimer(boolean isGame){
+        this.counter = 0;
+        if(isGame){
+            countDownIndicator.setProgress(100);
+        }
+        else{
+            countDownIndicator.setProgress(0);
+        }
+
         if(fiveSecondsWonder != null) {
             Platform.runLater(() -> {
                 fiveSecondsWonder.stop();
                 fiveSecondsWonder = null;
-                if (isGame) {
-                    countDownIndicator.setProgress(100);
-                } else {
-                    countDownIndicator.setProgress(0);
-                }
             });
         }
     }

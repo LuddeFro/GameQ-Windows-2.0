@@ -54,9 +54,6 @@ public abstract class GameDetector {
 
         status = newStatus;
         System.out.println("new Status: " + status);
-        System.out.println("game" + this.game);
-        System.out.println("status" + this.status);
-
 
         if (!isTesting) {
             application.updateStatus(newStatus);
@@ -100,16 +97,18 @@ public abstract class GameDetector {
     }
 
     public void startTimer(){
+        System.out.println(this.countDownLength);
         this.timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 update();
             }
-        }, 0, countDownLength * 1000);
+        }, countDownLength * 1000, countDownLength * 1000);
     }
 
     public void update(){
+        System.out.println("asdkjaksljdkajsdjk");
         if(status == Status.GameReady){
             updateStatus(Status.InGame);
             timer.cancel();

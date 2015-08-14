@@ -88,7 +88,7 @@ public class FeedbackController extends VBox implements Initializable {
                     Platform.runLater(() -> this.submitButton.setDisable(false));
                 }
 
-            }, application.getDetector.fileToString(), Encoding.getIntFromGame(application.getGame()),1);
+            }, application.getDetector().fileToString(), Encoding.getIntFromGame(application.getGame()),1);
 
             ConnectionHandler.submitFeedback((success, error) -> {
             }, feedbackField.getText());
@@ -105,7 +105,7 @@ public class FeedbackController extends VBox implements Initializable {
                     Platform.runLater(() -> this.submitButton.setDisable(false));
                 }
 
-            }, application.getDetector.fileToString(), Encoding.getIntFromGame(application.getGame()),2);
+            }, application.getDetector().fileToString(), Encoding.getIntFromGame(application.getGame()),2);
 
             ConnectionHandler.submitFeedback((success, error) -> {
             }, feedbackField.getText());

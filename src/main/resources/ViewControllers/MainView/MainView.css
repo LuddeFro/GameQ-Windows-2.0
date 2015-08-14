@@ -6,10 +6,15 @@
 }
 
 
+@font-face {
+    font-family: 'Roboto';
+    src: url('/ViewControllers/MainView/Roboto-Regular.ttf');
+}
+
 .label{
-    /*-fx-text-fill: white;*/
-    /*-fx-font-size: 20;*/
-    -fx-font-family: 'Roboto-Regular';
+    -fx-text-fill: white;
+    -fx-font-size: 20;
+    /*-fx-font-family: 'Roboto';*/
 }
 
 .button-orange{

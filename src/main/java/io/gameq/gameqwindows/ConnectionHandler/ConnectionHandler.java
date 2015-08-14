@@ -220,15 +220,15 @@ public final class ConnectionHandler {
         if(statusTimer != null){
             statusTimer.cancel();
             statusTimer.purge();
+            statusTimer = null;
         }
-
         statusTimer = new Timer();
         statusTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 needsUpdate();
             }
-        }, 0, 10 * 1000);
+        }, 0, 120 * 1000);
     }
 
     public static void setStatus(CallbackGeneral caller, int game, int status) {
@@ -240,9 +240,9 @@ public final class ConnectionHandler {
                 String response = post("setStatus", "status="+status + "&game="+ game + "&session_token=" +
                         ConnectionHandler
                                 .sessionToken +"&device_id=" + ConnectionHandler.loadDeviceID());
-                System.out.println("BAJA " + response);
+//                System.out.println("BAJA " + response);
                 holder.populate(response);
-                System.out.println("sak: " + holder.error);
+//                System.out.println("sak: " + holder.error);
                 if (holder.success && holder.error.equals("accept")) {
                     AcceptHandler.acceptMatch(game);
                 } else if (holder.success && holder.error.equals("auto")) {

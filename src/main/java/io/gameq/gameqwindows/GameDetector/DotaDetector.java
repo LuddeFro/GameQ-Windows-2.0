@@ -174,7 +174,6 @@ public class DotaDetector extends PacketDetector {
         else if(getStatus() == Status.GameReady){
             boolean inGame = isInGame(newPacket,  6, 30);
             resetGameTimer();
-
             if(inGame){updateStatus(Status.InGame);
                 resetQueueTimer();}
         }
@@ -218,8 +217,8 @@ public class DotaDetector extends PacketDetector {
             }
         }
 
-        srcQCounter.printMap();
-        dstQCounter.printMap();
+//        srcQCounter.printMap();
+//        dstQCounter.printMap();
 
         //bad coode here yo
         if(srcQCounter.get(78) > 0 && srcQCounter.get(158) > 0
@@ -345,10 +344,10 @@ public class DotaDetector extends PacketDetector {
 
         if(gameTimer1.size() > 0 || gameTimer2.size() > 0 && p.getPacketLength() > 1300){isProbablyGame = true;}
         else{isProbablyGame = false;}
-
-        packetCounter1.printMap();
-        packetCounter2.printMap();
-        dstPacketCounter.printMap();
+//
+//        packetCounter1.printMap();
+//        packetCounter2.printMap();
+//        dstPacketCounter.printMap();
 
         if(gameTimer1.size() >= 3
                 && packetCounter1.get(1300) < 3
