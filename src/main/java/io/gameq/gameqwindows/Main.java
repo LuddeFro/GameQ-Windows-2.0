@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import java.io.BufferedReader;
@@ -69,7 +70,9 @@ public class Main extends Application {
             stage.setMaxWidth(MINIMUM_WINDOW_WIDTH);
             stage.setMaxHeight(MINIMUM_WINDOW_HEIGHT);
             stage.setResizable(false);
-           // stage.initStyle(StageStyle.UTILITY);
+            Font.loadFont(getClass().getResourceAsStream("/resources/fonts/Roboto-Regular.ttf"), 20);
+
+            // stage.initStyle(StageStyle.UTILITY);
 
 
             stage.getIcons().addAll(

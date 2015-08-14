@@ -237,7 +237,7 @@ public class CSGODetector extends PacketDetector {
         else {return false;}
     }
 
-    private void update(){
+    public void update(){
         if(soonGame){
             time = time + 0.2;
             if(isGameReady(new Packet(-1,  -1,  -1, time))){

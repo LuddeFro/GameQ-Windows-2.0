@@ -1,13 +1,12 @@
 package io.gameq.gameqwindows.GameDetector;
 
-import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
 import io.gameq.gameqwindows.DataHandler.DataHandler;
 import io.gameq.gameqwindows.Main;
-import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
-import javafx.application.Application;
-import javafx.beans.Observable;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by fabianwikstrom on 7/6/2015.
@@ -29,7 +28,7 @@ public abstract class GameDetector {
 
     private int countDownLength = -1;
     private int counter = -1;
-    //private countdownTimer .....
+    private Timer timer;
 
 
     public void startDetection(Main application){
@@ -45,10 +44,12 @@ public abstract class GameDetector {
 
         if (status != newStatus && newStatus == Status.GameReady && !isTesting) {
             //detector.saveDetection()
-            //startTimer()
+            startTimer();
         } else {
-            // countDownTimer.invalidate()
-            counter = 0;
+            if(timer != null){
+                timer.cancel();
+                timer.purge();
+            }
         }
 
         status = newStatus;
@@ -58,7 +59,7 @@ public abstract class GameDetector {
 
 
         if (!isTesting) {
-        application.updateStatus(newStatus);
+            application.updateStatus(newStatus);
         }
     }
 
@@ -99,8 +100,21 @@ public abstract class GameDetector {
     }
 
     public void startTimer(){
-//        dispatch_async(dispatch_get_main_queue()) {
-//            self.countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)}
+        this.timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                update();
+            }
+        }, 0, countDownLength * 1000);
+    }
+
+    public void update(){
+        if(status == Status.GameReady){
+            updateStatus(Status.InGame);
+            timer.cancel();
+            timer.purge();
+        }
     }
 
     public String fileToString(){

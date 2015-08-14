@@ -5,8 +5,11 @@
 .button {
 }
 
+
 .label{
-    -fx-text-fill: white;
+    /*-fx-text-fill: white;*/
+    /*-fx-font-size: 20;*/
+    -fx-font-family: 'Roboto-Regular';
 }
 
 .button-orange{
@@ -33,7 +36,6 @@
 .text-field{
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-
 }
 
 .hbox {

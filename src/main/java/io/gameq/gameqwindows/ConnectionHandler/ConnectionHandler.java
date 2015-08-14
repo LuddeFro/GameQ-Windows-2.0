@@ -3,6 +3,8 @@ package io.gameq.gameqwindows.ConnectionHandler;
 import io.gameq.gameqwindows.ConnectionHandler.ep.EncryptedPreferences;
 import io.gameq.gameqwindows.ConnectionHandler.ep.Util;
 import io.gameq.gameqwindows.DataHandler.AcceptHandler;
+import io.gameq.gameqwindows.Structs.Game;
+import io.gameq.gameqwindows.Structs.Status;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -15,6 +17,8 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.prefs.Preferences;
 
 /**
@@ -29,7 +33,10 @@ public final class ConnectionHandler {
     private static long serverDelay = 0;
     static private final String algorithm = "DES";
     static private Preferences preferences;
-
+    private static boolean isLoggedIn = false;
+    private static int lastStatus = 0;
+    private static int lastGame = 0;
+    private static Timer statusTimer = null;
 
     static {
         byte rawKey[] = new byte[0];
@@ -108,6 +115,7 @@ public final class ConnectionHandler {
             public void run() {
                 String response = post("logout", "session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
                 holder.populate(response);
+                ConnectionHandler.isLoggedIn = false;
                 ConnectionHandler.saveEmail("");
                 ConnectionHandler.savePassword("");
                 mCaller.callback(holder.success, holder.error);
@@ -138,8 +146,7 @@ public final class ConnectionHandler {
                     ConnectionHandler.saveEmail(mEmail);
                     ConnectionHandler.savePassword(mPassword);
                     sessionToken = holder.session_token;
-
-
+                    ConnectionHandler.isLoggedIn = true;
 
                     if (holder.device_id != 0) {
                         ConnectionHandler.saveDeviceID(holder.device_id);
@@ -200,17 +207,40 @@ public final class ConnectionHandler {
         new Thread(r).start();
     }
 
+    public static void needsUpdate(){
+        if(isLoggedIn){
+            setStatus((success, error) -> {
+            }, lastGame, lastStatus);
+        }
+    }
+
+    private static void resetStatusUpdateTimer(int game, int status){
+        lastStatus = status;
+        lastGame = game;
+        if(statusTimer != null){
+            statusTimer.cancel();
+            statusTimer.purge();
+        }
+
+        statusTimer = new Timer();
+        statusTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                needsUpdate();
+            }
+        }, 0, 10 * 1000);
+    }
+
     public static void setStatus(CallbackGeneral caller, int game, int status) {
         final CallbackGeneral mCaller = caller;
+        resetStatusUpdateTimer(game, status);
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
                 String response = post("setStatus", "status="+status + "&game="+ game + "&session_token=" +
                         ConnectionHandler
-                                .sessionToken +
-                        "&device_id=" + ConnectionHandler.loadDeviceID());
-//                //System.out.println("session_token=" + ConnectionHandler.sessionToken + "&device_id=" +
-//                        ConnectionHandler.loadDeviceID());
+                                .sessionToken +"&device_id=" + ConnectionHandler.loadDeviceID());
+                System.out.println("BAJA " + response);
                 holder.populate(response);
                 System.out.println("sak: " + holder.error);
                 if (holder.success && holder.error.equals("accept")) {
