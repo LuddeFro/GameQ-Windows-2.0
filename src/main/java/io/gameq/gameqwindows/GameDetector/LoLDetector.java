@@ -33,7 +33,7 @@ public class LoLDetector extends PacketDetector {
     private PacketMap packetCounter1 = new PacketMap(new int[]{1300});
 
 
-    private long queueStartTime = -1;
+    private double queueStartTime = -1;
     private boolean foundServer  = false;
     private boolean soonGame = false;
 

@@ -6,9 +6,9 @@ package io.gameq.gameqwindows.Structs;
 public class PacketTimer {
 
     private int key;
-    private long time;
+    private double time;
 
-    public PacketTimer(int key, long time) {
+    public PacketTimer(int key, double time) {
         this.key = key;
         this.time = time;
     }
@@ -17,7 +17,7 @@ public class PacketTimer {
         return key;
     }
 
-    public long getTime() {
+    public double getTime() {
         return time;
     }
 }
