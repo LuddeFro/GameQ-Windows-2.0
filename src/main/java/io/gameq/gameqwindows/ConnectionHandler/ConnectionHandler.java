@@ -244,7 +244,7 @@ public final class ConnectionHandler {
                 holder.populate(response);
 //                System.out.println("sak: " + holder.error);
                 if (holder.success && holder.error.equals("accept")) {
-                    AcceptHandler.acceptMatch(game);
+                    AcceptHandler.acceptMatch(true, game);
                 } else if (holder.success && holder.error.equals("auto")) {
                     try {
                         Thread.sleep(1000);                 //1000 milliseconds is one second.
@@ -252,9 +252,12 @@ public final class ConnectionHandler {
                         Thread.currentThread().interrupt();
                     } finally {
                         System.out.println("I tried");
-                        AcceptHandler.acceptMatch(game);
+                        AcceptHandler.acceptMatch(true, game);
                     }
-                }
+                } else if (holder.success && holder.error.equals("decline")) {
+					AcceptHandler.acceptMatch(false, game)
+				}
+				
                 mCaller.callback(holder.success, holder.error);
             }
         };

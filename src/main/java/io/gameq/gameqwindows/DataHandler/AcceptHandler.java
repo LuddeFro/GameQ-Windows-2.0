@@ -12,21 +12,37 @@ import java.net.URL;
  */
 public final class AcceptHandler {
 
-    public static void acceptMatch(int game) {
+    public static void acceptMatch(boolean accept, int game) {
         if(Encoding.getGameFromInt(game) == Game.HoN || Encoding.getGameFromInt(game) == Game.HoTS) {
             //do nothing
         } else {
             String localFilename = "";
             if(Encoding.getGameFromInt(game) == Game.Dota2) {
                 if (isDotaReborn()) {
-                    localFilename = "DotaReborn.exe";
+					if (accept) {
+						localFilename = "DotaReborn.exe";
+					} else {
+						localFilename = "DotaReborn_decline.exe";
+					}
                 } else {
-                    localFilename = "Dota.exe";
+                    if (accept) {
+						localFilename = "Dota.exe";
+					} else {
+						localFilename = "Dota_decline.exe";
+					}
                 }
             } else if(Encoding.getGameFromInt(game) == Game.LoL) {
-                localFilename = "LoL.exe";
+                if (accept) {
+						localFilename = "LoL.exe";
+					} else {
+						localFilename = "LoL_decline.exe";
+					}
             } else if(Encoding.getGameFromInt(game) == Game.CSGO) {
-                localFilename = "CSGO.exe";
+                if (accept) {
+						localFilename = "CSGO.exe";
+					} else {
+						localFilename = "CSGO_decline.exe";
+					}
             }
 
             File tempFile = null;
