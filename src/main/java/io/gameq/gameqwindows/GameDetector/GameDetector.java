@@ -56,6 +56,9 @@ public abstract class GameDetector {
         System.out.println("new Status: " + status);
 
         if (!isTesting) {
+            if(newStatus == Status.InLobby){
+                newStatus = Status.InQueue;
+            }
             application.updateStatus(newStatus);
         }
     }

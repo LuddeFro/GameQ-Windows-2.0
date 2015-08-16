@@ -2,11 +2,18 @@
     -fx-background-color: #17212b;
 }
 
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Regular.ttf');
+}
+
 .button {
 }
 
 .label{
     -fx-text-fill: white;
+    -fx-font-family: 'Roboto';
+
 }
 
 .button-orange{
@@ -14,6 +21,8 @@
     -fx-background-radius: 4;
     -fx-text-fill: white;
     -fx-font-size: 20px;
+    -fx-font-family: 'Roboto';
+
 }
 
 .button-blue {
@@ -21,6 +30,8 @@
     -fx-background-radius: 4;
     -fx-text-fill: white;
     -fx-font-size: 20px;
+    -fx-font-family: 'Roboto';
+
 }
 
 .button-forgot{
@@ -28,16 +39,21 @@
     -fx-background-radius: 4;
     -fx-text-fill: white;
     -fx-font-size: 20px;
+    -fx-font-family: 'Roboto';
+
 }
 
 .text-field{
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+    -fx-font-family: 'Roboto';
+
 
 }
 
 .hbox {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 4;
+
 }
 

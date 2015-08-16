@@ -44,6 +44,7 @@ public class MainViewController extends VBox implements Initializable {
     @FXML ImageView settingsButton;
     @FXML ImageView exitButton;
     @FXML ImageView minButton;
+    @FXML Label countDownLabel;
 
     private boolean isFeedback = false;
     private boolean isSettings = false;
@@ -210,7 +211,7 @@ public class MainViewController extends VBox implements Initializable {
             timerHolder.getChildren().add(countDownIndicator);
             StackPane.setAlignment(countDownIndicator, Pos.CENTER);
 
-            if (false) {
+            if (true) {
                 startButton.setDisable(true);
                 startButton.setVisible(false);
                 stopButton.setDisable(true);
@@ -268,13 +269,24 @@ public class MainViewController extends VBox implements Initializable {
         }
     }
 
-    private void willDisappear(){
+    public void willDisappear(){
         resetTimer(false);
+        if(isFeedback){
+            feedback.close();
+            feedback = null;
+            isFeedback = false;
+        }
+        if(isSettings){
+            settings.close();
+            settings = null;
+            isSettings = false;
+        }
     }
 
     private void startTimer(double countDownTime){
         fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             this.counter = this.counter + 0.1;
+            this.countDownLabel.setText(Integer.toString((int)counter));
             countDownIndicator.setProgress(this.counter/countDownTime * 100);
         }));
         fiveSecondsWonder.setCycleCount((int) countDownTime * 10);

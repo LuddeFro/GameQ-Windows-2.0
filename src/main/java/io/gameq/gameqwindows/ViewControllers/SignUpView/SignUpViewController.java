@@ -66,6 +66,10 @@ public class SignUpViewController extends VBox implements Initializable {
         }
     }
 
+    public void onEnter(){
+        processSignUp();
+    }
+
     public void processSignUp() {
         if (application == null) {
         }

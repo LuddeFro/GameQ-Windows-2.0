@@ -38,6 +38,10 @@ public class SettingsController extends VBox implements Initializable {
         Platform.runLater(stage::close);
     }
 
+    public void logOutPressed(){
+        application.userLogout();
+    }
+
     public void submitButtonPressed(){
 
         if(!(pw1.getText().equals(pw2.getText()))){

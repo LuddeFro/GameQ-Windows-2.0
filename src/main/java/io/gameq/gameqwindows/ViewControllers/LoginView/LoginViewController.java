@@ -63,6 +63,10 @@ public class LoginViewController extends VBox implements Initializable {
         stage.setIconified(true);
     }
 
+    public void onEnter(){
+        processLogin();
+    }
+
     public void processForgot(){
         Platform.runLater(() -> {
             isForgot = true;

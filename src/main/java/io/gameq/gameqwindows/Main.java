@@ -54,6 +54,8 @@ public class Main extends Application {
     private Game game = Game.NoGame;
     private MainViewController mainView = null;
     private String userName = "";
+    private java.awt.Font boldFont = new java.awt.Font("Lucida Console", java.awt.Font.BOLD, 20);
+    private java.awt.Font regularFont = new java.awt.Font("Lucida Console", java.awt.Font.PLAIN, 20);
 
 
     // records relative x and y co-ordinates.
@@ -72,8 +74,7 @@ public class Main extends Application {
             stage.setResizable(false);
             Font.loadFont(
                     Main.class.getResource("/fonts/Roboto-Regular.ttf").toExternalForm(),
-                    20
-            );
+                    20);
 
             // stage.initStyle(StageStyle.UTILITY);
 
@@ -116,7 +117,9 @@ public class Main extends Application {
     }
 
     public void didLogin(){
-        Platform.runLater(() -> mainView.updateStatus(Game.NoGame, Status.Online, 0));
+        this.status = Status.Online;
+        this.game = Game.NoGame;
+        Platform.runLater(() -> mainView.updateStatus(this.game, this.status, 0));
 
         popup.removeAll();
 
@@ -132,8 +135,6 @@ public class Main extends Application {
 
         // the convention for tray icons seems to be to set the default icon for opening
         // the application stage in a bold font.
-        java.awt.Font defaultFont = java.awt.Font.decode(null);
-        java.awt.Font boldFont = defaultFont.deriveFont(java.awt.Font.BOLD);
         openItem.setFont(boldFont);
 
         // if the user selects the default menu item (which includes the app name),
@@ -149,6 +150,7 @@ public class Main extends Application {
         // and select the exit option, this will shutdown JavaFX and remove the
         // tray icon (removing the tray icon will also shut down AWT).
         java.awt.MenuItem exitItem = new java.awt.MenuItem("Quit");
+        exitItem.setFont(boldFont);
         exitItem.addActionListener(event -> {
             Platform.exit();
             tray.remove(trayIcon);
@@ -158,14 +160,16 @@ public class Main extends Application {
         });
 
         ConnectionHandler.setStatus(((success, error) -> {
-            if(success){
-            System.out.println("Updated status to online no game");
-            }
-            else{
+            if (success) {
+                System.out.println("Updated status to online no game");
+            } else {
             }
         }), Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(this.status));
 
         // setup the popup menu for the application.
+        userItem.setFont(regularFont);
+        statusItem.setFont(regularFont);
+        gameItem.setFont(regularFont);
         popup.add(userItem);
         popup.add(statusItem);
         popup.add(gameItem);
@@ -195,14 +199,13 @@ public class Main extends Application {
 
         // the convention for tray icons seems to be to set the default icon for opening
         // the application stage in a bold font.
-        java.awt.Font defaultFont = java.awt.Font.decode(null);
-        java.awt.Font boldFont = defaultFont.deriveFont(java.awt.Font.BOLD);
         openItem.setFont(boldFont);
 
         // to really exit the application, the user must go to the system tray icon
         // and select the exit option, this will shutdown JavaFX and remove the
         // tray icon (removing the tray icon will also shut down AWT).
         java.awt.MenuItem exitItem = new java.awt.MenuItem("Quit");
+        exitItem.setFont(boldFont);
         exitItem.addActionListener(event -> {
             Platform.exit();
             tray.remove(trayIcon);
@@ -216,6 +219,7 @@ public class Main extends Application {
 
     private void didLogOut(){
         Platform.runLater(this::setLogOutPopUp);
+        mainView.willDisappear();
         if(detector != null && this.game != Game.NoGame) {detector.stopDetection();
         }
         timer.cancel();

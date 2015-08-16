@@ -8,13 +8,18 @@
 
 @font-face {
     font-family: 'Roboto';
-    src: url('/ViewControllers/MainView/Roboto-Regular.ttf');
+    src: url('/fonts/Roboto-Regular.ttf');
 }
 
 .label{
     -fx-text-fill: white;
-    -fx-font-size: 20;
-    /*-fx-font-family: 'Roboto';*/
+    -fx-font-size: 30;
+    -fx-font-family: 'Roboto';
+}
+
+.canvas{
+    -fx-fill: #7dbae3;
+    -fx-background-color: #7dbae3;
 }
 
 .button-orange{
@@ -22,6 +27,7 @@
     -fx-background-radius: 4;
     -fx-text-fill: white;
     -fx-font-size: 20px;
+    -fx-font-family: 'Roboto';
 }
 
 .button-blue {
@@ -29,6 +35,7 @@
     -fx-background-radius: 4;
     -fx-text-fill: white;
     -fx-font-size: 20px;
+    -fx-font-family: 'Roboto';
 }
 
 .button-forgot{
@@ -36,11 +43,13 @@
     -fx-background-radius: 4;
     -fx-text-fill: white;
     -fx-font-size: 20px;
+    -fx-font-family: 'Roboto';
 }
 
 .text-field{
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+    -fx-font-family: 'Roboto';
 }
 
 .hbox {
