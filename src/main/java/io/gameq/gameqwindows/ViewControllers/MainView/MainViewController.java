@@ -50,6 +50,8 @@ public class MainViewController extends VBox implements Initializable {
     private Stage feedback = null;
     private Stage settings = null;
 
+    class Delta { double x, y; }
+
     public void exitPressed(){
         Stage stage = (Stage) exitButton.getScene().getWindow();
         // do what you have to do
@@ -62,7 +64,7 @@ public class MainViewController extends VBox implements Initializable {
     }
 
     public void startButtonClicked(){
-        application.getDetector().updateStatus(Status.GameReady);
+        application.updateStatus(Status.GameReady);
     }
 
     public void stopButtonClicked(){
@@ -118,8 +120,21 @@ public class MainViewController extends VBox implements Initializable {
                 feedback.setResizable(false);
                 feedback.initStyle(StageStyle.UNDECORATED);
                 feedback.show();
-
                 isFeedback = true;
+
+                // allow the background to be used to drag the clock around.
+                final Delta dragDelta = new Delta();
+                if (page != null) {
+                    page.setOnMousePressed(mouseEvent -> {
+                        // record a delta distance for the drag and drop operation.
+                        dragDelta.x = feedback.getX() - mouseEvent.getScreenX();
+                        dragDelta.y = feedback.getY() - mouseEvent.getScreenY();
+                    });
+                    page.setOnMouseDragged(mouseEvent -> {
+                        feedback.setX(mouseEvent.getScreenX() + dragDelta.x);
+                        feedback.setY(mouseEvent.getScreenY() + dragDelta.y);
+                    });
+                }
             });
         }
     }
@@ -160,6 +175,20 @@ public class MainViewController extends VBox implements Initializable {
                 settings.initStyle(StageStyle.UNDECORATED);
                 settings.show();
                 isSettings = true;
+
+                // allow the background to be used to drag the clock around.
+                final Delta dragDelta = new Delta();
+                if (page != null) {
+                    page.setOnMousePressed(mouseEvent -> {
+                        // record a delta distance for the drag and drop operation.
+                        dragDelta.x = settings.getX() - mouseEvent.getScreenX();
+                        dragDelta.y = settings.getY() - mouseEvent.getScreenY();
+                    });
+                    page.setOnMouseDragged(mouseEvent -> {
+                        settings.setX(mouseEvent.getScreenX() + dragDelta.x);
+                        settings.setY(mouseEvent.getScreenY() + dragDelta.y);
+                    });
+                }
             });
         }
     }

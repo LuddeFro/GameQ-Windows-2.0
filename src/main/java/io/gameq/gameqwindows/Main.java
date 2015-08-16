@@ -157,6 +157,14 @@ public class Main extends Application {
             System.exit(0);
         });
 
+        ConnectionHandler.setStatus(((success, error) -> {
+            if(success){
+            System.out.println("Updated status to online no game");
+            }
+            else{
+            }
+        }), Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(this.status));
+
         // setup the popup menu for the application.
         popup.add(userItem);
         popup.add(statusItem);

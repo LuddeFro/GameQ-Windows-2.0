@@ -5,6 +5,7 @@ import io.gameq.gameqwindows.ConnectionHandler.ep.Util;
 import io.gameq.gameqwindows.DataHandler.AcceptHandler;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
+import jdk.nashorn.internal.ir.Symbol;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -141,6 +142,7 @@ public final class ConnectionHandler {
             JSONHolder holder = new JSONHolder();
             public void run() {
                 String response = post("login", "email="+mEmail+"&password="+mPassword + "&push_token=" + ConnectionHandler.loadToken() + deviceString);
+                System.out.println(response);
                 holder.populate(response);
                 if (holder.success) {
                     ConnectionHandler.saveEmail(mEmail);
@@ -228,7 +230,7 @@ public final class ConnectionHandler {
             public void run() {
                 needsUpdate();
             }
-        }, 0, 120 * 1000);
+        }, 120 * 1000, 120 * 1000);
     }
 
     public static void setStatus(CallbackGeneral caller, int game, int status) {
@@ -240,9 +242,9 @@ public final class ConnectionHandler {
                 String response = post("setStatus", "status="+status + "&game="+ game + "&session_token=" +
                         ConnectionHandler
                                 .sessionToken +"&device_id=" + ConnectionHandler.loadDeviceID());
-//                System.out.println("BAJA " + response);
+                System.out.println("response " + response);
                 holder.populate(response);
-//                System.out.println("sak: " + holder.error);
+               System.out.println("error: " + holder.error);
                 if (holder.success && holder.error.equals("accept")) {
                     AcceptHandler.acceptMatch(true, game);
                 } else if (holder.success && holder.error.equals("auto")) {
@@ -255,7 +257,7 @@ public final class ConnectionHandler {
                         AcceptHandler.acceptMatch(true, game);
                     }
                 } else if (holder.success && holder.error.equals("decline")) {
-					AcceptHandler.acceptMatch(false, game)
+					AcceptHandler.acceptMatch(false, game);
 				}
 				
                 mCaller.callback(holder.success, holder.error);
@@ -361,11 +363,13 @@ public final class ConnectionHandler {
                 JSONHolder holder = new JSONHolder();
                 public void run() {
                     String response = post("login", "email="+mEmail+"&password="+mPassword + "&push_token=" + ConnectionHandler.loadToken() + deviceString);
+                    System.out.println(response);
                     holder.populate(response);
                     if (holder.success) {
                         ConnectionHandler.saveEmail(mEmail);
                         ConnectionHandler.savePassword(mPassword);
                         sessionToken = holder.session_token;
+                        isLoggedIn = true;
                         if (holder.device_id != 0) {
                             ConnectionHandler.saveDeviceID(holder.device_id);
                         }

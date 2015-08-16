@@ -4,7 +4,7 @@
 }
 .ringindicator-inner-circle {
 	-fx-opacity: 1;
-	-fx-stroke: #8fd8f7;
+	-fx-stroke: #34404d;
 	-fx-stroke-width: 0px;
 	-fx-fill: transparent;
 }
@@ -16,12 +16,12 @@
 }
 .ringindicator-outer-circle-secondary {
 	-fx-opacity: 1;
-	-fx-stroke: #8fd8f7;
+	-fx-stroke: #34404d;
 	-fx-stroke-width: 7.0px;
 	-fx-fill: transparent;
 }
 .indeterminate {
 	-fx-opacity: 1;
-    -fx-stroke: #8fd8f7;
+    -fx-stroke: #34404d;
     -fx-stroke-width: 8.0px;
 }
