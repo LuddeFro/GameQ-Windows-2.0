@@ -6,6 +6,7 @@ import io.gameq.gameqwindows.GameDetector.GameDetector;
 import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
+import io.gameq.gameqwindows.Updater.WinSparkleDLL;
 import io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController;
 import io.gameq.gameqwindows.ViewControllers.MainView.MainViewController;
 import io.gameq.gameqwindows.ViewControllers.SignUpView.SignUpViewController;
@@ -65,6 +66,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+//            WinSparkleDLL winSparkleDLL = WinSparkleDLL.INSTANCE;
+//            winSparkleDLL.win_sparkle_set_appcast_url("http://www.gameq.io/app/windows/appcast.xml");
+//            winSparkleDLL.win_sparkle_set_app_details("GameQ AB","GameQ Windows","1.0");
+//            winSparkleDLL.win_sparkle_set_automatic_check_for_updates(1);
+//            winSparkleDLL.win_sparkle_set_update_check_interval(3600*24);
+//            winSparkleDLL.win_sparkle_init();
+//            winSparkleDLL.win_sparkle_check_update_with_ui();
+
             stage = primaryStage;
             stage.setTitle("GameQ");
             stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
