@@ -3,14 +3,9 @@ package io.gameq.gameqwindows.ConnectionHandler;
 import io.gameq.gameqwindows.ConnectionHandler.ep.EncryptedPreferences;
 import io.gameq.gameqwindows.ConnectionHandler.ep.Util;
 import io.gameq.gameqwindows.DataHandler.AcceptHandler;
-import io.gameq.gameqwindows.Structs.Game;
-import io.gameq.gameqwindows.Structs.Status;
-import jdk.nashorn.internal.ir.Symbol;
-
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
-import javax.security.auth.callback.Callback;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -21,6 +16,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.prefs.Preferences;
+
 
 /**
  * Created by Ludvig on 14/07/15.
@@ -287,7 +283,8 @@ public final class ConnectionHandler {
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
-                String response = post("versionControl", "push_token="+mToken+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
+                String response = post("updateToken", "push_token="+mToken+"&session_token=" + ConnectionHandler
+                        .sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
                 return;
@@ -304,7 +301,8 @@ public final class ConnectionHandler {
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
-                String response = post("versionControl", "csv="+mCSV+"&game="+mGame+"&type="+mType+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
+                String response = post("submitCSV", "csv="+mCSV+"&game="+mGame+"&type="+mType+"&session_token=" +
+                        ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
                 return;
@@ -319,7 +317,7 @@ public final class ConnectionHandler {
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
-                String response = post("versionControl", "feedback="+mFeedback+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
+                String response = post("submitFeedback", "feedback="+mFeedback+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
                 System.out.println(response);
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
@@ -337,7 +335,8 @@ public final class ConnectionHandler {
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
-                String response = post("versionControl", "email="+mEmail+"&password="+mOldPassword+"&new_password="+mNewPassword+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
+                String response = post("updatePassword",
+                        "email="+mEmail+"&password="+mOldPassword+"&new_password="+mNewPassword+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
                 System.out.println(response);
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);

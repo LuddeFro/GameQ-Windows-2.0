@@ -1,12 +1,8 @@
 package io.gameq.gameqwindows.Updater;
 
-import com.sun.jna.Library;
+
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.sun.jna.NativeLong;
-import com.sun.jna.Platform;
-import com.sun.jna.*;
-
 
 /**
  * Created by fabianwikstrom on 8/19/2015.
