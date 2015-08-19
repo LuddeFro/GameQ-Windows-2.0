@@ -67,7 +67,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            System.loadLibrary("WinSparkle");
             System.loadLibrary("jnetpcap");
             WinSparkleDLL winSparkleDLL = WinSparkleDLL.INSTANCE;
             winSparkleDLL.win_sparkle_set_appcast_url("http://www.gameq.io/app/windows/appcast.xml");
@@ -327,6 +326,7 @@ public class Main extends Application {
     // Lots of games to add
     private void update(){
         Game newGame = null;
+        System.out.println("vafan");
         try {
             String line;
             Process p = Runtime.getRuntime().exec
@@ -339,16 +339,26 @@ public class Main extends Application {
                 }
             }
             if(newGame == null){
-                newGame = Game.NoGame;}
+                newGame = Game.NoGame;
+            }
             input.close();
         } catch (Exception err) {
             // err.printStackTrace();
         }
 
-        if (game != newGame){
+        System.out.println(Encoding.getStringFromGame(newGame));
+
+        if (game != newGame && newGame != Game.NoGame){
             detector = new DotaDetector();
             this.game = newGame;
             detector.startDetection(this);
+        }
+        else if(game != newGame && newGame == Game.NoGame){
+            if (detector != null){
+                detector.stopDetection();
+                this.game = Game.NoGame;
+                detector = null;
+            }
         }
     }
 

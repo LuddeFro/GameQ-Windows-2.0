@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="GameQ-Windows-2.0">
+    <output-path>$PROJECT_DIR$/out/artifacts/GameQ_Windows_2_0</output-path>
+    <root id="root">
+      <element id="archive" name="GameQ_Windows_2_0.jar">
+        <element id="module-output" name="GameQ-Windows-2.0" />
+      </element>
+    </root>
+  </artifact>
+</component>

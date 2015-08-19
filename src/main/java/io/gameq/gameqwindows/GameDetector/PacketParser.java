@@ -25,7 +25,7 @@ import java.util.List;
  *  #3: \Device\NPF_GenericDialupAdapter [Adapter for generic dialup and VPN capture]
  */
 
-public class PacketParser {
+public class PacketParser  {
 
     private static PacketParser instance = null;
     protected PacketParser() {
