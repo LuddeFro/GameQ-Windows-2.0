@@ -44,22 +44,24 @@ public class SettingsController extends VBox implements Initializable {
 
     public void submitButtonPressed(){
 
-        if(!(pw1.getText().equals(pw2.getText()))){
+        if(!(pw1.getText().equals(pw2.getText())) || pw1.getText().isEmpty()){
             Platform.runLater(()-> statusLabel.setText("Passwords are not the same"));
         }
         else {
             Platform.runLater(()-> statusLabel.setText("changing password"));
             Platform.runLater(()-> submitButton.setDisable(true));
+            Platform.runLater(() -> exitButton.setDisable(true));
 
             ConnectionHandler.updatePassword((success, error) -> {
                 if(success){
                     Platform.runLater(()-> statusLabel.setText("Your password has been changed"));
                     Platform.runLater(()-> submitButton.setDisable(false));
+                    Platform.runLater(() -> exitButton.setDisable(false));
                 }
                 else{
                     Platform.runLater(()-> statusLabel.setText(error));
                     Platform.runLater(()-> submitButton.setDisable(false));
-                    //TODO enable disable exit button
+                    Platform.runLater(() -> exitButton.setDisable(false));
                 }
 
             }, application.getUserName(), pw2.getText(), oldpw.getText());

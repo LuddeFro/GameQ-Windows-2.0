@@ -7,9 +7,10 @@ import io.gameq.gameqwindows.Structs.Status;
 import io.gameq.gameqwindows.ViewControllers.FeedbackView.FeedbackController;
 import io.gameq.gameqwindows.ViewControllers.MainView.ProgressTimer.RingProgressIndicator;
 import io.gameq.gameqwindows.ViewControllers.SettingsView.SettingsController;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -38,6 +40,7 @@ public class MainViewController extends VBox implements Initializable {
     @FXML Button failModeButton;
     @FXML AnchorPane anchorPane;
     @FXML StackPane timerHolder;
+    @FXML StackPane queueTimerHolder;
     @FXML Label statusLabel;
     @FXML Label gameLabel;
     @FXML ImageView feedbackButton;
@@ -50,6 +53,7 @@ public class MainViewController extends VBox implements Initializable {
     private boolean isSettings = false;
     private Stage feedback = null;
     private Stage settings = null;
+    private RotateTransition rt;
 
     class Delta { double x, y; }
 
@@ -65,11 +69,12 @@ public class MainViewController extends VBox implements Initializable {
     }
 
     public void startButtonClicked(){
-        application.updateStatus(Status.GameReady);
+        startQueueTimer();
     }
 
     public void stopButtonClicked(){
         System.out.println("stop");
+        resetQueueTimer(true);
     }
 
     public void saveButtonClicked(){
@@ -197,7 +202,8 @@ public class MainViewController extends VBox implements Initializable {
     private Main application;
     private Timeline timer = null;
     private double counter = 0;
-    private RingProgressIndicator countDownIndicator =  new RingProgressIndicator();
+    private RingProgressIndicator countDownIndicator =  new RingProgressIndicator(1);
+    private RingProgressIndicator queueIndicator = new RingProgressIndicator(2);
     Timeline fiveSecondsWonder = null;
 
     public void setApp(Main application){
@@ -208,10 +214,12 @@ public class MainViewController extends VBox implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> {
             countDownIndicator.setProgress(0);
+            queueIndicator.setProgress(0);
             timerHolder.getChildren().add(countDownIndicator);
+            queueTimerHolder.getChildren().add(queueIndicator);
             StackPane.setAlignment(countDownIndicator, Pos.CENTER);
 
-            if (true) {
+            if (!application.getUserName().equals("fabian.wikstrom@gmail.com")) {
                 startButton.setDisable(true);
                 startButton.setVisible(false);
                 stopButton.setDisable(true);
@@ -234,26 +242,33 @@ public class MainViewController extends VBox implements Initializable {
         switch (status){
             case Offline:
                 resetTimer(false);
+                resetQueueTimer(false);
                 break;
             case Online:
                 resetTimer(false);
+                resetQueueTimer(false);
                 break;
             case InLobby:
                 resetTimer(false);
+                resetQueueTimer(false);
                 break;
             case InQueue:
                 resetTimer(false);
+                startQueueTimer();
                 break;
             case GameReady:
                 startTimer(countDownTime);
+                resetQueueTimer(true);
                 break;
             case InGame:
                 resetTimer(true);
+                resetQueueTimer(true);
         }
     }
 
     private void resetTimer(boolean isGame){
         this.counter = 0;
+        this.countDownLabel.setText("");
         if(isGame){
             countDownIndicator.setProgress(100);
         }
@@ -281,6 +296,29 @@ public class MainViewController extends VBox implements Initializable {
             settings = null;
             isSettings = false;
         }
+    }
+
+    private void resetQueueTimer(boolean game){
+        if(queueIndicator != null) {
+            if (game) {
+                queueIndicator.setProgress(100);
+            } else {
+                queueIndicator.setProgress(0);
+            }
+        }
+        if(rt == null) {
+            rt.stop();
+            rt = null;
+        }
+    }
+
+    private void startQueueTimer(){
+        queueIndicator.setProgress(15);
+        rt = new RotateTransition(Duration.millis(3000), queueTimerHolder);
+        rt.setByAngle(360);
+        rt.setInterpolator(Interpolator.LINEAR);
+        rt.setCycleCount(Animation.INDEFINITE);
+        rt.play();
     }
 
     private void startTimer(double countDownTime){

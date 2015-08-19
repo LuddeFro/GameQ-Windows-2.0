@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 package io.gameq.gameqwindows.ViewControllers.MainView.ProgressTimer;
 
 import com.sun.javafx.css.converters.SizeConverter;
@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * Progress indicator showing a filling arc.
- * 
+ *
  * @author Andrea Vacondio
  *
  */
@@ -38,6 +38,19 @@ public class RingProgressIndicator extends ProgressCircleIndicator {
     public RingProgressIndicator() {
         this.getStylesheets().add(this.getClass().getClassLoader().getResource("ViewControllers/ringprogress.css").toExternalForm());
         this.getStyleClass().add("ringindicator");
+    }
+
+    public RingProgressIndicator(int i) {
+        if (i == 1){
+            this.getStylesheets().add(this.getClass().getClassLoader().getResource("ViewControllers/ringprogress.css")
+                    .toExternalForm());
+            this.getStyleClass().add("ringindicator");
+        }
+        else if(i == 2){
+            this.getStylesheets().add(this.getClass().getClassLoader().getResource("ViewControllers/ringprogress.css")
+                    .toExternalForm());
+            this.getStyleClass().add("ringindicator2");
+        }
     }
 
     @Override
@@ -103,6 +116,6 @@ public class RingProgressIndicator extends ProgressCircleIndicator {
 
     @Override
     public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
-    	 return StyleableProperties.STYLEABLES;
+        return StyleableProperties.STYLEABLES;
     }
 }

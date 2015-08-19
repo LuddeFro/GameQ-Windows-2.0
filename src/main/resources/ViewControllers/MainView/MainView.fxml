@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
@@ -23,7 +24,12 @@
                 <Button fx:id="failModeButton" layoutX="12.0" layoutY="86.0" mnemonicParsing="false" onAction="#failModeButtonClicked" text="FailMode" />
             <StackPane fx:id="timerHolder" layoutX="157.0" layoutY="200.0" maxHeight="200.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" styleClass="tab-pane-stack" AnchorPane.bottomAnchor="170.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="230.0">
                <children>
-                  <Label fx:id="countDownLabel" prefHeight="58.0" prefWidth="70.0" />
+                  <Label fx:id="countDownLabel" prefHeight="80.0" prefWidth="80.0" />
+                  <StackPane fx:id="queueTimerHolder" prefHeight="150.0" prefWidth="200.0">
+                     <StackPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </StackPane.margin>
+                  </StackPane>
                </children></StackPane>
             <Label fx:id="statusLabel" alignment="CENTER" layoutX="50.0" layoutY="520.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" prefHeight="50.0" prefWidth="400.0" text="Status" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
                <font>

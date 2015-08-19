@@ -62,6 +62,7 @@ public class FeedbackController extends VBox implements Initializable {
 
     public void submitPressed(){
         Platform.runLater(() -> submitButton.setDisable(true));
+        Platform.runLater(() -> exitButton.setDisable(true));
         Platform.runLater(() -> statusField.setText("Submitting Feedback"));
 
         if(generalButton.isSelected()){
@@ -69,10 +70,12 @@ public class FeedbackController extends VBox implements Initializable {
                 if(success){
                     Platform.runLater(() -> this.statusField.setText("Success, thank you!"));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
+                    Platform.runLater(() -> exitButton.setDisable(false));
                 }
                 else{
                     Platform.runLater(() -> this.statusField.setText(error));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
+                    Platform.runLater(() -> exitButton.setDisable(false));
                 }
             },feedbackField.getText());
         }
@@ -82,10 +85,13 @@ public class FeedbackController extends VBox implements Initializable {
                 if(success1){
                     Platform.runLater(() -> this.statusField.setText("Success, thank you!"));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
+                    Platform.runLater(() -> exitButton.setDisable(false));
                 }
                 else{
                     Platform.runLater(() -> this.statusField.setText(error1));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
+                    Platform.runLater(() -> exitButton.setDisable(false));
+
                 }
 
             }, application.getDetector().fileToString(), Encoding.getIntFromGame(application.getGame()),1);
@@ -99,10 +105,12 @@ public class FeedbackController extends VBox implements Initializable {
                 if(success1){
                     Platform.runLater(() -> this.statusField.setText("Success, thank you!"));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
+                    Platform.runLater(() -> exitButton.setDisable(false));
                 }
                 else{
                     Platform.runLater(() -> this.statusField.setText(error1));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
+                    Platform.runLater(() -> exitButton.setDisable(false));
                 }
 
             }, application.getDetector().fileToString(), Encoding.getIntFromGame(application.getGame()),2);

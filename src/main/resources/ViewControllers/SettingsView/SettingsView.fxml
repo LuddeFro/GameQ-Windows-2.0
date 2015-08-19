@@ -15,7 +15,7 @@
     <AnchorPane maxHeight="400.0" maxWidth="400.0" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
          <children>
             <Label layoutX="30.0" layoutY="30.0" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" text="Change Password" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0" />
-            <Button fx:id="submitButton" layoutX="30.0" layoutY="267.0" mnemonicParsing="false" styleClass="button-orange" text="Change Password" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+            <Button fx:id="submitButton" layoutX="30.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#submitButtonPressed" styleClass="button-orange" text="Change Password" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
             <Label fx:id="statusLabel" layoutX="31.0" layoutY="231.0" prefHeight="27.0" prefWidth="340.0" />
             <ImageView fx:id="exitButton" fitHeight="20.0" fitWidth="20.0" layoutX="88.0" layoutY="9.0" onMouseClicked="#exitPressed" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                <image>

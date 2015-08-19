@@ -2,6 +2,11 @@
 	-fx-ring-width: 8.0px;
 	-fx-inner-radius: 100.0px;
 }
+.ringindicator2{
+	-fx-ring-width: 8.0px;
+	-fx-inner-radius: 85.0px;
+}
+
 .ringindicator-inner-circle {
 	-fx-opacity: 1;
 	-fx-stroke: #34404d;
