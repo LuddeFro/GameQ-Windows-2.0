@@ -15,7 +15,7 @@
 }
 .ringindicator-filler {
 	-fx-opacity: 1;
-	-fx-stroke: #2ecc71;
+	-fx-stroke: #FF6861;
 	-fx-fill: transparent;
 	-fx-stroke-line-cap: butt;
 }

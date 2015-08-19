@@ -9,8 +9,6 @@ import io.gameq.gameqwindows.ViewControllers.MainView.ProgressTimer.RingProgress
 import io.gameq.gameqwindows.ViewControllers.SettingsView.SettingsController;
 import javafx.animation.*;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,10 +21,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -250,7 +248,7 @@ public class MainViewController extends VBox implements Initializable {
                 break;
             case InLobby:
                 resetTimer(false);
-                resetQueueTimer(false);
+                startQueueTimer();
                 break;
             case InQueue:
                 resetTimer(false);
@@ -299,6 +297,7 @@ public class MainViewController extends VBox implements Initializable {
     }
 
     private void resetQueueTimer(boolean game){
+        Platform.runLater(() -> {
         if(queueIndicator != null) {
             if (game) {
                 queueIndicator.setProgress(100);
@@ -306,19 +305,20 @@ public class MainViewController extends VBox implements Initializable {
                 queueIndicator.setProgress(0);
             }
         }
-        if(rt == null) {
+        if(rt != null) {
             rt.stop();
             rt = null;
-        }
+        }});
     }
 
     private void startQueueTimer(){
-        queueIndicator.setProgress(15);
-        rt = new RotateTransition(Duration.millis(3000), queueTimerHolder);
-        rt.setByAngle(360);
-        rt.setInterpolator(Interpolator.LINEAR);
-        rt.setCycleCount(Animation.INDEFINITE);
-        rt.play();
+        Platform.runLater(() -> {
+            queueIndicator.setProgress(15);
+            rt = new RotateTransition(Duration.millis(3000), queueTimerHolder);
+            rt.setByAngle(360);
+            rt.setInterpolator(Interpolator.LINEAR);
+            rt.setCycleCount(Animation.INDEFINITE);
+            rt.play();});
     }
 
     private void startTimer(double countDownTime){

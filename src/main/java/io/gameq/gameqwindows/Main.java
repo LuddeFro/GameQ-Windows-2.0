@@ -120,6 +120,12 @@ public class Main extends Application {
         this.status = Status.Online;
         this.game = Game.NoGame;
         Platform.runLater(() -> mainView.updateStatus(this.game, this.status, 0));
+        ConnectionHandler.setStatus(((success, error) -> {
+            if (success) {
+                System.out.println("Updated status to online no game");
+            } else {
+            }
+        }), Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(this.status));
 
         popup.removeAll();
 
@@ -158,13 +164,6 @@ public class Main extends Application {
             timer.purge();
             System.exit(0);
         });
-
-        ConnectionHandler.setStatus(((success, error) -> {
-            if (success) {
-                System.out.println("Updated status to online no game");
-            } else {
-            }
-        }), Encoding.getIntFromGame(this.game), Encoding.getIntFromStatus(this.status));
 
         // setup the popup menu for the application.
         userItem.setFont(regularFont);

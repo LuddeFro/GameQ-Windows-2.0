@@ -47,7 +47,7 @@ public class RingProgressIndicator extends ProgressCircleIndicator {
             this.getStyleClass().add("ringindicator");
         }
         else if(i == 2){
-            this.getStylesheets().add(this.getClass().getClassLoader().getResource("ViewControllers/ringprogress.css")
+            this.getStylesheets().add(this.getClass().getClassLoader().getResource("ViewControllers/ringprogress2.css")
                     .toExternalForm());
             this.getStyleClass().add("ringindicator2");
         }
