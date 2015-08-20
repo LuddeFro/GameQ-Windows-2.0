@@ -353,7 +353,7 @@ public class Main extends Application {
                     newGame = Game.LoL;
                 }
 
-                else  if(line.contains("HeroesOfTheStorm_x64.exe") || line.contains(" HeroesOfTheStorm.exe")) {
+                else  if(line.contains("HeroesOfTheStorm_x64.exe") || line.contains("HeroesOfTheStorm.exe")) {
                     newGame = Game.HoTS;
                 }
             }
@@ -391,13 +391,9 @@ public class Main extends Application {
                 detector = new HoTSDetector();
             }
 
-            final boolean finalLeagueIsGame = leagueIsGame;
              one = new Thread() {
                 public void run() {
                     detector.startDetection(Main.this);
-                    if(game == Game.LoL && finalLeagueIsGame){
-                        detector.updateStatus(Status.InGame);
-                    }
                 }
             };
             one.start();
@@ -408,6 +404,13 @@ public class Main extends Application {
                 detector.stopDetection();
                 detector = null;
             }
+        }
+
+        if(game == Game.LoL && leagueIsGame && status != Status.InGame){
+            updateStatus(Status.InGame);
+        }
+        else if(game == Game.LoL && leagueIsGame && status == Status.InGame){
+            updateStatus(Status.InQueue);
         }
     }
 

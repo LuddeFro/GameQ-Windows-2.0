@@ -69,7 +69,6 @@ public abstract class GameDetector {
     }
 
     public void resetDetection() {
-        updateStatus(Status.InLobby);
     }
 
     public void saveMissedDetection(){
