@@ -1,5 +1,6 @@
 package io.gameq.gameqwindows.ViewControllers.MainView;
 
+import io.gameq.gameqwindows.DataHandler.AcceptHandler;
 import io.gameq.gameqwindows.Main;
 import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
@@ -67,7 +68,7 @@ public class MainViewController extends VBox implements Initializable {
     }
 
     public void startButtonClicked(){
-        startQueueTimer();
+        AcceptHandler.acceptMatch(true, 5);
     }
 
     public void stopButtonClicked(){

@@ -32,21 +32,16 @@ public class LoLDetector extends PacketDetector {
     private LinkedList<PacketTimer> gameTimer1 = new LinkedList<>();
     private PacketMap packetCounter1 = new PacketMap(new int[]{1300});
 
-
     private double queueStartTime = -1;
-    private boolean foundServer  = false;
-    private boolean soonGame = false;
 
     @Override
     public void startDetection(Main application) {
         super.startDetection(application);
         setGame(Game.LoL);
-        //self.detector = self
         setCountDownLength(10);
         updateStatus(Status.InLobby);
 
         if(!isCapturing){
-            //new thread?????
             PacketParser.getInstance().start(lolFilter, this);
             isCapturing = true;
         }
@@ -76,10 +71,6 @@ public class LoLDetector extends PacketDetector {
     }
 
     public void resetGameTimer(){
-
-        foundServer = false;
-        soonGame = false;
-
         gameTimer1 = new LinkedList<>();
         packetCounter1 = new PacketMap(new int[]{1300});
         queueStartTime = -1;
@@ -188,7 +179,7 @@ public class LoLDetector extends PacketDetector {
             }
         }
 
-        if((stopQCounter.get(100) > 0 || stopQCounter.get(800) > 0) && (stopDstQCounter.get(300) > 0 ||
+        if((stopQCounter.get(100) > 0 || stopQCounter.get(900) > 0) && (stopDstQCounter.get(300) > 0 ||
                 stopDstQCounter.get(800) > 0) && (stopQTimer.size() >= 2 && stopDstQTimer.size() >= 2))
         {return true;}
         else if((stopQCounter.get(900) > 0 || stopQCounter.get(1100) > 0 || stopQCounter.get(300) > 0) &&

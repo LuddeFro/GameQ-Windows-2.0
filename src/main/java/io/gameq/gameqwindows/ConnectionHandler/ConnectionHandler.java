@@ -93,16 +93,16 @@ public final class ConnectionHandler {
             in.close();
             returnString = response.toString();
 
-            System.out.println(arguments + extension);
+            //System.out.println(arguments + extension);
 
         } catch (MalformedURLException e) {
-            System.out.println("URL Error (MalformedURLException) for " + url );
+            //System.out.println("URL Error (MalformedURLException) for " + url );
         } catch (IOException e) {
-            System.out.println("URL Error (IOException) for " + url );
+            //System.out.println("URL Error (IOException) for " + url );
         }
 
         if (returnString == null) {
-            System.out.println("URL Error (nullResponse) for " + url );
+            //System.out.println("URL Error (nullResponse) for " + url );
             return null;
         } else {
             return returnString;
@@ -142,7 +142,7 @@ public final class ConnectionHandler {
             JSONHolder holder = new JSONHolder();
             public void run() {
                 String response = post("login", "email="+mEmail+"&password="+mPassword + "&push_token=" + ConnectionHandler.loadToken() + deviceString);
-                System.out.println(response);
+                //System.out.println(response);
                 holder.populate(response);
                 if (holder.success) {
                     ConnectionHandler.saveEmail(mEmail);
@@ -242,9 +242,9 @@ public final class ConnectionHandler {
                 String response = post("setStatus", "status="+status + "&game="+ game + "&session_token=" +
                         ConnectionHandler
                                 .sessionToken +"&device_id=" + ConnectionHandler.loadDeviceID());
-                System.out.println("response " + response);
+                //System.out.println("response " + response);
                 holder.populate(response);
-                System.out.println("error: " + holder.error);
+                //System.out.println("error: " + holder.error);
                 if (holder.success && holder.error.equals("accept")) {
                     AcceptHandler.acceptMatch(true, game);
                 } else if (holder.success && holder.error.equals("auto")) {
@@ -253,7 +253,7 @@ public final class ConnectionHandler {
                     } catch(InterruptedException ex) {
                         Thread.currentThread().interrupt();
                     } finally {
-                        System.out.println("I tried");
+                        //System.out.println("I tried");
                         AcceptHandler.acceptMatch(true, game);
                     }
                 } else if (holder.success && holder.error.equals("decline")) {
@@ -322,7 +322,7 @@ public final class ConnectionHandler {
             JSONHolder holder = new JSONHolder();
             public void run() {
                 String response = post("submitFeedback", "feedback="+mFeedback+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
-                System.out.println(response);
+                //System.out.println(response);
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
                 return;
@@ -341,7 +341,7 @@ public final class ConnectionHandler {
             public void run() {
                 String response = post("updatePassword",
                         "email="+mEmail+"&password="+mOldPassword+"&new_password="+mNewPassword+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
-                System.out.println(response);
+                //System.out.println(response);
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
                 return;
@@ -440,7 +440,7 @@ public final class ConnectionHandler {
 
     private static int loadDeviceID() {
         String bajs = preferences.get("device_id", "");
-        // System.out.println("bajs"+bajs);
+        // //System.out.println("bajs"+bajs);
         if(bajs.equals("")){return 0;}
         else{return Integer.parseInt(bajs);}
     }
@@ -460,7 +460,7 @@ public final class ConnectionHandler {
             byte byteData[] = md.digest();
             return bytesToHex(byteData);
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("Error: " + e);
+            //System.out.println("Error: " + e);
             return null;
         }
     }

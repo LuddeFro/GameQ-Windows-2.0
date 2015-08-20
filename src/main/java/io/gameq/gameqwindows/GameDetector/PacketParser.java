@@ -109,13 +109,12 @@ public class PacketParser  {
             public void nextPacket(PcapPacket packet, String user) {
 
                 if (packet.hasHeader(tcp)) {
-                    System.out.print("Found tcp packet");
-                    System.out.print("src: " +  tcp.source());
-                    System.out.print("dst: " +  tcp.destination());
-                    System.out.print("len: " + tcp.getLength()); //PROBABLY WRONG
-                    System.out.println("time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
-                    detector.handle(new Packet(tcp.source(), tcp.destination(), tcp.getLength(), packet
-                            .getCaptureHeader().timestampInMillis()/1000));
+//                    System.out.print("src: " +  tcp.source());
+//                    System.out.print(" dst: " +  tcp.destination());
+//                    System.out.print(" len: " + packet.getCaptureHeader().caplen()); //PROBABLY WRONG
+//                    System.out.println(" time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
+                    detector.handle(new Packet(tcp.source(), tcp.destination(), packet.getCaptureHeader().caplen() -
+                            64, packet.getCaptureHeader().timestampInMillis()/1000.0));
                 }
 
                 else if(packet.hasHeader(udp)){
@@ -124,7 +123,8 @@ public class PacketParser  {
 //                    System.out.print(" dst: " + udp.destination());
 //                    System.out.print(" caplen : " + packet.getCaptureHeader().caplen());
 //                    System.out.println(" time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
-                    detector.handle(new Packet(udp.source(), udp.destination(), packet.getCaptureHeader().caplen(), packet.getCaptureHeader().timestampInMillis()/1000));
+                    detector.handle(new Packet(udp.source(), udp.destination(), packet.getCaptureHeader().caplen(),
+                            packet.getCaptureHeader().timestampInMillis()/1000.0));
                 }
             }
         };

@@ -18,7 +18,7 @@ public abstract class PacketDetector extends GameDetector{
     protected void handle(Packet newPacket) {
         if(newPacket.getPacketLength() > 5){
             System.out.println("src: " + newPacket.getSrcPort() + " dst: " + newPacket.getDstPort() + " len: " +
-                    newPacket.getPacketLength() + " time: " + newPacket.getCaptureTime());
+                    newPacket.getPacketLength() + " time: " +  newPacket.getCaptureTime()/1000.0);
 
             if(getStatus() != Status.InGame){
                 packetQueue.addFirst(newPacket);
@@ -32,7 +32,7 @@ public abstract class PacketDetector extends GameDetector{
 
     protected void handleTest(Packet newPacket) {
         System.out.println("src: " + newPacket.getSrcPort() + " dst: " + newPacket.getDstPort() + " len: " +
-                newPacket.getPacketLength() + " time: " + newPacket.getCaptureTime());
+                newPacket.getPacketLength() + " time: " +   newPacket.getCaptureTime()/1000.0);
         update(newPacket);
     }
 

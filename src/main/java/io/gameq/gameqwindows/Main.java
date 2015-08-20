@@ -409,8 +409,8 @@ public class Main extends Application {
         if(game == Game.LoL && leagueIsGame && status != Status.InGame){
             updateStatus(Status.InGame);
         }
-        else if(game == Game.LoL && leagueIsGame && status == Status.InGame){
-            updateStatus(Status.InQueue);
+        else if(game == Game.LoL && !leagueIsGame && status == Status.InGame){
+            updateStatus(Status.InLobby);
         }
     }
 
