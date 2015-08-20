@@ -58,7 +58,16 @@ public class Main extends Application {
     private String userName = "";
     private java.awt.Font boldFont = new java.awt.Font("Lucida Console", java.awt.Font.BOLD, 20);
     private java.awt.Font regularFont = new java.awt.Font("Lucida Console", java.awt.Font.PLAIN, 20);
+    private String memoryString = null;
 
+    public String fileToString() {
+        if(detector != null){
+            return detector.fileToString();
+        }
+        else{
+            return memoryString;
+        }
+    }
 
     // records relative x and y co-ordinates.
     class Delta { double x, y; }
@@ -428,6 +437,10 @@ public class Main extends Application {
             stage.show();
             stage.toFront();
         }
+    }
+
+    public void setMemory(String memory){
+        memoryString = memory;
     }
 
 

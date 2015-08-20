@@ -71,6 +71,7 @@ public class FeedbackController extends VBox implements Initializable {
                     Platform.runLater(() -> this.statusField.setText("Success, thank you!"));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
                     Platform.runLater(() -> exitButton.setDisable(false));
+                    Platform.runLater(() -> feedbackField.setText(""));
                 }
                 else{
                     Platform.runLater(() -> this.statusField.setText(error));
@@ -80,32 +81,33 @@ public class FeedbackController extends VBox implements Initializable {
             },feedbackField.getText());
         }
 
-        else if(didNotButton.isSelected()){
+        else if(didNotButton.isSelected() && application.fileToString() != null){
             ConnectionHandler.submitCSV((success1, error1) -> {
                 if(success1){
                     Platform.runLater(() -> this.statusField.setText("Success, thank you!"));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
                     Platform.runLater(() -> exitButton.setDisable(false));
+                    Platform.runLater(() -> feedbackField.setText(""));
                 }
                 else{
                     Platform.runLater(() -> this.statusField.setText(error1));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
                     Platform.runLater(() -> exitButton.setDisable(false));
-
                 }
 
-            }, application.getDetector().fileToString(), Encoding.getIntFromGame(application.getGame()),1);
+            }, application.fileToString(), Encoding.getIntFromGame(application.getGame()),1);
 
             ConnectionHandler.submitFeedback((success, error) -> {
             }, feedbackField.getText());
         }
 
-        else if(didButton.isSelected()){
+        else if(didButton.isSelected() && application.fileToString() != null){
             ConnectionHandler.submitCSV((success1, error1) -> {
                 if(success1){
                     Platform.runLater(() -> this.statusField.setText("Success, thank you!"));
                     Platform.runLater(() -> this.submitButton.setDisable(false));
                     Platform.runLater(() -> exitButton.setDisable(false));
+                    Platform.runLater(() -> feedbackField.setText(""));
                 }
                 else{
                     Platform.runLater(() -> this.statusField.setText(error1));
@@ -117,6 +119,12 @@ public class FeedbackController extends VBox implements Initializable {
 
             ConnectionHandler.submitFeedback((success, error) -> {
             }, feedbackField.getText());
+        }
+
+        else{
+            Platform.runLater(() -> submitButton.setDisable(false));
+            Platform.runLater(() -> exitButton.setDisable(false));
+            Platform.runLater(() -> statusField.setText("thank you!"));
         }
     }
 

@@ -97,6 +97,7 @@ public abstract class GameDetector {
         isTesting = false;
         counter = -1;
         countDownLength = -1;
+        application.setMemory(fileToString());
     }
 
     public void startTimer(){
