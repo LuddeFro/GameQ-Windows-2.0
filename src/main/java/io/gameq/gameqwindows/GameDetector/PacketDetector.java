@@ -48,6 +48,12 @@ public abstract class PacketDetector extends GameDetector{
     }
 
     @Override
+    public void stopDetection(){
+        PacketParser.getInstance().terminate();
+        super.stopDetection();
+    }
+
+    @Override
      public void saveDetection(){
         super.saveDetection();
         packetQueue = new LinkedList<>();

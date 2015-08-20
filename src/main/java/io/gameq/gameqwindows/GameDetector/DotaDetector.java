@@ -51,12 +51,10 @@ public class DotaDetector extends PacketDetector {
     public void startDetection(Main application) {
         super.startDetection(application);
         setGame(Game.Dota2);
-        //self.detector = self
         setCountDownLength(45);
         updateStatus(Status.InLobby);
 
         if(!isCapturing){
-            //new thread?????
             PacketParser.getInstance().start(dotaFilter, this);
             isCapturing = true;
         }

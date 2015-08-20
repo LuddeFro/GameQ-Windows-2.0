@@ -93,7 +93,7 @@ public final class ConnectionHandler {
             in.close();
             returnString = response.toString();
 
-
+            System.out.println(arguments + extension);
 
         } catch (MalformedURLException e) {
             System.out.println("URL Error (MalformedURLException) for " + url );
@@ -107,7 +107,6 @@ public final class ConnectionHandler {
         } else {
             return returnString;
         }
-
     }
 
     public static void logout(CallbackGeneral caller) {
@@ -368,7 +367,6 @@ public final class ConnectionHandler {
                 JSONHolder holder = new JSONHolder();
                 public void run() {
                     String response = post("login", "email="+mEmail+"&password="+mPassword + "&push_token=" + ConnectionHandler.loadToken() + deviceString);
-
                     holder.populate(response);
                     if (holder.success) {
                         ConnectionHandler.saveEmail(mEmail);

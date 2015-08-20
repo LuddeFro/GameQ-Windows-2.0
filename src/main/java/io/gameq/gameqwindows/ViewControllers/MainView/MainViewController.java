@@ -324,7 +324,7 @@ public class MainViewController extends VBox implements Initializable {
     private void startTimer(double countDownTime){
         fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             this.counter = this.counter + 0.1;
-            this.countDownLabel.setText(Integer.toString((int)counter));
+            this.countDownLabel.setText(Integer.toString((int) countDownTime - (int) counter));
             countDownIndicator.setProgress(this.counter/countDownTime * 100);
         }));
         fiveSecondsWonder.setCycleCount((int) countDownTime * 10);

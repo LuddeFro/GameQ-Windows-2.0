@@ -42,8 +42,7 @@ public class CSGODetector extends PacketDetector {
     @Override
     public void startDetection(Main application) {
         super.startDetection(application);
-        setGame(Game.Dota2);
-        //self.detector = self
+        setGame(Game.CSGO);
         setCountDownLength(20);
         updateStatus(Status.InQueue);
 

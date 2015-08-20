@@ -18,8 +18,7 @@ public class HoNDetector extends PacketDetector {
     @Override
     public void startDetection(Main application) {
         super.startDetection(application);
-        setGame(Game.Dota2);
-        //self.detector = self
+        setGame(Game.HoN);
         setCountDownLength(10);
         updateStatus(Status.InQueue);
 

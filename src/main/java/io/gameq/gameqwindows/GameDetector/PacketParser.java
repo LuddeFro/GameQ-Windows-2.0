@@ -144,7 +144,9 @@ public class PacketParser  {
 
     public void terminate(){
         if (pcap != null) {
+            pcap.breakloop();
             pcap.close();
+            PacketParser.instance = null;
         }
     }
 }

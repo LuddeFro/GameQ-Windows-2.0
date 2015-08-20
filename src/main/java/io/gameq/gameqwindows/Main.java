@@ -57,6 +57,7 @@ public class Main extends Application {
     private java.awt.Font boldFont = new java.awt.Font("Lucida Console", java.awt.Font.BOLD, 20);
     private java.awt.Font regularFont = new java.awt.Font("Lucida Console", java.awt.Font.PLAIN, 20);
     private String memoryString = null;
+    private Thread one = null;
 
     public String fileToString() {
         if(detector != null){
@@ -367,9 +368,10 @@ public class Main extends Application {
 
         if (game != newGame && newGame != Game.NoGame){
             this.game = newGame;
-            if (detector != null){
+            if (one != null && detector != null){
                 detector.stopDetection();
                 detector = null;
+                one = null;
             }
 
             if(game == Game.Dota2){
@@ -390,7 +392,7 @@ public class Main extends Application {
             }
 
             final boolean finalLeagueIsGame = leagueIsGame;
-            Thread one = new Thread() {
+             one = new Thread() {
                 public void run() {
                     detector.startDetection(Main.this);
                     if(game == Game.LoL && finalLeagueIsGame){
@@ -401,9 +403,9 @@ public class Main extends Application {
             one.start();
         }
         else if(game != newGame && newGame == Game.NoGame){
+            this.game = Game.NoGame;
             if (detector != null){
                 detector.stopDetection();
-                this.game = Game.NoGame;
                 detector = null;
             }
         }
