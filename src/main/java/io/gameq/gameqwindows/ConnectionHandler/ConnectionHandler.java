@@ -40,14 +40,14 @@ public final class ConnectionHandler {
     static {
         byte rawKey[] = new byte[0];
         try {
-            String s = ConnectionHandler.class.getResource("").getPath();
-            File f = new File(String.valueOf(ConnectionHandler.class.getResource("/asdasd")));
-            if(f.exists() && !f.isDirectory()) {
-                rawKey = Util.readFile(String.valueOf(ConnectionHandler.class.getResource("/asdasd")));
+            String s = String.valueOf(Main.class.getResource("").getPath());
+            File f = new File(String.valueOf(ConnectionHandler.class.getResource("").getPath()) + "/asdasd");
+            if(f != null && (f.exists() && !f.isDirectory())) {
+                rawKey = Util.readFile(String.valueOf(ConnectionHandler.class.getResource("").getPath()) + "/asdasd");
             }
             else{
-                GenerateKey.generateKey(String.valueOf(ConnectionHandler.class.getResource("/asdasd")));
-                rawKey = Util.readFile(String.valueOf(ConnectionHandler.class.getResource("/asdasd")));
+                GenerateKey.generateKey(String.valueOf(ConnectionHandler.class.getResource("").getPath()) + "/asdasd");
+                rawKey = Util.readFile(String.valueOf(ConnectionHandler.class.getResource("").getPath()) + "/asdasd");
             }
             DESKeySpec dks = new DESKeySpec( rawKey );
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm);

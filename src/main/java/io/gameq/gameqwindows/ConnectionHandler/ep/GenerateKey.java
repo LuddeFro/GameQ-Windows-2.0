@@ -11,8 +11,8 @@ import java.security.SecureRandom;
 
 public class GenerateKey
 {
-  public static void generateKey(String s) throws Exception {
-    String keyFilename = String.valueOf(s);
+  public static void generateKey(String path) throws Exception {
+    String keyFilename = String.valueOf(path);
     String algorithm = "DES";
 
     // Generate the key

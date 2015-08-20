@@ -1,8 +1,7 @@
 package io.gameq.gameqwindows;
 
 import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
-import io.gameq.gameqwindows.GameDetector.DotaDetector;
-import io.gameq.gameqwindows.GameDetector.GameDetector;
+import io.gameq.gameqwindows.GameDetector.*;
 import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
@@ -345,6 +344,21 @@ public class Main extends Application {
                 if(line.contains("dota.exe")){
                     newGame = Game.Dota2;
                 }
+                else  if(line.contains("hon.exe")) {
+                    newGame = Game.HoN;
+                }
+
+                else  if(line.contains("dota.exe")) {
+
+                }
+
+                else  if(line.contains("dota.exe")) {
+
+                }
+
+                else  if(line.contains("dota.exe")) {
+
+                }
             }
             if(newGame == null){
                 newGame = Game.NoGame;
@@ -356,7 +370,28 @@ public class Main extends Application {
 
         if (game != newGame && newGame != Game.NoGame){
             this.game = newGame;
-            detector = new DotaDetector();
+            if (detector != null){
+                detector.stopDetection();
+                detector = null;
+            }
+
+            if(game == Game.Dota2){
+                detector = new DotaDetector();
+            }
+            else if(game == Game.LoL){
+                detector = new LoLDetector();
+            }
+            else if(game == Game.CSGO){
+                detector = new LoLDetector();
+            }
+            else if(game == Game.HoN){
+                detector = new HoNDetector();
+
+            }
+            else if(game == Game.HoTS){
+                detector = new HoTSDetector();
+            }
+
             Thread one = new Thread() {
                 public void run() {
                     detector.startDetection(Main.this);
