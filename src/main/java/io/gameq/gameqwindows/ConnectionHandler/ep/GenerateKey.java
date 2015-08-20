@@ -21,7 +21,8 @@ public class GenerateKey
     kg.init( sr );
     SecretKey key = kg.generateKey();
 
+    System.out.println(path);
     // Save the raw key bytes in a file
-    Util.writeFile( keyFilename, key.getEncoded() );
+    Util.writeFile(keyFilename, key.getEncoded());
   }
 }

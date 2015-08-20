@@ -5,7 +5,6 @@ import io.gameq.gameqwindows.GameDetector.*;
 import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
-import io.gameq.gameqwindows.Updater.LoadDll;
 import io.gameq.gameqwindows.Updater.WinSparkleDLL;
 import io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController;
 import io.gameq.gameqwindows.ViewControllers.MainView.MainViewController;
@@ -75,6 +74,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+
+            String bajs = System.getProperty("sun.arch.data.model").equals("64") ? "WinSparkle64" : "WinSparkle32";
             System.loadLibrary("jnetpcap");
             WinSparkleDLL winSparkleDLL = WinSparkleDLL.INSTANCE;
             winSparkleDLL.win_sparkle_set_appcast_url("http://www.gameq.io/app/windows/appcast.xml");
@@ -82,7 +83,7 @@ public class Main extends Application {
             winSparkleDLL.win_sparkle_set_automatic_check_for_updates(1);
             winSparkleDLL.win_sparkle_set_update_check_interval(3600 * 24);
             winSparkleDLL.win_sparkle_init();
-            winSparkleDLL.win_sparkle_check_update_with_ui();
+            winSparkleDLL.win_sparkle_check_update_without_ui();
 //            //TODO somth with cleanup
 
             stage = primaryStage;

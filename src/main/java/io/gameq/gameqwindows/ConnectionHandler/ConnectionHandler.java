@@ -5,6 +5,7 @@ import io.gameq.gameqwindows.ConnectionHandler.ep.GenerateKey;
 import io.gameq.gameqwindows.ConnectionHandler.ep.Util;
 import io.gameq.gameqwindows.DataHandler.AcceptHandler;
 import io.gameq.gameqwindows.Main;
+import  org.apache.commons.io.*;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -40,15 +41,9 @@ public final class ConnectionHandler {
     static {
         byte rawKey[] = new byte[0];
         try {
-            String s = String.valueOf(Main.class.getResource("").getPath());
-            File f = new File(String.valueOf(ConnectionHandler.class.getResource("").getPath()) + "/asdasd");
-            if(f != null && (f.exists() && !f.isDirectory())) {
-                rawKey = Util.readFile(String.valueOf(ConnectionHandler.class.getResource("").getPath()) + "/asdasd");
-            }
-            else{
-                GenerateKey.generateKey(String.valueOf(ConnectionHandler.class.getResource("").getPath()) + "/asdasd");
-                rawKey = Util.readFile(String.valueOf(ConnectionHandler.class.getResource("").getPath()) + "/asdasd");
-            }
+            InputStream is = Main.class.getClassLoader().getResourceAsStream("asdasd");
+            byte[] bytes = IOUtils.toByteArray(is);
+            rawKey = bytes;
             DESKeySpec dks = new DESKeySpec( rawKey );
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm);
             SecretKey secretKey = keyFactory.generateSecret(dks);

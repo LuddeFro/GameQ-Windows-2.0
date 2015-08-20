@@ -9,7 +9,9 @@ import com.sun.jna.Native;
  */
 
 public interface WinSparkleDLL extends Library {
-    WinSparkleDLL INSTANCE = (WinSparkleDLL) Native.loadLibrary("WinSparkle", WinSparkleDLL.class);
+    WinSparkleDLL INSTANCE = (WinSparkleDLL) Native.loadLibrary(
+            (System.getProperty("sun.arch.data.model").equals("64") ? "WinSparkle64" : "WinSparkle32"),
+    WinSparkleDLL.class);
 
     //win_sparkle_init()
     void win_sparkle_init();
