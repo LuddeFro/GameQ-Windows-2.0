@@ -323,6 +323,7 @@ public class Main extends Application {
     // Lots of games to add
     private void update(){
         Game newGame = null;
+        boolean leagueIsGame = false;
         try {
             String line;
             Process p = Runtime.getRuntime().exec
@@ -337,24 +338,27 @@ public class Main extends Application {
                     newGame = Game.HoN;
                 }
 
-                else  if(line.contains("L.exe")) {
-
+                else  if(line.contains("csgo.exe")) {
+                    newGame = Game.CSGO;
                 }
 
-                else  if(line.contains("dota.exe")) {
-
+                else  if(line.contains("LolClient.exe")) {
+                    leagueIsGame = false;
+                    newGame = Game.LoL;
                 }
 
-                else  if(line.contains("dota.exe")) {
-
+                else  if(line.contains("League of Legends.exe")) {
+                    leagueIsGame = true;
+                    newGame = Game.LoL;
                 }
 
-                else  if(line.contains("dota.exe")) {
-
+                else  if(line.contains("HeroesOfTheStorm_x64.exe") || line.contains(" HeroesOfTheStorm.exe")) {
+                    newGame = Game.HoTS;
                 }
             }
             if(newGame == null){
                 newGame = Game.NoGame;
+                leagueIsGame = false;
             }
             input.close();
         } catch (Exception err) {
@@ -385,9 +389,13 @@ public class Main extends Application {
                 detector = new HoTSDetector();
             }
 
+            final boolean finalLeagueIsGame = leagueIsGame;
             Thread one = new Thread() {
                 public void run() {
                     detector.startDetection(Main.this);
+                    if(game == Game.LoL && finalLeagueIsGame){
+                        detector.updateStatus(Status.InGame);
+                    }
                 }
             };
             one.start();
