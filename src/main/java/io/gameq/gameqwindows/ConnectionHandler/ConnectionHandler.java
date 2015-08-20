@@ -1,8 +1,11 @@
 package io.gameq.gameqwindows.ConnectionHandler;
 
 import io.gameq.gameqwindows.ConnectionHandler.ep.EncryptedPreferences;
+import io.gameq.gameqwindows.ConnectionHandler.ep.GenerateKey;
 import io.gameq.gameqwindows.ConnectionHandler.ep.Util;
 import io.gameq.gameqwindows.DataHandler.AcceptHandler;
+import io.gameq.gameqwindows.Main;
+
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
@@ -23,7 +26,6 @@ import java.util.prefs.Preferences;
  * Copyright GameQ AB 2015
  */
 public final class ConnectionHandler {
-
     private static ConnectionHandler instance = null;
     private static String TAG = "GAMEQ";
     private static String sessionToken = "";
@@ -38,7 +40,15 @@ public final class ConnectionHandler {
     static {
         byte rawKey[] = new byte[0];
         try {
-            rawKey = Util.readFile("C:\\Users\\fabianwikstrom\\IdeaProjects\\GameQ-Windows-2.1\\src\\main\\resources\\key");
+            String s = ConnectionHandler.class.getResource("").getPath();
+            File f = new File(String.valueOf(ConnectionHandler.class.getResource("/asdasd")));
+            if(f.exists() && !f.isDirectory()) {
+                rawKey = Util.readFile(String.valueOf(ConnectionHandler.class.getResource("/asdasd")));
+            }
+            else{
+                GenerateKey.generateKey(String.valueOf(ConnectionHandler.class.getResource("/asdasd")));
+                rawKey = Util.readFile(String.valueOf(ConnectionHandler.class.getResource("/asdasd")));
+            }
             DESKeySpec dks = new DESKeySpec( rawKey );
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm);
             SecretKey secretKey = keyFactory.generateSecret(dks);
@@ -240,7 +250,7 @@ public final class ConnectionHandler {
                                 .sessionToken +"&device_id=" + ConnectionHandler.loadDeviceID());
                 System.out.println("response " + response);
                 holder.populate(response);
-               System.out.println("error: " + holder.error);
+                System.out.println("error: " + holder.error);
                 if (holder.success && holder.error.equals("accept")) {
                     AcceptHandler.acceptMatch(true, game);
                 } else if (holder.success && holder.error.equals("auto")) {
@@ -253,9 +263,9 @@ public final class ConnectionHandler {
                         AcceptHandler.acceptMatch(true, game);
                     }
                 } else if (holder.success && holder.error.equals("decline")) {
-					AcceptHandler.acceptMatch(false, game);
-				}
-				
+                    AcceptHandler.acceptMatch(false, game);
+                }
+
                 mCaller.callback(holder.success, holder.error);
             }
         };

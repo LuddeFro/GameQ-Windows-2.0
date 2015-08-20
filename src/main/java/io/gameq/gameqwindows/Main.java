@@ -326,7 +326,6 @@ public class Main extends Application {
     // Lots of games to add
     private void update(){
         Game newGame = null;
-        System.out.println("vafan");
         try {
             String line;
             Process p = Runtime.getRuntime().exec
@@ -346,12 +345,15 @@ public class Main extends Application {
             // err.printStackTrace();
         }
 
-        System.out.println(Encoding.getStringFromGame(newGame));
-
         if (game != newGame && newGame != Game.NoGame){
-            detector = new DotaDetector();
             this.game = newGame;
-            detector.startDetection(this);
+            detector = new DotaDetector();
+            Thread one = new Thread() {
+                public void run() {
+                    detector.startDetection(Main.this);
+                }
+            };
+            one.start();
         }
         else if(game != newGame && newGame == Game.NoGame){
             if (detector != null){
