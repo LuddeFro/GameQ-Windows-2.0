@@ -74,18 +74,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-
-            String bajs = System.getProperty("sun.arch.data.model").equals("64") ? "WinSparkle64" : "WinSparkle32";
-            System.loadLibrary("jnetpcap");
-            WinSparkleDLL winSparkleDLL = WinSparkleDLL.INSTANCE;
-            winSparkleDLL.win_sparkle_set_appcast_url("http://www.gameq.io/app/windows/appcast.xml");
-            winSparkleDLL.win_sparkle_set_app_details("GameQ AB", "GameQ Windows", "1.0");
-            winSparkleDLL.win_sparkle_set_automatic_check_for_updates(1);
-            winSparkleDLL.win_sparkle_set_update_check_interval(3600 * 24);
-            winSparkleDLL.win_sparkle_init();
-            winSparkleDLL.win_sparkle_check_update_without_ui();
-//            //TODO somth with cleanup
-
             stage = primaryStage;
             stage.setTitle("GameQ");
             stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
@@ -342,11 +330,15 @@ public class Main extends Application {
             BufferedReader input =
                     new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
-                if(line.contains("dota.exe")){
+                if(line.contains("dota.exe") || line.contains("dota2.exe")){
                     newGame = Game.Dota2;
                 }
                 else  if(line.contains("hon.exe")) {
                     newGame = Game.HoN;
+                }
+
+                else  if(line.contains("L.exe")) {
+
                 }
 
                 else  if(line.contains("dota.exe")) {

@@ -28,7 +28,19 @@ public class JSONHolder {
         String oJsonString = jsonString;
         if (jsonString == null) {
             jsonString = "";
+            success = false;
+            error = "Could not connenct to server";
+            status = 0;
+            game = 0;
+            accept_before = 0;
+            device_id = 0;
+            session_token = "";
+            current_version = "";
+            download_link = "";
+            time = System.currentTimeMillis() / 1000L;
+            return;
         }
+
         JsonElement jelement = new JsonParser().parse(jsonString);
         JsonObject jObject = jelement.getAsJsonObject();
 
