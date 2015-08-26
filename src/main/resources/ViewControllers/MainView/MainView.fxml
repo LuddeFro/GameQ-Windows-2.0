@@ -22,7 +22,7 @@
                 <Button fx:id="saveButton" layoutX="9.0" layoutY="235.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
                 <Button fx:id="saveMissed" layoutX="16.0" layoutY="141.0" mnemonicParsing="false" onAction="#saveMissedButtonClicked" prefHeight="39.0" prefWidth="89.0" text="missed" />
                 <Button fx:id="failModeButton" layoutX="12.0" layoutY="86.0" mnemonicParsing="false" onAction="#failModeButtonClicked" text="FailMode" />
-            <StackPane fx:id="timerHolder" layoutX="157.0" layoutY="200.0" maxHeight="200.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" styleClass="tab-pane-stack" AnchorPane.bottomAnchor="170.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="230.0">
+            <StackPane fx:id="timerHolder" layoutX="157.0" layoutY="200.0" maxHeight="200.0" maxWidth="200.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" styleClass="tab-pane-stack" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="255.0">
                <children>
                   <Label fx:id="countDownLabel" alignment="CENTER" prefHeight="80.0" prefWidth="80.0" />
                   <StackPane fx:id="queueTimerHolder" prefHeight="150.0" prefWidth="200.0">
@@ -31,11 +31,11 @@
                      </StackPane.margin>
                   </StackPane>
                </children></StackPane>
-            <Label fx:id="statusLabel" alignment="CENTER" layoutX="50.0" layoutY="520.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" prefHeight="50.0" prefWidth="400.0" text="Status" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+            <Label fx:id="statusLabel" alignment="CENTER" layoutX="50.0" layoutY="520.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" prefHeight="50.0" prefWidth="400.0" text="Status" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
                <font>
                   <Font size="24.0" />
                </font></Label>
-            <Label fx:id="gameLabel" alignment="CENTER" layoutX="50.0" layoutY="560.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" prefHeight="50.0" prefWidth="400.0" text="Game" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+            <Label fx:id="gameLabel" alignment="CENTER" layoutX="50.0" layoutY="560.0" maxHeight="50.0" maxWidth="400.0" minHeight="50.0" minWidth="400.0" prefHeight="50.0" prefWidth="400.0" text="Game" textFill="WHITE" AnchorPane.bottomAnchor="-25.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
                <font>
                   <Font size="24.0" />
                </font></Label>
@@ -64,10 +64,10 @@
                   <Image url="@../../images/windows-min.png" />
                </image>
             </ImageView>
-            <Rectangle fill="#7dbae3" height="40.0" layoutX="80.0" layoutY="70.0" stroke="#7dbae3" strokeType="INSIDE" width="5.0" AnchorPane.bottomAnchor="385.0" AnchorPane.leftAnchor="247.5" AnchorPane.topAnchor="175.0" />
-            <Rectangle fill="#7dbae3" height="40.0" layoutX="245.0" layoutY="430.0" stroke="#7dbae3" strokeType="INSIDE" width="5.0" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="247.5" />
-            <Rectangle fill="#7dbae3" height="5.0" layoutX="364.0" layoutY="328.0" stroke="#7dbae3" strokeType="INSIDE" width="40.0" AnchorPane.bottomAnchor="267.0" AnchorPane.rightAnchor="96.0" AnchorPane.topAnchor="328.0" />
-            <Rectangle fill="#7dbae3" height="5.0" layoutX="110.0" layoutY="331.0" stroke="#7dbae3" strokeType="INSIDE" width="40.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="328.0" />
+            <Rectangle fill="#7dbae3" height="40.0" layoutX="80.0" layoutY="70.0" stroke="#7dbae3" strokeType="INSIDE" width="5.0" AnchorPane.leftAnchor="247.5" AnchorPane.topAnchor="200.0" />
+            <Rectangle fill="#7dbae3" height="40.0" layoutX="245.0" layoutY="430.0" stroke="#7dbae3" strokeType="INSIDE" width="5.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="247.5" />
+            <Rectangle fill="#7dbae3" height="5.0" layoutX="364.0" layoutY="328.0" stroke="#7dbae3" strokeType="INSIDE" width="40.0" AnchorPane.rightAnchor="96.0" AnchorPane.topAnchor="353.0" />
+            <Rectangle fill="#7dbae3" height="5.0" layoutX="110.0" layoutY="331.0" stroke="#7dbae3" strokeType="INSIDE" width="40.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="353.0" />
             </children>
         </AnchorPane>
     </children>

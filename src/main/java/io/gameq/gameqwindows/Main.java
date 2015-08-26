@@ -100,8 +100,6 @@ public class Main extends Application {
             // sets up the tray icon (using awt code run on the swing thread).
             javax.swing.SwingUtilities.invokeLater(this::addAppToTray);
 
-            //TODO Login without internet
-
             ConnectionHandler.loginWithRememberedDetails((success, error) -> {
                 if (success) {
                     Platform.runLater(this::gotoMainView);

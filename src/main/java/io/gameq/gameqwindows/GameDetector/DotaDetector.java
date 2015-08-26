@@ -26,10 +26,13 @@ public class DotaDetector extends PacketDetector {
     private PacketMap srcQCounter = new PacketMap(new int[]{78,158,270,285});
 
     private LinkedList<PacketTimer> dstQTimer = new LinkedList<>();
-    private PacketMap dstQCounter = new PacketMap(new int[]{126,142,174,222});
+    private PacketMap dstQCounter = new PacketMap(new int[]{78, 126, 174, 222});
 
     private LinkedList<PacketTimer> stopQTimer = new LinkedList<>();
     private PacketMap stopQCounter = new PacketMap(new int[]{78,250});
+
+    private LinkedList<PacketTimer> stopDstQTimer = new LinkedList<>();
+    private PacketMap stopDstQCounter = new PacketMap(new int[]{142, 174, 206, 250});
 
     private LinkedList<PacketTimer> gameTimer1 = new LinkedList<>();
     private PacketMap packetCounter1 = new PacketMap(new int[]{600, 700, 800, 900, 1000, 1100, 1200, 1300});
@@ -98,11 +101,13 @@ public class DotaDetector extends PacketDetector {
 
         queuePort = -1;
         srcQTimer = new LinkedList<>();
-        srcQCounter = new PacketMap(new int[]{78,158,270,285});
+        srcQCounter =new PacketMap(new int[]{78,158,270,285});
         dstQTimer = new LinkedList<>();
-        dstQCounter = new PacketMap(new int[]{126,142,174,222});
+        dstQCounter =  new PacketMap(new int[]{78, 126, 174, 222});
         stopQTimer = new LinkedList<>();
         stopQCounter =  new PacketMap(new int[]{78,250});
+        stopDstQTimer = new LinkedList<>();
+        stopDstQCounter = new PacketMap(new int[]{142, 174, 206, 250});
     }
 
     private void resetGameTimer(){
@@ -148,7 +153,7 @@ public class DotaDetector extends PacketDetector {
 
             boolean inGame = isInGame(newPacket, 5, 30);
             boolean gameReady = isGameReady(newPacket);
-            boolean startedQueueing = queueStarted(newPacket, 30,5, 2);
+            boolean startedQueueing = queueStarted(newPacket, 2,5, 2);
 
             if(inGame){updateStatus(Status.InGame);}
             else if(gameReady){updateStatus(Status.GameReady);}
@@ -218,62 +223,32 @@ public class DotaDetector extends PacketDetector {
 //        srcQCounter.printMap();
 //        dstQCounter.printMap();
 
-        //bad coode here yo
-        if(srcQCounter.get(78) > 0 && srcQCounter.get(158) > 0
-                || (dstQCounter.get(174) > 0 && srcQCounter.get(78) > 0 && (srcQCounter.get(270) > 0 || srcQCounter.get(285) > 0 ))){
-
-            srcQTimer.add(new PacketTimer(158, p.getCaptureTime()));
-            srcQCounter.put(158, srcQCounter.get(158) + 1);
-
-            srcQTimer.add(new PacketTimer(78, p.getCaptureTime()));
-            srcQCounter.put(78, srcQCounter.get(78) + 1);
-
-            dstQTimer.add(new PacketTimer(126, p.getCaptureTime()));
-            dstQCounter.put(126, dstQCounter.get(126) + 1);
-
-            dstQTimer.add(new PacketTimer(142, p.getCaptureTime()));
-            dstQCounter.put(142, dstQCounter.get(142) + 1);
-
-            return true;
-        }
+        if(dstQCounter.get(174) >= 1 && (srcQCounter.get(270) >= 1 || srcQCounter.get(285) >= 1 ) &&
+                (srcQCounter.get(78) >= 1 ||
+                dstQCounter.get(78) >= 1) && (dstQCounter.get(174) + dstQCounter.get(222) >= 2))
+        {return true;}
+        else if(srcQCounter.get(78) >= 1 && dstQCounter.get(78) >= 1 && dstQCounter.get(174) >= 1 &&
+                dstQCounter.get(222) >= 1 &&
+                dstQCounter.get(126) >= 1){return true;}
+        else if(srcQCounter.get(78) >= 2 && dstQCounter.get(78) >= 1 && dstQCounter.get(222) >= 1 &&
+                dstQCounter.get(126) >= 1)
+        {return true;}
         else {return false;}
     }
 
 
     private boolean isStillQueueing(Packet p, int timeSpan, int maxPacket, int packetNumber) {
 
-        while(!srcQTimer.isEmpty() && p.getCaptureTime() - srcQTimer.getLast().getTime() > timeSpan){
-            int key = srcQTimer.removeLast().getKey();
-            srcQCounter.put(key, srcQCounter.get(key) - 1);
-        }
-
-        while(!dstQTimer.isEmpty() && p.getCaptureTime() - dstQTimer.getLast().getTime() > timeSpan){
-            int key = dstQTimer.removeLast().getKey();
-            dstQCounter.put(key, dstQCounter.get(key) -1);
-        }
-
-
         while(!stopQTimer.isEmpty() && p.getCaptureTime() - stopQTimer.getLast().getTime() > timeSpan){
             int key = stopQTimer.removeLast().getKey();
             stopQCounter.put(key, stopQCounter.get(key) -1);
         }
 
-
-        for (int key : srcQCounter.keySet()){
-            if((p.getPacketLength() <= key + maxPacket && p.getPacketLength() >= key)
-                    && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
-                srcQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
-                srcQCounter.put(key, srcQCounter.get(key) + 1);
-            }
+        while(!stopDstQTimer.isEmpty() && p.getCaptureTime() - stopDstQTimer.getLast().getTime() > timeSpan){
+            int key = stopDstQTimer.removeLast().getKey();
+            stopDstQCounter.put(key, stopDstQCounter.get(key) -1);
         }
 
-        for (int key : dstQCounter.keySet()){
-            if((p.getPacketLength() <= key + maxPacket && p.getPacketLength() >= key)
-                    && p.getDstPort() <= portMax && p.getDstPort() >= portMin){
-                dstQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
-                dstQCounter.put(key, dstQCounter.get(key) + 1);
-            }
-        }
 
         if(p.getPacketLength() <= 250 + 50 && p.getPacketLength() >= 250
                 && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
@@ -287,15 +262,31 @@ public class DotaDetector extends PacketDetector {
         }
 
 
+        for (int key : stopQCounter.keySet()){
+            if((p.getPacketLength() <= key + 10 && p.getPacketLength() >= key)
+                    && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
+                stopQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                stopQCounter.put(key, stopQCounter.get(key) + 1);
+            }
+        }
+
+        for (int key : stopDstQCounter.keySet()){
+            if((p.getPacketLength() <= key + 10 && p.getPacketLength() >= key)
+                    && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
+                stopDstQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                stopDstQCounter.put(key, stopDstQCounter.get(key) + 1);
+            }
+        }
+
 
         if(isProbablyGame){return true;}
-        if(stopQCounter.get(78) > 1 && stopQCounter.get(250) > 0){return false;}
-        //else if(srcQueueCounter[78] > 0 && srcQueueCounter[158] > 0 || isProbablyGame){return true}
-        if((srcQCounter.get(78) + srcQCounter.get(158) + dstQCounter.get(126) + dstQCounter.get(142) > 2)
-                && ((srcQCounter.get(78) > 0 && srcQCounter.get(78)  > 0 &&
-                ( dstQCounter.get(126) > 0 ||  dstQCounter.get(142)  > 0))))
-        {return true;}
-        else {return false;}
+        if(stopQCounter.get(250) >= 1 && stopDstQCounter.get(142) >= 1 && (stopDstQCounter.get(174) >= 1 ||
+                stopDstQCounter.get(206) >= 1)){return false;}
+        else if(stopQCounter.get(250) >= 1 && stopDstQCounter.get(142) >= 1 && stopDstQCounter.get(206) >= 1){return
+                false;}
+        else if(stopQCounter.get(78) >= 2 && stopDstQCounter.get(142) >= 1 && stopDstQCounter.get(206) >= 1){return
+                false;}
+        else {return true;}
     }
 
 
@@ -372,22 +363,22 @@ public class DotaDetector extends PacketDetector {
             inGameTimer.addFirst(new PacketTimer(port, p.getCaptureTime()));
             if(inGamePacketCounter.get(port) == null){inGamePacketCounter.put(port, 1);}
             else {inGamePacketCounter.put(port, inGamePacketCounter.get(port) + 1);}
-            }
+        }
 
-            while(!inGameTimer.isEmpty() && p.getCaptureTime() - inGameTimer.getLast().getTime() > timeSpan || inGameTimer.size() >= inGameMaxSize){
-                int key = inGameTimer.removeLast().getKey();
-                inGamePacketCounter.put(key, inGamePacketCounter.get(key) - 1);
-            }
+        while(!inGameTimer.isEmpty() && p.getCaptureTime() - inGameTimer.getLast().getTime() > timeSpan || inGameTimer.size() >= inGameMaxSize){
+            int key = inGameTimer.removeLast().getKey();
+            inGamePacketCounter.put(key, inGamePacketCounter.get(key) - 1);
+        }
 
-            int maxNumber = 0;
+        int maxNumber = 0;
 
-            for(int key : inGamePacketCounter.keySet()){
-                maxNumber = Math.max(maxNumber, inGamePacketCounter.get(key));
-            }
+        for(int key : inGamePacketCounter.keySet()){
+            maxNumber = Math.max(maxNumber, inGamePacketCounter.get(key));
+        }
 
-            //    println(inGamePacketCounter)
-            //    println(maxNumber)
-            //    println(inGameTimer.count)
+        //    println(inGamePacketCounter)
+        //    println(maxNumber)
+        //    println(inGameTimer.count)
         return maxNumber > 70;
     }
 }
