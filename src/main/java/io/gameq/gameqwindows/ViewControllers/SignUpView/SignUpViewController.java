@@ -73,8 +73,7 @@ public class SignUpViewController extends VBox implements Initializable {
     public void processSignUp() {
         if (application == null) {
         }
-        //TODO check for email password error
-        else if (true) {
+        else if (pwField1.getText().equals(pwField2.getText())) {
             Platform.runLater(() -> signUpButton.setDisable(true));
             Platform.runLater(() -> backButton.setDisable(true));
             Platform.runLater(() -> statusLabel.setText("Creating Account..."));
@@ -84,8 +83,7 @@ public class SignUpViewController extends VBox implements Initializable {
                     Platform.runLater(() -> backButton.setDisable(false));
                     Platform.runLater(() -> statusLabel.setText("Success!"));
                     Platform.runLater(application::gotoMainView);
-                    //TODO ADd later
-                    //didLogin();
+                    application.didLogin();
                     application.setUserName(emailField.getText());
                 } else {
                     Platform.runLater(() -> signUpButton.setDisable(false));
@@ -97,10 +95,10 @@ public class SignUpViewController extends VBox implements Initializable {
             ConnectionHandler.login((success, error) -> {
 
             }, "asd", "asd");
-
-
         } else {
-            //TODO format error message
+            Platform.runLater(() -> statusLabel.setText("Password are not the same"));
+            Platform.runLater(() -> pwField1.setText(""));
+            Platform.runLater(() -> pwField2.setText(""));
         }
     }
 }

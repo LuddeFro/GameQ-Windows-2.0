@@ -89,8 +89,7 @@ public class LoginViewController extends VBox implements Initializable {
             if (application == null){
                 System.out.println("Error no application");
             }
-            //TODO check for email password error
-            else if(true) {
+            else {
                 Platform.runLater(() -> loginButton.setDisable(true));
                 Platform.runLater(() -> signUp.setDisable(true));
                 Platform.runLater(() -> exitButton.setDisable(true));
@@ -118,40 +117,32 @@ public class LoginViewController extends VBox implements Initializable {
                     }
                 }, emailField.getText(), passwordField.getText());
             }
-            else{
-                //TODO format error message
-            }}
+        }
         else{
-            //TODO check for email password error
-             if(true) {
-                Platform.runLater(() -> loginButton.setDisable(true));
-                Platform.runLater(() -> signUp.setDisable(true));
-                Platform.runLater(() -> forgotButton.setDisable(true));
-                 Platform.runLater(() -> exitButton.setDisable(true));
-                 Platform.runLater(() -> minButton.setDisable(true));
-                Platform.runLater(() -> statusLabel.setText("Submitting..."));
-                ConnectionHandler.submitForgotPassword((success, error) -> {
-                    if (success) {
-                        Platform.runLater(() -> statusLabel.setText("Success!"));
-                        Platform.runLater(() -> loginButton.setDisable(false));
-                        Platform.runLater(() -> signUp.setDisable(false));
-                        Platform.runLater(() -> forgotButton.setDisable(false));
-                        Platform.runLater(() -> exitButton.setDisable(false));
-                        Platform.runLater(() -> minButton.setDisable(false));
+            Platform.runLater(() -> loginButton.setDisable(true));
+            Platform.runLater(() -> signUp.setDisable(true));
+            Platform.runLater(() -> forgotButton.setDisable(true));
+            Platform.runLater(() -> exitButton.setDisable(true));
+            Platform.runLater(() -> minButton.setDisable(true));
+            Platform.runLater(() -> statusLabel.setText("Submitting..."));
+            ConnectionHandler.submitForgotPassword((success, error) -> {
+                if (success) {
+                    Platform.runLater(() -> statusLabel.setText("Success!"));
+                    Platform.runLater(() -> loginButton.setDisable(false));
+                    Platform.runLater(() -> signUp.setDisable(false));
+                    Platform.runLater(() -> forgotButton.setDisable(false));
+                    Platform.runLater(() -> exitButton.setDisable(false));
+                    Platform.runLater(() -> minButton.setDisable(false));
 
-                    } else {
-                        Platform.runLater(() -> statusLabel.setText(error));
-                        Platform.runLater(() -> loginButton.setDisable(false));
-                        Platform.runLater(() -> signUp.setDisable(false));
-                        Platform.runLater(() -> forgotButton.setDisable(false));
-                        Platform.runLater(() -> exitButton.setDisable(false));
-                        Platform.runLater(() -> minButton.setDisable(false));
-                    }
-                }, emailField.getText());
-            }
-            else{
-                 //TODO Wrong format
-             }
+                } else {
+                    Platform.runLater(() -> statusLabel.setText(error));
+                    Platform.runLater(() -> loginButton.setDisable(false));
+                    Platform.runLater(() -> signUp.setDisable(false));
+                    Platform.runLater(() -> forgotButton.setDisable(false));
+                    Platform.runLater(() -> exitButton.setDisable(false));
+                    Platform.runLater(() -> minButton.setDisable(false));
+                }
+            }, emailField.getText());
         }
     }
 
