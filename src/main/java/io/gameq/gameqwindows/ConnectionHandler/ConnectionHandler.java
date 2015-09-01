@@ -177,7 +177,8 @@ public final class ConnectionHandler {
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
-                String response = post("login", "email="+mEmail+"&password="+mPassword + "&push_token=" + ConnectionHandler.loadToken() + deviceString);
+                String response = post("register", "email="+mEmail+"&password="+mPassword + "&push_token=" +
+                        ConnectionHandler.loadToken() + deviceString);
                 holder.populate(response);
                 if (holder.success) {
                     ConnectionHandler.saveEmail(mEmail);
