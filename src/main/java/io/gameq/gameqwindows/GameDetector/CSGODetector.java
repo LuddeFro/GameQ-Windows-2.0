@@ -149,21 +149,21 @@ public class CSGODetector extends PacketDetector {
 
     private boolean isGameReady(Packet p) {
 
-        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 60){
+        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 60.0){
             int key = gameTimer1.removeLast().getKey();
             packetCounter1.put(key, packetCounter1.get(key) - 1);
         }
 
         double t = 1.0;
         if(isTesting()){t = 0.2;}
-        else{t = 2;}
+        else{t = 2.0;}
 
         while(!gameTimer2.isEmpty() && p.getCaptureTime() - gameTimer2.getLast().getTime() > t){
             int key = gameTimer2.removeLast().getKey();
             packetCounter2.put(key, packetCounter2.get(key) - 1);
         }
 
-        while(!dstGameTimer.isEmpty() && p.getCaptureTime() - dstGameTimer.getLast().getTime() > 10){
+        while(!dstGameTimer.isEmpty() && p.getCaptureTime() - dstGameTimer.getLast().getTime() > 10.0){
             int key = dstGameTimer.removeLast().getKey();
             dstPacketCounter.put(key, dstPacketCounter.get(key) - 1);
         }

@@ -24,13 +24,15 @@ public class LoLDetector extends PacketDetector {
     private PacketMap dstQCounter = new PacketMap(new int[]{100, 400, 500, 700, 800, 900});
 
     private LinkedList<PacketTimer> stopQTimer = new LinkedList<>();
-    private PacketMap stopQCounter = new PacketMap(new int[]{100, 300, 900, 1100});
+    private PacketMap stopQCounter = new PacketMap(new int[]{100, 300, 800, 900, 1100});
 
     private LinkedList<PacketTimer> stopDstQTimer = new LinkedList<>();
-    private PacketMap stopDstQCounter = new PacketMap(new int[]{100, 300, 900});
+    private PacketMap stopDstQCounter = new PacketMap(new int[]{100, 300, 700, 800, 900});
 
     private LinkedList<PacketTimer> gameTimer1 = new LinkedList<>();
     private PacketMap packetCounter1 = new PacketMap(new int[]{1300});
+
+    private LinkedList<PacketTimer> spamDetector = new LinkedList<>();
 
     private double queueStartTime = -1;
 
@@ -55,6 +57,9 @@ public class LoLDetector extends PacketDetector {
     }
 
     public void resetQueueTimer(){
+
+        spamDetector = new LinkedList<>();
+
         srcQTimer = new LinkedList<>();
         srcQCounter =  new PacketMap(new int[]{300, 400, 500, 600, 700, 800, 900, 1100});
 
@@ -64,10 +69,10 @@ public class LoLDetector extends PacketDetector {
         dstQCounter =  new PacketMap(new int[]{100, 400, 500, 700, 800, 900});
 
         stopQTimer =  new LinkedList<>();
-        stopQCounter = new PacketMap(new int[]{100, 300, 900, 1100});
+        stopQCounter = new PacketMap(new int[]{100, 300, 800, 900, 1100});
 
         stopDstQTimer =  new LinkedList<>();
-        stopDstQCounter = new PacketMap(new int[]{100, 300, 900});
+        stopDstQCounter = new PacketMap(new int[]{100, 300, 700, 800, 900});
     }
 
     public void resetGameTimer(){
@@ -111,15 +116,23 @@ public class LoLDetector extends PacketDetector {
 
     private boolean isQueueing(Packet p){
 
-        while(!srcQTimer.isEmpty() && p.getCaptureTime() - srcQTimer.getLast().getTime() > 2){
+        while(!spamDetector.isEmpty() && p.getCaptureTime() - spamDetector.getLast().getTime() > 1.0){
+            System.out.println(p.getCaptureTime() - spamDetector.getLast().getTime());
+            spamDetector.removeLast();
+        }
+
+        spamDetector.addFirst(new PacketTimer(p.getPacketLength(), p.getCaptureTime()));
+
+        while(!srcQTimer.isEmpty() && p.getCaptureTime() - srcQTimer.getLast().getTime() > 2.0){
             int key = srcQTimer.removeLast().getKey();
             srcQCounter.put(key, srcQCounter.get(key) - 1);
         }
 
-        while(!dstQTimer.isEmpty() && p.getCaptureTime() - dstQTimer.getLast().getTime() > 2){
+        while(!dstQTimer.isEmpty() && p.getCaptureTime() - dstQTimer.getLast().getTime() > 2.0){
             int key = dstQTimer.removeLast().getKey();
             dstQCounter.put(key, dstQCounter.get(key) -1);
         }
+
 
         for (int key : srcQCounter.keySet()){
             if((p.getPacketLength() <= key + 99 && p.getPacketLength() >= key  && ports.contains(p.getSrcPort()))){
@@ -139,7 +152,11 @@ public class LoLDetector extends PacketDetector {
             }
         }
 
-        if((srcQCounter.get(400) > 0 || srcQCounter.get(800) > 0 || srcQCounter.get(700) > 0) && (dstQCounter.get(500) > 0 ||
+        System.out.println(spamDetector.size());
+
+        if(spamDetector.size() > 10){return false;}
+        else if((srcQCounter.get(400) > 0 || srcQCounter.get(800) > 0 || srcQCounter.get(700) > 0) && (dstQCounter.get
+                (500) > 0 ||
                 dstQCounter.get(800)  > 0 || dstQCounter.get(700)  > 0 || dstQCounter.get(400)  > 0) && (srcQTimer.size() >= 2 &&
                 dstQTimer.size() >= 2) && (srcQTimer.size() + dstQTimer.size() >= 3)){
             queueStartTime = p.getCaptureTime();
@@ -149,26 +166,28 @@ public class LoLDetector extends PacketDetector {
                 dstQCounter.get(100) > 0) && (srcQTimer.size() >= 3 && dstQTimer.size() >= 3)){
             queueStartTime = p.getCaptureTime();
             return true;}
+        else if((srcQCounter.get(400) > 0 && dstQCounter.get(400) > 0 && srcQCounter.get(700) > 0 && dstQCounter.get
+                (700) > 0)){return true;}
         else{return false;}
     }
 
 
     private boolean stoppedQueueing(Packet p) {
 
-        while(!stopQTimer.isEmpty() && p.getCaptureTime() - stopQTimer.getLast().getTime() > 2){
+        while(!stopQTimer.isEmpty() && p.getCaptureTime() - stopQTimer.getLast().getTime() > 2.0){
             int key = stopQTimer.removeLast().getKey();
             stopQCounter.put(key, stopQCounter.get(key) -1);
         }
 
-        while(!stopDstQTimer.isEmpty() && p.getCaptureTime() - stopDstQTimer.getLast().getTime() > 2){
+        while(!stopDstQTimer.isEmpty() && p.getCaptureTime() - stopDstQTimer.getLast().getTime() > 2.0){
             int key = stopDstQTimer.removeLast().getKey();
             stopDstQCounter.put(key, stopDstQCounter.get(key) -1);
         }
 
         for (int key : stopQCounter.keySet()){
             if((p.getPacketLength() <= key + 99 && p.getPacketLength() >= key && ports.contains(p.getSrcPort()))){
-                srcQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
-                srcQCounter.put(key, srcQCounter.get(key) + 1);
+                stopQTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                stopQCounter.put(key, stopQCounter.get(key) + 1);
             }
         }
 
@@ -179,20 +198,24 @@ public class LoLDetector extends PacketDetector {
             }
         }
 
-        if((stopQCounter.get(100) > 0 || stopQCounter.get(900) > 0) && (stopDstQCounter.get(300) > 0 ||
+        if((stopQCounter.get(100) > 0 || (stopQCounter.get(900) > 0 || stopQCounter.get(800) > 0)) &&
+                (stopDstQCounter.get(300) > 0 ||
                 stopDstQCounter.get(800) > 0) && (stopQTimer.size() >= 2 && stopDstQTimer.size() >= 2))
         {return true;}
         else if((stopQCounter.get(900) > 0 || stopQCounter.get(1100) > 0 || stopQCounter.get(300) > 0) &&
                 (stopDstQCounter.get(100) > 0 || stopDstQCounter.get(300) > 0) && (stopQTimer.size() >= 3 &&
                 stopDstQTimer.size() >= 3))
         {return true;}
+        else if(stopQCounter.get(100) > 0 && (stopQCounter.get(900) + stopQCounter.get(800) > 0)
+                && stopDstQCounter.get(300) > 0 && (stopDstQCounter.get(700) + stopDstQCounter.get(800) +
+            stopDstQCounter.get(900) > 0)){return true;}
         else{return false;}
     }
 
 
     private boolean isGameReady(Packet p) {
 
-        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 3){
+        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 3.0){
             int key = gameTimer1.removeLast().getKey();
             packetCounter1.put(key, packetCounter1.get(key) - 1);
         }

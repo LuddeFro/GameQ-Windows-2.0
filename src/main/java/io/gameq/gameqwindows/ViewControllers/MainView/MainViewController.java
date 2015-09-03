@@ -68,7 +68,7 @@ public class MainViewController extends VBox implements Initializable {
     }
 
     public void startButtonClicked(){
-        AcceptHandler.acceptMatch(true, 5);
+        AcceptHandler.acceptMatch(false, 5);
     }
 
     public void stopButtonClicked(){

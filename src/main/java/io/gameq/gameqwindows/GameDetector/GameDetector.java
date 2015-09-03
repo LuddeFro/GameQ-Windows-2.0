@@ -1,7 +1,9 @@
 package io.gameq.gameqwindows.GameDetector;
 
+import io.gameq.gameqwindows.ConnectionHandler.ConnectionHandler;
 import io.gameq.gameqwindows.DataHandler.DataHandler;
 import io.gameq.gameqwindows.Main;
+import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
 
@@ -32,7 +34,6 @@ public abstract class GameDetector {
 
 
     public void startDetection(Main application){
-        //datahandler.foldername = ...
         counter = 0;
         this.application = application;
     }
@@ -65,7 +66,15 @@ public abstract class GameDetector {
 
 
     public void saveDetection(){
-        System.out.println("Saving File");
+        if(saveToServer){
+            ConnectionHandler.submitCSV(((success, error) -> {
+                if(success){
+
+                } else{
+
+                }
+            }),application.fileToString(), Encoding.getIntFromGame(game), Encoding.getIntFromStatus(status));
+        }
     }
 
     public void resetDetection() {

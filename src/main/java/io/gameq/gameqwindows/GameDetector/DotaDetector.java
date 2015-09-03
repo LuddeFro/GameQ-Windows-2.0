@@ -153,7 +153,7 @@ public class DotaDetector extends PacketDetector {
 
             boolean inGame = isInGame(newPacket, 5, 30);
             boolean gameReady = isGameReady(newPacket);
-            boolean startedQueueing = queueStarted(newPacket, 2,5, 2);
+            boolean startedQueueing = queueStarted(newPacket, 2.0,5, 2);
 
             if(inGame){updateStatus(Status.InGame);}
             else if(gameReady){updateStatus(Status.GameReady);}
@@ -164,7 +164,7 @@ public class DotaDetector extends PacketDetector {
         else  if(getStatus() == Status.InQueue){
             boolean inGame = isInGame(newPacket,  5, 30);
             boolean gameReady = isGameReady(newPacket);
-            boolean stillQueueing = isStillQueueing(newPacket, 30, 5, 2);
+            boolean stillQueueing = isStillQueueing(newPacket, 30.0, 5, 2);
 
             if(inGame){updateStatus(Status.InGame);}
             else if(gameReady){updateStatus(Status.GameReady);}
@@ -192,7 +192,7 @@ public class DotaDetector extends PacketDetector {
         }
     }
 
-    private boolean queueStarted(Packet p, int timeSpan, int maxPacket, int packetNumber) {
+    private boolean queueStarted(Packet p, double timeSpan, int maxPacket, int packetNumber) {
 
         while(!srcQTimer.isEmpty() && p.getCaptureTime() - srcQTimer.getLast().getTime() > timeSpan){
             int key = srcQTimer.removeLast().getKey();
@@ -237,7 +237,7 @@ public class DotaDetector extends PacketDetector {
     }
 
 
-    private boolean isStillQueueing(Packet p, int timeSpan, int maxPacket, int packetNumber) {
+    private boolean isStillQueueing(Packet p, double timeSpan, int maxPacket, int packetNumber) {
 
         while(!stopQTimer.isEmpty() && p.getCaptureTime() - stopQTimer.getLast().getTime() > timeSpan){
             int key = stopQTimer.removeLast().getKey();
@@ -292,17 +292,17 @@ public class DotaDetector extends PacketDetector {
 
     private boolean isGameReady(Packet p) {
 
-        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 10){
+        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 10.0){
             int key = gameTimer1.removeLast().getKey();
             packetCounter1.put(key, packetCounter1.get(key) - 1);
         }
 
-        while(!dstGameTimer.isEmpty() && p.getCaptureTime() - dstGameTimer.getLast().getTime() > 10){
+        while(!dstGameTimer.isEmpty() && p.getCaptureTime() - dstGameTimer.getLast().getTime() > 10.0){
             int key = dstGameTimer.removeLast().getKey();
             dstPacketCounter.put(key, dstPacketCounter.get(key) - 1);
         }
 
-        while(!gameTimer2.isEmpty() && p.getCaptureTime() - gameTimer2.getLast().getTime() > 10){
+        while(!gameTimer2.isEmpty() && p.getCaptureTime() - gameTimer2.getLast().getTime() > 10.0){
             int key = gameTimer2.removeLast().getKey();
             packetCounter2.put(key, packetCounter2.get(key) - 1);
         }
