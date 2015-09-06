@@ -41,8 +41,23 @@ public class JSONHolder {
             return;
         }
 
-        JsonElement jelement = new JsonParser().parse(jsonString);
-        JsonObject jObject = jelement.getAsJsonObject();
+        JsonObject jObject = null;
+        try {
+            JsonElement jelement = new JsonParser().parse(jsonString);
+            jObject = jelement.getAsJsonObject();
+        } catch (Exception e) {
+            success = false;
+            error = "Connection Failure: " + oJsonString;
+            status = 0;
+            game = 0;
+            accept_before = 0;
+            device_id = 0;
+            session_token = "";
+            current_version = "";
+            download_link = "";
+            time = System.currentTimeMillis() / 1000L;
+            return;
+        }
 
         if (jObject == null) {
             success = false;
@@ -60,55 +75,55 @@ public class JSONHolder {
 
         try {
             success = jObject.get("success").getAsInt() != 0;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Json parse fail");
             success = false;
         }
 
         try {
             error = jObject.get("error").getAsString();
-        }catch (Exception e){
+        } catch (Exception e) {
             error = "";
         }
 
         try {
             status = jObject.get("status").getAsInt();
-        }catch (Exception e){
+        } catch (Exception e) {
             status = 0;
         }
         try {
             game = jObject.get("game").getAsInt();
-        }catch (Exception e){
+        } catch (Exception e) {
             game = 0;
         }
         try {
             accept_before = jObject.get("accept_before").getAsInt();
-        }catch (Exception e){
+        } catch (Exception e) {
             accept_before = 0;
         }
         try {
             device_id = jObject.get("device_id").getAsInt();
-        }catch (Exception e){
+        } catch (Exception e) {
             device_id = 0;
         }
         try {
             session_token = jObject.get("session_token").getAsString();
-        }catch (Exception e){
+        } catch (Exception e) {
             session_token = "";
         }
         try {
             current_version = jObject.get("current_version").getAsString();
-        }catch (Exception e){
+        } catch (Exception e) {
             current_version = "";
         }
         try {
             download_link = jObject.get("download_link").getAsString();
-        }catch (Exception e){
+        } catch (Exception e) {
             download_link = "";
         }
         try {
             time = jObject.get("time").getAsLong();
-        }catch (Exception e){
+        } catch (Exception e) {
             time = System.currentTimeMillis() / 1000L;
         }
     }

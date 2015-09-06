@@ -46,6 +46,7 @@ public abstract class GameDetector {
         if (status != newStatus && newStatus == Status.GameReady && !isTesting) {
             //detector.saveDetection()
             startTimer();
+            saveDetection();
         } else {
             if(timer != null){
                 timer.cancel();

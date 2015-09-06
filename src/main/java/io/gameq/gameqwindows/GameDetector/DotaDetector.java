@@ -134,15 +134,15 @@ public class DotaDetector extends PacketDetector {
     }
 
 
-    @Override
-    public void handle(Packet newPacket) {
-        update(newPacket);
-    }
-
-    @Override
-    public void handleTest(Packet newPacket) {
-        update(newPacket);
-    }
+//    @Override
+//    public void handle(Packet newPacket) {
+//        update(newPacket);
+//    }
+//
+//    @Override
+//    public void handleTest(Packet newPacket) {
+//        update(newPacket);
+//    }
 
     @Override
     public void update(Packet newPacket) {
@@ -298,7 +298,7 @@ public class DotaDetector extends PacketDetector {
     private boolean isGameReady(Packet p) {
 
         while(!spamDetector.isEmpty() && p.getCaptureTime() - spamDetector.getLast().getTime() > 1.0){
-            System.out.println(p.getCaptureTime() - spamDetector.getLast().getTime());
+//            System.out.println(p.getCaptureTime() - spamDetector.getLast().getTime());
             spamDetector.removeLast();
         }
 

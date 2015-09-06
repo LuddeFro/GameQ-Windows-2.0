@@ -74,7 +74,7 @@ public class PacketParser  {
          * Second we open up the selected device
          **************************************************************************/
         int snaplen = 64 * 1024;           // Capture all packets, no trucation
-        int flags = Pcap.MODE_PROMISCUOUS; // capture all packets
+        int flags = Pcap.MODE_NON_PROMISCUOUS; // capture all packets
         int timeout = 100;           // 10 seconds in millis
         pcap = Pcap.openLive(device.getName(), snaplen, flags, timeout, errbuf);
 
