@@ -8,9 +8,9 @@ public class Packet {
     private int srcPort;
     private int dstPort;
     private int packetLength;
-    private double captureTime;
+    private long captureTime;
 
-    public Packet(int srcPort, int dstPort, int packetLength, double captureTime){
+    public Packet(int srcPort, int dstPort, int packetLength, long captureTime){
 
         this.dstPort = dstPort;
         this.srcPort = srcPort;
@@ -30,7 +30,7 @@ public class Packet {
         return packetLength;
     }
 
-    public double getCaptureTime() {
+    public long getCaptureTime() {
         return captureTime;
     }
 }

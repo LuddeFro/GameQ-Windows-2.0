@@ -36,7 +36,7 @@ public class CSGODetector extends PacketDetector {
     private boolean soonGame = false;
 
     private int inGameMaxSize = 101;
-    private double time = -1;
+    private long time = -1;
     private Timer timer = null;
 
     @Override
@@ -103,7 +103,7 @@ public class CSGODetector extends PacketDetector {
             timer.cancel();
             timer.purge();
         }
-        time = -1.0;
+        time = -1;
     }
 
     public void resetInGameTimer(){
@@ -211,7 +211,7 @@ public class CSGODetector extends PacketDetector {
 
         if(soonGame == true && packetCounter2.get(590) > 0) {
             soonGame = false;
-            time = -1.0;
+            time = -1;
             timer.purge();
             timer.cancel();
         }
@@ -238,7 +238,7 @@ public class CSGODetector extends PacketDetector {
 
     public void update(){
         if(soonGame){
-            time = time + 0.2;
+            time = time + 200;
             if(isGameReady(new Packet(-1,  -1,  -1, time))){
                 updateStatus(Status.GameReady);
                 timer.purge();

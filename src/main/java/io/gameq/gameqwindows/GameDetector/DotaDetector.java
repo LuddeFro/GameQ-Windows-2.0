@@ -158,7 +158,7 @@ public class DotaDetector extends PacketDetector {
 
             boolean inGame = isInGame(newPacket, 5, 30);
             boolean gameReady = isGameReady(newPacket);
-            boolean startedQueueing = queueStarted(newPacket, 2.0,5, 2);
+            boolean startedQueueing = queueStarted(newPacket, 2 * 1000,5, 2);
 
             if(inGame){updateStatus(Status.InGame);}
             else if(gameReady){updateStatus(Status.GameReady);}
@@ -169,7 +169,7 @@ public class DotaDetector extends PacketDetector {
         else  if(getStatus() == Status.InQueue){
             boolean inGame = isInGame(newPacket,  5, 30);
             boolean gameReady = isGameReady(newPacket);
-            boolean stillQueueing = isStillQueueing(newPacket, 30.0, 5, 2);
+            boolean stillQueueing = isStillQueueing(newPacket, 30 * 1000, 5, 2);
 
             if(inGame){updateStatus(Status.InGame);}
             else if(gameReady){updateStatus(Status.GameReady);}
@@ -197,7 +197,7 @@ public class DotaDetector extends PacketDetector {
         }
     }
 
-    private boolean queueStarted(Packet p, double timeSpan, int maxPacket, int packetNumber) {
+    private boolean queueStarted(Packet p, long timeSpan, int maxPacket, int packetNumber) {
 
         while(!srcQTimer.isEmpty() && p.getCaptureTime() - srcQTimer.getLast().getTime() > timeSpan){
             int key = srcQTimer.removeLast().getKey();
@@ -230,7 +230,7 @@ public class DotaDetector extends PacketDetector {
 
         if(dstQCounter.get(174) >= 1 && (srcQCounter.get(270) >= 1 || srcQCounter.get(285) >= 1 ) &&
                 (srcQCounter.get(78) >= 1 ||
-                dstQCounter.get(78) >= 1) && (dstQCounter.get(174) + dstQCounter.get(222) >= 2))
+                        dstQCounter.get(78) >= 1) && (dstQCounter.get(174) + dstQCounter.get(222) >= 2))
         {return true;}
         else if(srcQCounter.get(78) >= 1 && dstQCounter.get(78) >= 1 && dstQCounter.get(174) >= 1 &&
                 dstQCounter.get(222) >= 1 &&
@@ -242,7 +242,7 @@ public class DotaDetector extends PacketDetector {
     }
 
 
-    private boolean isStillQueueing(Packet p, double timeSpan, int maxPacket, int packetNumber) {
+    private boolean isStillQueueing(Packet p, long timeSpan, int maxPacket, int packetNumber) {
 
         while(!stopQTimer.isEmpty() && p.getCaptureTime() - stopQTimer.getLast().getTime() > timeSpan){
             int key = stopQTimer.removeLast().getKey();
@@ -297,49 +297,53 @@ public class DotaDetector extends PacketDetector {
 
     private boolean isGameReady(Packet p) {
 
-        while(!spamDetector.isEmpty() && p.getCaptureTime() - spamDetector.getLast().getTime() > 1.0){
+        while(!spamDetector.isEmpty() && p.getCaptureTime() - spamDetector.getLast().getTime() > 1 * 1000){
+//            System.out.println(p.getCaptureTime());
+//            System.out.println(spamDetector.getLast().getTime());
 //            System.out.println(p.getCaptureTime() - spamDetector.getLast().getTime());
             spamDetector.removeLast();
         }
 
         spamDetector.addFirst(new PacketTimer(p.getPacketLength(), p.getCaptureTime()));
 
-        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 10.0){
+        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 10 * 1000){
             int key = gameTimer1.removeLast().getKey();
             packetCounter1.put(key, packetCounter1.get(key) - 1);
         }
 
-        while(!dstGameTimer.isEmpty() && p.getCaptureTime() - dstGameTimer.getLast().getTime() > 10.0){
+        while(!dstGameTimer.isEmpty() && p.getCaptureTime() - dstGameTimer.getLast().getTime() > 10 * 1000){
             int key = dstGameTimer.removeLast().getKey();
             dstPacketCounter.put(key, dstPacketCounter.get(key) - 1);
         }
 
-        while(!gameTimer2.isEmpty() && p.getCaptureTime() - gameTimer2.getLast().getTime() > 10.0){
+        while(!gameTimer2.isEmpty() && p.getCaptureTime() - gameTimer2.getLast().getTime() > 10 * 1000){
             int key = gameTimer2.removeLast().getKey();
             packetCounter2.put(key, packetCounter2.get(key) - 1);
         }
 
-        for (int key: packetCounter1.keySet()){
-            if(p.getPacketLength() <= key + 100 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort ==
-                    -1) && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
-                gameTimer1.addFirst(new PacketTimer(key, p.getCaptureTime()));
-                packetCounter1.put(key, packetCounter1.get(key) + 1);
+        if(spamDetector.size() < 20) {
+            for (int key : packetCounter1.keySet()) {
+                if (p.getPacketLength() <= key + 100 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort ==
+                        -1) && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin) {
+                    gameTimer1.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                    packetCounter1.put(key, packetCounter1.get(key) + 1);
+                }
             }
-        }
 
-        for (int key: dstPacketCounter.keySet()){
-            if(p.getPacketLength() <= key + 5 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort ==
-                    -1) && p.getDstPort() <= portMax && p.getDstPort() >= portMin){
-                dstGameTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
-                dstPacketCounter.put(key, dstPacketCounter.get(key) + 1);
+            for (int key : dstPacketCounter.keySet()) {
+                if (p.getPacketLength() <= key + 5 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort ==
+                        -1) && p.getDstPort() <= portMax && p.getDstPort() >= portMin) {
+                    dstGameTimer.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                    dstPacketCounter.put(key, dstPacketCounter.get(key) + 1);
+                }
             }
-        }
 
-        for (int key: packetCounter2.keySet()){
-            if(p.getPacketLength() <= key + 5 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort ==
-                    -1) && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin){
-                gameTimer2.addFirst(new PacketTimer(key, p.getCaptureTime()));
-                packetCounter2.put(key, packetCounter2.get(key) + 1);
+            for (int key : packetCounter2.keySet()) {
+                if (p.getPacketLength() <= key + 5 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort ==
+                        -1) && p.getSrcPort() <= portMax && p.getSrcPort() >= portMin) {
+                    gameTimer2.addFirst(new PacketTimer(key, p.getCaptureTime()));
+                    packetCounter2.put(key, packetCounter2.get(key) + 1);
+                }
             }
         }
 
@@ -350,9 +354,7 @@ public class DotaDetector extends PacketDetector {
 //        packetCounter2.printMap();
 //        dstPacketCounter.printMap();
 
-
-        if(spamDetector.size() > 10){return false;}
-        else if(gameTimer1.size() >= 3
+        if(gameTimer1.size() >= 3
                 && packetCounter1.get(1300) < 3
                 && gameTimer2.size() > 0
                 && dstPacketCounter.get(78) > 1)

@@ -11,8 +11,11 @@ import org.jnetpcap.packet.PcapPacketHandler;
 import org.jnetpcap.protocol.tcpip.Tcp;
 import org.jnetpcap.protocol.tcpip.Udp;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,20 +28,20 @@ import java.util.List;
  *  #3: \Device\NPF_GenericDialupAdapter [Adapter for generic dialup and VPN capture]
  */
 
-public class PacketParser  {
+public class PacketParser {
 
     private static PacketParser instance = null;
+    private LinkedList<PcapThread> pcapThreads = new LinkedList<>();
+
     protected PacketParser() {
-        // Exists only to defeat instantiation.
     }
+
     public static PacketParser getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new PacketParser();
         }
         return instance;
     }
-
-    private Pcap pcap = null;
 
     public void start(String filterString, PacketDetector detector) {
         List<PcapIf> alldevs = new ArrayList<PcapIf>(); // Will be filled with NICs
@@ -61,94 +64,120 @@ public class PacketParser  {
             String description =
                     (device.getDescription() != null) ? device.getDescription()
                             : "No description available";
-            System.out.printf("#%d: %s [%s]\n", i++, device.getName(), description);
+            System.out.printf("Starting detection on: " + "#%d: %s [%s]\n", i, device.getName(), description);
+            if(alldevs.get(i) != null){
+                PcapThread newPcapThread = new PcapThread(alldevs.get(i),filterString, detector);
+                pcapThreads.addFirst(newPcapThread);
+                new Thread(newPcapThread).start();
+            }
+            i++;
+        }
+    }
+
+    public void terminate(){
+        for(PcapThread pcapThread : pcapThreads){
+            pcapThread.terminate();
+        }
+    }
+
+    /***************************************************************************
+     * Second we open up the selected device
+     **************************************************************************/
+
+    private class PcapThread implements Runnable {
+
+        private PcapIf device = null;
+        private StringBuilder errbuf = null;
+        private String filterString = "";
+        private PacketDetector detector = null;
+        private Pcap pcap = null;
+
+
+        public PcapThread(PcapIf device, String filterString, PacketDetector detector) {
+            this.device = device;
+            this.errbuf = new StringBuilder();
+            this.filterString = filterString;
+            this.detector = detector;
         }
 
-        PcapIf device = alldevs.get(0); // We know we have atleast 1 device
-        System.out
-                .printf("\nChoosing '%s' on your behalf:\n",
-                        (device.getDescription() != null) ? device.getDescription()
-                                : device.getName());
+        @Override
+        public void run() {
 
-        /***************************************************************************
-         * Second we open up the selected device
-         **************************************************************************/
-        int snaplen = 64 * 1024;           // Capture all packets, no trucation
-        int flags = Pcap.MODE_NON_PROMISCUOUS; // capture all packets
-        int timeout = 100;           // 10 seconds in millis
-        pcap = Pcap.openLive(device.getName(), snaplen, flags, timeout, errbuf);
+            int snaplen = 64 * 1024;           // Capture all packets, no trucation
+            int flags = Pcap.MODE_NON_PROMISCUOUS; // capture all packets
+            int timeout = 100;           // 10 seconds in millis
+            pcap = Pcap.openLive(device.getName(), snaplen, flags, timeout, errbuf);
 
-        if (pcap == null) {
-            System.err.printf("Error while opening device for capture: "
-                    + errbuf.toString());
-            return;
-        }
+            if (pcap == null) {
+                System.err.printf("Error while opening device for capture: "
+                        + errbuf.toString());
+                return;
+            }
 
         /*Set Filter*/
 
-        PcapBpfProgram filter = new PcapBpfProgram();
-        int optimize = 0; // 1 means true, 0 means false
-        int netmask = 0;
+            PcapBpfProgram filter = new PcapBpfProgram();
+            int optimize = 0; // 1 means true, 0 means false
+            int netmask = 0;
 
-        int k = pcap.compile(filter, filterString, optimize, netmask);
-        if (k != Pcap.OK) {
-            System.out.println("Filter error: " + pcap.getErr());
-        }
-        pcap.setFilter(filter);
+            int k = pcap.compile(filter, filterString, optimize, netmask);
+            if (k != Pcap.OK) {
+                System.out.println("Filter error: " + pcap.getErr());
+            }
+            pcap.setFilter(filter);
 
 
-        /***************************************************************************
-         * Third we create a packet handler which will receive packets from the
-         * libpcap loop.
-         **************************************************************************/
-        PcapPacketHandler<String> jpacketHandler = new PcapPacketHandler<String>() {
+            /***************************************************************************
+             * Third we create a packet handler which will receive packets from the
+             * libpcap loop.
+             **************************************************************************/
+            PcapPacketHandler<String> jpacketHandler = new PcapPacketHandler<String>() {
 
-            Tcp tcp = new Tcp(); // Preallocate a Tcp header
-            Udp udp = new Udp(); // Preallocate a UDP header
+                Tcp tcp = new Tcp(); // Preallocate a Tcp header
+                Udp udp = new Udp(); // Preallocate a UDP header
 
-            public void nextPacket(PcapPacket packet, String user) {
+                public void nextPacket(PcapPacket packet, String user) {
 
-                if (packet.hasHeader(tcp)) {
+                    if (packet.hasHeader(tcp)) {
 //                    System.out.print("src: " +  tcp.source());
 //                    System.out.print(" dst: " +  tcp.destination());
 //                    System.out.print(" len: " + packet.getCaptureHeader().caplen()); //PROBABLY WRONG
 //                    System.out.println(" time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
-                    detector.handle(new Packet(tcp.source(), tcp.destination(), packet.getCaptureHeader().caplen() -
-                            64, packet.getCaptureHeader().timestampInMillis()/1000.0));
-                }
-
-                else if(packet.hasHeader(udp)){
+                        detector.handle(new Packet(tcp.source(), tcp.destination(), packet.getCaptureHeader().caplen() -
+                                64, packet.getCaptureHeader().timestampInMillis() ));
+                    } else if (packet.hasHeader(udp)) {
 //                    System.out.print("Found udp packet");
 //                    System.out.print(" src: " + udp.source());
 //                    System.out.print(" dst: " + udp.destination());
 //                    System.out.print(" caplen : " + packet.getCaptureHeader().caplen());
 //                    System.out.println(" time: " + new Date(packet.getCaptureHeader().timestampInMillis()));
-                    detector.handle(new Packet(udp.source(), udp.destination(), packet.getCaptureHeader().caplen(),
-                            packet.getCaptureHeader().timestampInMillis()/1000.0));
+                        detector.handle(new Packet(udp.source(), udp.destination(), packet.getCaptureHeader().caplen(),
+                                packet.getCaptureHeader().timestampInMillis()));
+                    }
                 }
+            };
+
+            /***************************************************************************
+             * Fourth we enter the loop and tell it to capture 10 packets. The loop
+             * method does a mapping of pcap.datalink() DLT value to JProtocol ID, which
+             * is needed by JScanner. The scanner scans the packet buffer and decodes
+             * the headers. The mapping is done automatically, although a variation on
+             * the loop method exists that allows the programmer to sepecify exactly
+             * which protocol ID to use as the data link type for this pcap interface.
+             **************************************************************************/
+            pcap.loop(Pcap.LOOP_INFINITE, jpacketHandler, "jNetPcap rocks!");
+
+            /***************************************************************************
+             * Last thing to do is close the pcap handle
+             **************************************************************************/
+        }
+
+        private void terminate() {
+            if (pcap != null) {
+                pcap.breakloop();
+                pcap.close();
+                PacketParser.instance = null;
             }
-        };
-
-        /***************************************************************************
-         * Fourth we enter the loop and tell it to capture 10 packets. The loop
-         * method does a mapping of pcap.datalink() DLT value to JProtocol ID, which
-         * is needed by JScanner. The scanner scans the packet buffer and decodes
-         * the headers. The mapping is done automatically, although a variation on
-         * the loop method exists that allows the programmer to sepecify exactly
-         * which protocol ID to use as the data link type for this pcap interface.
-         **************************************************************************/
-        pcap.loop(Pcap.LOOP_INFINITE, jpacketHandler, "jNetPcap rocks!");
-
-        /***************************************************************************
-         * Last thing to do is close the pcap handle
-         **************************************************************************/
-    }
-
-    public void terminate(){
-        if (pcap != null) {
-            pcap.breakloop();
-            pcap.close();
-            PacketParser.instance = null;
         }
     }
 }

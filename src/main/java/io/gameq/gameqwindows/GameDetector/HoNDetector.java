@@ -61,20 +61,20 @@ public class HoNDetector extends PacketDetector {
 
         //IN QUEUE
         else  if(getStatus() == Status.InQueue){
-            boolean inGame = isGame(newPacket, 10.0, 0, 50);
+            boolean inGame = isGame(newPacket, 10 * 1000, 0, 50);
             updateStatus(Status.GameReady);
         }
 
         //GAME READY
         else if(getStatus() == Status.GameReady){
-            boolean inGame = isGame(newPacket, 10.0, 0, 50);
+            boolean inGame = isGame(newPacket, 10 * 1000, 0, 50);
             if(inGame){updateStatus(Status.InGame);
             }
         }
 
         //IN GAME
         else  if(getStatus() == Status.InGame){
-            boolean inGame = isGame(newPacket, 10.0, 0, 50);
+            boolean inGame = isGame(newPacket, 10 * 1000, 0, 50);
             if(!inGame){updateStatus(Status.InLobby);
             }
         }
@@ -83,7 +83,7 @@ public class HoNDetector extends PacketDetector {
         }
     }
 
-    public boolean isGame(Packet p, Double timeSpan, int maxPacket, int packetNumber){
+    public boolean isGame(Packet p, long timeSpan, int maxPacket, int packetNumber){
 
         while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > timeSpan || gameTimer1
                 .size() >= inGameMaxSize){

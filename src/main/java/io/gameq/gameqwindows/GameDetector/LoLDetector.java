@@ -34,7 +34,7 @@ public class LoLDetector extends PacketDetector {
 
     private LinkedList<PacketTimer> spamDetector = new LinkedList<>();
 
-    private double queueStartTime = -1;
+    private long queueStartTime = -1;
 
     @Override
     public void startDetection(Main application) {
@@ -116,19 +116,19 @@ public class LoLDetector extends PacketDetector {
 
     private boolean isQueueing(Packet p){
 
-        while(!spamDetector.isEmpty() && p.getCaptureTime() - spamDetector.getLast().getTime() > 1.0){
+        while(!spamDetector.isEmpty() && p.getCaptureTime() - spamDetector.getLast().getTime() > 1 * 1000){
             System.out.println(p.getCaptureTime() - spamDetector.getLast().getTime());
             spamDetector.removeLast();
         }
 
         spamDetector.addFirst(new PacketTimer(p.getPacketLength(), p.getCaptureTime()));
 
-        while(!srcQTimer.isEmpty() && p.getCaptureTime() - srcQTimer.getLast().getTime() > 2.0){
+        while(!srcQTimer.isEmpty() && p.getCaptureTime() - srcQTimer.getLast().getTime() > 2 * 1000){
             int key = srcQTimer.removeLast().getKey();
             srcQCounter.put(key, srcQCounter.get(key) - 1);
         }
 
-        while(!dstQTimer.isEmpty() && p.getCaptureTime() - dstQTimer.getLast().getTime() > 2.0){
+        while(!dstQTimer.isEmpty() && p.getCaptureTime() - dstQTimer.getLast().getTime() > 2 * 1000){
             int key = dstQTimer.removeLast().getKey();
             dstQCounter.put(key, dstQCounter.get(key) -1);
         }
@@ -174,12 +174,12 @@ public class LoLDetector extends PacketDetector {
 
     private boolean stoppedQueueing(Packet p) {
 
-        while(!stopQTimer.isEmpty() && p.getCaptureTime() - stopQTimer.getLast().getTime() > 2.0){
+        while(!stopQTimer.isEmpty() && p.getCaptureTime() - stopQTimer.getLast().getTime() > 2 * 1000){
             int key = stopQTimer.removeLast().getKey();
             stopQCounter.put(key, stopQCounter.get(key) -1);
         }
 
-        while(!stopDstQTimer.isEmpty() && p.getCaptureTime() - stopDstQTimer.getLast().getTime() > 2.0){
+        while(!stopDstQTimer.isEmpty() && p.getCaptureTime() - stopDstQTimer.getLast().getTime() > 2 * 1000){
             int key = stopDstQTimer.removeLast().getKey();
             stopDstQCounter.put(key, stopDstQCounter.get(key) -1);
         }
@@ -215,14 +215,14 @@ public class LoLDetector extends PacketDetector {
 
     private boolean isGameReady(Packet p) {
 
-        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 3.0){
+        while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 3 * 1000){
             int key = gameTimer1.removeLast().getKey();
             packetCounter1.put(key, packetCounter1.get(key) - 1);
         }
 
         for (int key: packetCounter1.keySet()){
             if(p.getPacketLength() <= key + 99 && p.getPacketLength() >= key && (p.getSrcPort() == queuePort || queuePort == -1)
-                    && ports.contains(p.getSrcPort()) && (p.getCaptureTime() - queueStartTime > 0.3)){
+                    && ports.contains(p.getSrcPort()) && (p.getCaptureTime() - queueStartTime > 300)){
                 gameTimer1.addFirst(new PacketTimer(key, p.getCaptureTime()));
                 packetCounter1.put(key, packetCounter1.get(key) + 1);
             }
