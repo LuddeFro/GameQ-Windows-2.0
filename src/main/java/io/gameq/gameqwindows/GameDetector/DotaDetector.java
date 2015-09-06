@@ -46,6 +46,8 @@ public class DotaDetector extends PacketDetector {
     private LinkedList<PacketTimer> inGameTimer = new LinkedList<>();
     private PacketMap inGamePacketCounter = new PacketMap(new int[]{});
 
+    private LinkedList<PacketTimer> spamDetector = new LinkedList<>();
+
     private int saveCounter = 0;
     private int inGameMaxSize = 100;
 
@@ -111,6 +113,9 @@ public class DotaDetector extends PacketDetector {
     }
 
     private void resetGameTimer(){
+
+        spamDetector = new LinkedList<>();
+
         gameTimer1 = new LinkedList<>();
         packetCounter1 =  new PacketMap(new int[]{600, 700, 800, 900, 1000, 1100, 1200, 1300});
 
@@ -292,6 +297,13 @@ public class DotaDetector extends PacketDetector {
 
     private boolean isGameReady(Packet p) {
 
+        while(!spamDetector.isEmpty() && p.getCaptureTime() - spamDetector.getLast().getTime() > 1.0){
+            System.out.println(p.getCaptureTime() - spamDetector.getLast().getTime());
+            spamDetector.removeLast();
+        }
+
+        spamDetector.addFirst(new PacketTimer(p.getPacketLength(), p.getCaptureTime()));
+
         while(!gameTimer1.isEmpty() && p.getCaptureTime() - gameTimer1.getLast().getTime() > 10.0){
             int key = gameTimer1.removeLast().getKey();
             packetCounter1.put(key, packetCounter1.get(key) - 1);
@@ -338,7 +350,9 @@ public class DotaDetector extends PacketDetector {
 //        packetCounter2.printMap();
 //        dstPacketCounter.printMap();
 
-        if(gameTimer1.size() >= 3
+
+        if(spamDetector.size() > 10){return false;}
+        else if(gameTimer1.size() >= 3
                 && packetCounter1.get(1300) < 3
                 && gameTimer2.size() > 0
                 && dstPacketCounter.get(78) > 1)

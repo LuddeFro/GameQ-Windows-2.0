@@ -65,7 +65,6 @@ public class SettingsController extends VBox implements Initializable {
                 }
 
             }, application.getUserName(), pw2.getText(), oldpw.getText());
-
         }
     }
 

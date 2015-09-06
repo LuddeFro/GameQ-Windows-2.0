@@ -29,7 +29,7 @@ public class JSONHolder {
         if (jsonString == null) {
             jsonString = "";
             success = false;
-            error = "Could not connenct to server";
+            error = "Connection Failure";
             status = 0;
             game = 0;
             accept_before = 0;
@@ -46,7 +46,7 @@ public class JSONHolder {
 
         if (jObject == null) {
             success = false;
-            error = "null json, response was: " + oJsonString;
+            error = "Connection Failure: " + oJsonString;
             status = 0;
             game = 0;
             accept_before = 0;

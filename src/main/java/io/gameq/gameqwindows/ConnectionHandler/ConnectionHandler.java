@@ -335,8 +335,8 @@ public final class ConnectionHandler {
     public static void updatePassword(CallbackGeneral caller, String email, String newPassword, String oldPassword) {
         final CallbackGeneral mCaller = caller;
         final String mEmail = email;
-        final String mOldPassword = oldPassword;
-        final String mNewPassword = newPassword;
+        final String mOldPassword = ConnectionHandler.hashSHA256(oldPassword);
+        final String mNewPassword = ConnectionHandler.hashSHA256(newPassword);
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
