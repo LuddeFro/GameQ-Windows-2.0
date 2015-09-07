@@ -81,6 +81,7 @@ public class FeedbackController extends VBox implements Initializable {
             },feedbackField.getText());
         }
 
+        //did not recieve notif
         else if(didNotButton.isSelected() && application.fileToString() != null){
             ConnectionHandler.submitCSV((success1, error1) -> {
                 if(success1){
@@ -95,12 +96,13 @@ public class FeedbackController extends VBox implements Initializable {
                     Platform.runLater(() -> exitButton.setDisable(false));
                 }
 
-            }, application.fileToString(), Encoding.getIntFromGame(application.getGame()),1);
+            }, application.fileToString(), Encoding.getIntFromGame(application.getGame()),4);
 
             ConnectionHandler.submitFeedback((success, error) -> {
             }, feedbackField.getText());
         }
 
+        //got wrong notif
         else if(didButton.isSelected() && application.fileToString() != null){
             ConnectionHandler.submitCSV((success1, error1) -> {
                 if(success1){
@@ -115,7 +117,7 @@ public class FeedbackController extends VBox implements Initializable {
                     Platform.runLater(() -> exitButton.setDisable(false));
                 }
 
-            }, application.getDetector().fileToString(), Encoding.getIntFromGame(application.getGame()),2);
+            }, application.getDetector().fileToString(), Encoding.getIntFromGame(application.getGame()),5);
 
             ConnectionHandler.submitFeedback((success, error) -> {
             }, feedbackField.getText());

@@ -11,7 +11,7 @@ import java.util.LinkedList;
 public abstract class PacketDetector extends GameDetector{
 
     LinkedList<Packet> packetQueue = new LinkedList<Packet>();
-    int queueMaxSize = -1;
+    int queueMaxSize = 300;
     boolean isCapturing = false;
     PacketParser packetParser = PacketParser.getInstance();
 
@@ -42,7 +42,8 @@ public abstract class PacketDetector extends GameDetector{
     public String fileToString(){
         String log = "";
         for(Packet p: packetQueue){
-            log = log + p.getSrcPort() + "," + p.getDstPort() + "," + p.getPacketLength() + "," + p.getCaptureTime();
+            log = log + p.getSrcPort() + "," + p.getDstPort() + "," + p.getPacketLength() + "," + p.getCaptureTime()
+                    + ",";
         }
         return log;
     }

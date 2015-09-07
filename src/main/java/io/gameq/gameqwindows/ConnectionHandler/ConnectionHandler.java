@@ -310,7 +310,7 @@ public final class ConnectionHandler {
             JSONHolder holder = new JSONHolder();
             public void run() {
                 String response = post("storeCSV", "csv="+mCSV+"&game="+mGame+"&type="+mType+"&session_token=" +
-                        ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID(), "http://dev.gameq.io/computer/");
+                        ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID(), "http://dev.gameq.io:8080/computer/");
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
                 return;
@@ -326,7 +326,8 @@ public final class ConnectionHandler {
             JSONHolder holder = new JSONHolder();
             public void run() {
                 String response = post("storeFeedback", "feedback="+mFeedback+"&session_token=" + ConnectionHandler
-                        .sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID(), "http://dev.gameq.io/computer/");
+                        .sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID(), "http://dev.gameq" +
+                        ".io:8080/computer/");
                 System.out.println(response);
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);

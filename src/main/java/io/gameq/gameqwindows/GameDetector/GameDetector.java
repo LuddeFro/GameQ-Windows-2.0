@@ -67,14 +67,15 @@ public abstract class GameDetector {
 
 
     public void saveDetection(){
+//        System.out.println(application.fileToString());
         if(saveToServer){
             ConnectionHandler.submitCSV(((success, error) -> {
                 if(success){
-
+                    System.out.println("Submitted CSV");
                 } else{
-
+                    System.out.println("Failed to submit CSv");
                 }
-            }),application.fileToString(), Encoding.getIntFromGame(game), Encoding.getIntFromStatus(status));
+            }),application.fileToString(), Encoding.getIntFromGame(game), 3);
         }
     }
 

@@ -134,16 +134,6 @@ public class DotaDetector extends PacketDetector {
     }
 
 
-//    @Override
-//    public void handle(Packet newPacket) {
-//        update(newPacket);
-//    }
-//
-//    @Override
-//    public void handleTest(Packet newPacket) {
-//        update(newPacket);
-//    }
-
     @Override
     public void update(Packet newPacket) {
 
