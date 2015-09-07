@@ -58,7 +58,10 @@ public final class ConnectionHandler {
 
 
     public static String post(String extension, String arguments) {
-        String serverURL = "http://server.gameq.io:8080/computer/";
+        return post(extension, arguments, "http://server.gameq.io:8080/computer/");
+    }
+
+    public static String post(String extension, String arguments, String serverURL) {
         String url = serverURL + extension + "?";
         arguments = arguments + "&key=68440fe0484ad2bb1656b56d234ca5f463f723c3d3d58c3398190877d1d963bb";
         URL obj;
@@ -306,8 +309,8 @@ public final class ConnectionHandler {
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
-                String response = post("submitCSV", "csv="+mCSV+"&game="+mGame+"&type="+mType+"&session_token=" +
-                        ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
+                String response = post("storeCSV", "csv="+mCSV+"&game="+mGame+"&type="+mType+"&session_token=" +
+                        ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID(), "http://dev.gameq.io/computer/");
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
                 return;
@@ -322,8 +325,9 @@ public final class ConnectionHandler {
         Runnable r = new Runnable() {
             JSONHolder holder = new JSONHolder();
             public void run() {
-                String response = post("submitFeedback", "feedback="+mFeedback+"&session_token=" + ConnectionHandler.sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID());
-                //System.out.println(response);
+                String response = post("storeFeedback", "feedback="+mFeedback+"&session_token=" + ConnectionHandler
+                        .sessionToken + "&device_id=" + ConnectionHandler.loadDeviceID(), "http://dev.gameq.io/computer/");
+                System.out.println(response);
                 holder.populate(response);
                 mCaller.callback(holder.success, holder.error);
                 return;
