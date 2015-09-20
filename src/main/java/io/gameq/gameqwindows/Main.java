@@ -405,10 +405,10 @@ public class Main extends Application {
         }
 
         if(game == Game.LoL && leagueIsGame && status != Status.InGame){
-            updateStatus(Status.InGame);
+            detector.updateStatus(Status.InGame);
         }
-        else if(game == Game.LoL && !leagueIsGame && status == Status.InGame){
-            updateStatus(Status.InLobby);
+        else if(game == Game.LoL && status == Status.InGame){
+            detector.updateStatus(Status.InLobby);
         }
     }
 
@@ -420,7 +420,7 @@ public class Main extends Application {
 
         ConnectionHandler.setStatus((success, error) -> {
             if (success) {
-                System.out.println("successfully updated status");
+//                System.out.println("successfully updated status");
             } else {
                 System.out.println(error);
             }

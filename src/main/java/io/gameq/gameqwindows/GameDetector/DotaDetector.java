@@ -340,9 +340,9 @@ public class DotaDetector extends PacketDetector {
         if(gameTimer1.size() > 0 || gameTimer2.size() > 0 && p.getPacketLength() > 1300){isProbablyGame = true;}
         else{isProbablyGame = false;}
 //
-//        packetCounter1.printMap();
-//        packetCounter2.printMap();
-//        dstPacketCounter.printMap();
+        packetCounter1.printMap();
+        packetCounter2.printMap();
+        dstPacketCounter.printMap();
 
         if(gameTimer1.size() >= 3
                 && packetCounter1.get(1300) < 3

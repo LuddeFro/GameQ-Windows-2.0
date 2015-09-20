@@ -117,7 +117,6 @@ public class LoLDetector extends PacketDetector {
     private boolean isQueueing(Packet p){
 
         while(!spamDetector.isEmpty() && p.getCaptureTime() - spamDetector.getLast().getTime() > 1 * 1000){
-            System.out.println(p.getCaptureTime() - spamDetector.getLast().getTime());
             spamDetector.removeLast();
         }
 
@@ -152,6 +151,9 @@ public class LoLDetector extends PacketDetector {
             }
         }
 
+        srcQCounter.printMap();
+        dstQCounter.printMap();
+        System.out.println(Encoding.getStringFromGameStatus(getGame(),getStatus()));
         System.out.println(spamDetector.size());
 
         if(spamDetector.size() > 10){return false;}
@@ -197,6 +199,8 @@ public class LoLDetector extends PacketDetector {
                 stopDstQCounter.put(key, stopDstQCounter.get(key) + 1);
             }
         }
+
+
 
         if((stopQCounter.get(100) > 0 || (stopQCounter.get(900) > 0 || stopQCounter.get(800) > 0)) &&
                 (stopDstQCounter.get(300) > 0 ||

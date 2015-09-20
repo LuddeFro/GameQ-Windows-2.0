@@ -122,7 +122,6 @@ public abstract class GameDetector {
     }
 
     public void update(){
-        System.out.println("asdkjaksljdkajsdjk");
         if(status == Status.GameReady){
             updateStatus(Status.InGame);
             timer.cancel();
