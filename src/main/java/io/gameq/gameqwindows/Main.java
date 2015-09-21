@@ -67,13 +67,13 @@ public class Main extends Application {
         }
     }
 
-    static {
-        if(System.getProperty("sun.arch.data.model").equals("32")){
-            System.loadLibrary("jnetpcap32");
-        }else if(System.getProperty("sun.arch.data.model").equals("64")){
-            System.loadLibrary("jnetpcap64");
-        }
-    }
+//    static {
+//        if(System.getProperty("sun.arch.data.model").equals("32")){
+//            System.loadLibrary("jnetpcap32");
+//        }else if(System.getProperty("sun.arch.data.model").equals("64")){
+//            System.loadLibrary("jnetpcap");
+//        }
+//    }
 
     // records relative x and y co-ordinates.
     class Delta { double x, y; }
