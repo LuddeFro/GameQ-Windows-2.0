@@ -5,7 +5,6 @@ import io.gameq.gameqwindows.GameDetector.*;
 import io.gameq.gameqwindows.Structs.Encoding;
 import io.gameq.gameqwindows.Structs.Game;
 import io.gameq.gameqwindows.Structs.Status;
-import io.gameq.gameqwindows.Updater.WinSparkleDLL;
 import io.gameq.gameqwindows.ViewControllers.LoginView.LoginViewController;
 import io.gameq.gameqwindows.ViewControllers.MainView.MainViewController;
 import io.gameq.gameqwindows.ViewControllers.SignUpView.SignUpViewController;
@@ -68,13 +67,23 @@ public class Main extends Application {
         }
     }
 
+    static {
+        if(System.getProperty("sun.arch.data.model").equals("32")){
+            System.loadLibrary("jnetpcap32");
+        }else if(System.getProperty("sun.arch.data.model").equals("64")){
+            System.loadLibrary("jnetpcap64");
+        }
+    }
+
     // records relative x and y co-ordinates.
     class Delta { double x, y; }
 
 
     @Override
     public void start(Stage primaryStage) {
+
         try {
+
             stage = primaryStage;
             stage.setTitle("GameQ");
             stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
