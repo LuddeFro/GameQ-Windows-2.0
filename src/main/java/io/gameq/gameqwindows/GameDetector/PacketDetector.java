@@ -17,9 +17,6 @@ public abstract class PacketDetector extends GameDetector{
 
     protected void handle(Packet newPacket) {
         if(newPacket.getPacketLength() > 5){
-            System.out.println("src: " + newPacket.getSrcPort() + " dst: " + newPacket.getDstPort() + " len: " +
-                    newPacket.getPacketLength() + " time: " +  newPacket.getCaptureTime()/1000.0);
-
             if(getStatus() != Status.InGame){
                 packetQueue.addFirst(newPacket);
                 if(packetQueue.size() >= queueMaxSize) {
@@ -52,17 +49,5 @@ public abstract class PacketDetector extends GameDetector{
     public void stopDetection(){
         PacketParser.getInstance().terminate();
         super.stopDetection();
-    }
-
-    @Override
-     public void saveDetection(){
-        super.saveDetection();
-        packetQueue = new LinkedList<>();
-    }
-
-    @Override
-    public void saveMissedDetection(){
-        super.saveMissedDetection();
-        packetQueue = new LinkedList<>();
     }
 }
