@@ -43,7 +43,6 @@ public class QueueChecker {
 
     //private static Robot robot;
 
-    private static HashMap<Game, Boolean> isForeground = new HashMap<Game, Boolean>();
     private static HashMap<Game, Boolean> shouldStop = new HashMap<Game, Boolean>();
     private static HashMap<Game, Boolean> isIngame = new HashMap<Game, Boolean>(); //TODO: SET THIS APPROPRIATELY
 
@@ -68,44 +67,13 @@ public class QueueChecker {
         this.detector = detector;
         shouldStop.put(game, false);
         (new Thread(new QueueTimer(game))).start();
-        (new Thread(new ForegroundTimer(game))).start();
     }
 
     public void stopMonitor(Game game) {
         shouldStop.put(game, true);
     }
 
-    public class ForegroundTimer implements Runnable {
 
-        public Game game;
-
-        public ForegroundTimer(Game game) {
-            this.game = game;
-        }
-
-        public void run() {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (shouldStop.get(game) != null && shouldStop.get(game)) {
-                return;
-            }
-            if (detector.getStatus() == Status.InGame) {
-                //do nothing
-            } else {
-                if (foregroundWindowMatches(game)) {
-                    isForeground.put(game, true);
-                } else {
-                    isForeground.put(game, false);
-                }
-            }
-            run();
-        }
-
-
-    }
 
     public class QueueTimer implements Runnable {
 
@@ -121,13 +89,19 @@ public class QueueChecker {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             if (shouldStop.get(game) != null && shouldStop.get(game)) {
                 return;
             }
-            if (isIngame.get(game) != null && isIngame.get(game)) {
+            //detector.getStatus() == Status.InGame
+            //isIngame.get(game) != null && isIngame.get(game)
+            //System.out.println("tick");
+            if (detector.getStatus() == Status.InGame) {
                 //do nothing
-            } else if (isForeground.get(game) != null && isForeground.get(game)) {
+            } else if (foregroundWindowMatches(game)) {
+                System.out.println("foreground window match");
                 if (queuePopped(game)) {
+                    System.out.println("queue popped");
                     //TODO Tell the Connectionshandler
                     detector.updateStatus(Status.GameReady);
                 }
@@ -260,7 +234,16 @@ public class QueueChecker {
             //cap = (BufferedImage)cb.getData(DataFlavor.imageFlavor); //ca 40ms
 
             cap = capture(User32DLL.GetForegroundWindow());
+            if (cap == null) {
+                System.out.println("Could not capture window.");
+                return false;
+            }
             for (int i = 0; i < numSquares; i++) {
+                if (sx[i] + sw[i] > cap.getWidth() || sy[i] + sh[i] > cap.getHeight()) {
+                    System.out.println("User has retabbed/resized");
+                    return false;
+                }
+                System.out.println("x: "+ sx[i] + " w: "+ sw[i] + "  capw: " + cap.getWidth());
                 BufferedImage scap = cap.getSubimage(sx[i],sy[i],sw[i],sh[i]);
                 //dev lines below to see what image is caught
                 //File file = new File(Encoding.getStringFromGame(game)+i+"AVGCLRCap.png");
@@ -441,7 +424,9 @@ public class QueueChecker {
 
         int width = bounds.right - bounds.left;
         int height = bounds.bottom - bounds.top;
-
+        if (width == 0 || height == 0) {
+            return null;
+        }
         WinDef.HBITMAP hBitmap = GDI32.INSTANCE.CreateCompatibleBitmap(hdcWindow, width, height);
 
         WinNT.HANDLE hOld = GDI32.INSTANCE.SelectObject(hdcMemDC, hBitmap);
