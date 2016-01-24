@@ -144,5 +144,26 @@ public class Encoding {
         }
     }
 
+    public static String getWindowTitleFromGame(Game game) {
+        switch (game){
+            case NoGame:
+                return "N/A";
+            case Dota2:
+                return "Dota 2";
+            case HoN:
+                return "N/A";
+            case CSGO:
+                return "Counter-Strike: Global Offensive";
+            case HoTS:
+                return "N/A";
+            case LoL:
+                return "PVP.net Client";
+        }
+        return "N/A";
+    }
+    public static String getWindowTitleFromGame(int game) {
+        return getWindowTitleFromGame(Encoding.getGameFromInt(game));
+    }
+
 
 }

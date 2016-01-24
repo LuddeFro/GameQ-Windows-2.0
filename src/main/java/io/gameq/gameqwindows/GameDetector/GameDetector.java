@@ -46,7 +46,6 @@ public abstract class GameDetector {
         if (status != newStatus && newStatus == Status.GameReady && !isTesting) {
             //detector.saveDetection()
             startTimer();
-            saveDetection();
         } else {
             if(timer != null){
                 timer.cancel();
@@ -67,16 +66,6 @@ public abstract class GameDetector {
 
 
     public void saveDetection(){
-//        System.out.println(application.fileToString());
-        if(saveToServer){
-            ConnectionHandler.submitCSV(((success, error) -> {
-                if(success){
-                    System.out.println("Submitted CSV");
-                } else{
-                    System.out.println("Failed to submit CSv");
-                }
-            }),application.fileToString(), Encoding.getIntFromGame(game), 3);
-        }
     }
 
     public void resetDetection() {
@@ -88,15 +77,6 @@ public abstract class GameDetector {
 
     public void failMode(){
 
-        if(isFailMode){
-            System.out.println("FailMode Off");
-            isFailMode = false;
-        }
-
-        else{
-            System.out.println("FailMode On");
-            isFailMode = true;
-        }
     }
 
     public void stopDetection(){
