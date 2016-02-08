@@ -147,23 +147,41 @@ public class QueueChecker {
             case Dota2:
                 sy[0] = (int) (wRect.getY() + wRect.getHeight()*(585.0/1200.0));
                 sh[0] = (int) (wRect.getHeight()*(20.0/1200.0) );
-                sx[0] = (int) (wRect.getX() + wRect.getWidth()*(610.0/1920.0));
+                sx[0] = (int) (wRect.getX() + wRect.getWidth()*(790.0/1920.0));
                 sw[0] = (int) (wRect.getWidth()*(20.0/1920.0));
-                r[0] = 46;
-                g[0] = 78;
-                b[0] = 65;
-                shouldmatch[0] = true;
+                r[0] = 48;
+                g[0] = 74;
+                b[0] = 64;
+                shouldmatch[0] = false;
 
                 sy[1] = (int) (wRect.getY() + wRect.getHeight()*(585.0/1200.0));
                 sh[1] = (int) (wRect.getHeight()*(20.0/1200.0) );
-                sx[1] = (int) (wRect.getX() + wRect.getWidth()*(1040/1920.0));
+                sx[1] = (int) (wRect.getX() + wRect.getWidth()*(1100/1920.0));
                 sw[1] = (int) (wRect.getWidth()*(20.0/1920.0));
-                r[1] = 81;
-                g[1] = 43;
-                b[1] = 42;
-                shouldmatch[1] = true;
+                r[1] = 50;
+                g[1] = 77;
+                b[1] = 66;
+                shouldmatch[1] = false;
 
-                numSquares = 2;
+                sy[2] = (int) (wRect.getY() + wRect.getHeight()*(585.0/1200.0));
+                sh[2] = (int) (wRect.getHeight()*(20.0/1200.0) );
+                sx[2] = (int) (wRect.getX() + wRect.getWidth()*(1230.0/1920.0));
+                sw[2] = (int) (wRect.getWidth()*(20.0/1920.0));
+                r[2] = 34;
+                g[2] = 35;
+                b[2] = 36;
+                shouldmatch[1] = false;
+
+                sy[3] = (int) (wRect.getY() + wRect.getHeight()*(585.0/1200.0));
+                sh[3] = (int) (wRect.getHeight()*(20.0/1200.0) );
+                sx[3] = (int) (wRect.getX() + wRect.getWidth()*(660.0/1920.0));
+                sw[3] = (int) (wRect.getWidth()*(20.0/1920.0));
+                r[3] = 37;
+                g[3] = 38;
+                b[3] = 38;
+                shouldmatch[1] = false;
+
+                numSquares = 4;
                 break;
             case CSGO:
                 sy[0] = (int) (0 + wRect.getHeight()*(250.0/1200.0));
